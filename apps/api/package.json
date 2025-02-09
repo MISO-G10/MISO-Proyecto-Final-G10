@@ -1,0 +1,35 @@
+{
+  "name": "@acme/hono-api",
+  "type": "module",
+  "scripts": {
+    "dev": "dotenvx run -- tsx watch src/index.ts",
+    "build": "dotenvx run -- esbuild src/index.ts --bundle --format=esm --platform=node --outdir=dist --sourcemap",
+    "start": "dotenvx run -- node dist/index.js"
+  },
+  "dependencies": {
+    "@acme/db": "workspace:*",
+    "@hono/node-server": "^1.13.8",
+    "@hono/zod-validator": "^0.4.2",
+    "@scalar/hono-api-reference": "^0.5.172",
+    "@t3-oss/env-nextjs": "^0.12.0",
+    "hono": "^4.6.20",
+    "hono-openapi": "^0.4.4",
+    "pg": "^8.13.1",
+    "uuid": "^11.0.5",
+    "zod": "^3.24.1",
+    "zod-openapi": "^4.2.3"
+  },
+  "devDependencies": {
+    "@acme/eslint-config": "workspace:*",
+    "@acme/prettier-config": "workspace:*",
+    "@acme/tsconfig": "workspace:*",
+    "@dotenvx/dotenvx": "catalog:",
+    "@hono/eslint-config": "^1.0.2",
+    "@types/node": "^22.10.10",
+    "esbuild": "^0.25.0",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "tsx": "^4.7.1"
+  },
+  "prettier": "@acme/prettier-config"
+}
