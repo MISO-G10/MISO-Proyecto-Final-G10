@@ -1,0 +1,21 @@
+[project]
+name = "{{cookiecutter.project_slug}}"
+version = "0.1.0"
+description = "{{cookiecutter.project_description}}"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=3.1.0",
+    "flask-jwt-extended>=4.7.1",
+    "flask-limiter>=3.10.1",
+    "flask-migrate>=4.1.0",
+    "flask-sqlalchemy>=3.1.1",
+    "python-dotenv>=1.0.1",
+    "sqlalchemy-mixins>=2.0.5",
+    "uuid7>=0.1.0",
+    "gunicorn>=23.0.0",
+    "psycopg2-binary>=2.9.10",
+    "flask-rest-api>=0.17.1",
+    "flask-marshmallow>=1.3.0",
+    "marshmallow-sqlalchemy>=1.4.1",
+]
