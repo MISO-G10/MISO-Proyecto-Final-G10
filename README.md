@@ -136,6 +136,21 @@ en cambios en los modelos.
 
 [Documentación oficial](https://flask-migrate.readthedocs.io/en/latest/)
 
+
+### Pruebas
+Usamos `pytest` para correr las pruebas. Para correr las pruebas, dado la naturalidad del proyecto, debes ir a la
+carpeta del microservicio y ejecutar el siguiente comando:
+
+Ingresar a la carpeta del microservicio:
+```bash
+cd apps/<nombre_del_microservicio>
+```
+
+Luego, ejecuta el siguiente comando:
+```bash
+uv run -- pytest
+```
+
 ## Creación de un nuevo microservicio
 
 Para crear un nuevo microservicio, proveemos de un pequeño CLI que facilita la creación de estos basados en una
@@ -153,6 +168,7 @@ la carpeta del microservicio será creada dentro de la carpeta `apps`, y sus dep
 Serán creadas automáticamente.
 
 En caso de que uses el nombre de un microservicio que ya existe, el CLI arrojará un error.
+
 
 ## Despliegue
 
