@@ -5,6 +5,7 @@ from app.blueprints import api
 from app.blueprints.commands import commands
 from app.config.application import ApplicationConfig
 from app.lib.database import db, migrate
+from app.lib.schema import marshmallow
 from app.lib.errors import ApiError
 
 
@@ -29,6 +30,7 @@ def create_app():
 
     db.init_app(app)
     migrate.init_app(app, db, command="mg")
+    marshmallow.init_app(app)
 
     app.register_blueprint(api, url_prefix='/exp-01')
     app.register_blueprint(commands)
