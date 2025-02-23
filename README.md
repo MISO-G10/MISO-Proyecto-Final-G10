@@ -67,13 +67,15 @@ Idealmente, cada microservicio debería tener la siguiente estructura:
 ### Variables de entorno
 
 Cada microservicio debe tener un archivo `.env.example` que contenga las variables de entorno necesarias para su
-correcto funcionamiento. Simplemente, copia este archivo y renómbralo a `.env` para que `uv` pueda cargar las variables.
+correcto funcionamiento. Simplemente, copia este archivo y renómbralo a `.env` y modifica las variables según sea
+necesario.
 
 ### Configuración de la aplicación
 
 La configuración de la aplicación se encuentra en el archivo `app/config/application.py`. Aquí se definen las variables,
 como el nombre de la aplicación, el puerto en el que se ejecutará, etc. Estas son luego utilizadas por Flask para
-configurar SQLAlchemy, y otras librerías.
+configurar SQLAlchemy, y otras librerías. Ten encuenta que primero debes definir las variables de entorno en el archivo
+`.env` y posteriormente importarlas en el archivo `application.py` en caso de que desees usarlas.
 
 ### Docker
 
@@ -153,4 +155,5 @@ Serán creadas automáticamente.
 En caso de que uses el nombre de un microservicio que ya existe, el CLI arrojará un error.
 
 ## Despliegue
+
 WIP
