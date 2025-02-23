@@ -1,8 +1,8 @@
 from sqlalchemy import Integer, String
+from sqlalchemy.orm import mapped_column, Mapped
 
 from app.lib.database import db
 from .model import Model
-from sqlalchemy.orm import mapped_column, Mapped
 
 
 class User(db.Model, Model):
