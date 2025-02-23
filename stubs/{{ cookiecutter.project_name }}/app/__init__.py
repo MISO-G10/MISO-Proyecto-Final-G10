@@ -32,7 +32,7 @@ def create_app():
     migrate.init_app(app, db, command="mg")
     marshmallow.init_app(app)
 
-    app.register_blueprint(api, url_prefix='/exp-01')
+    app.register_blueprint(api, url_prefix='/{{ cookiecutter.project_slug }}')
     app.register_blueprint(commands)
 
     # with app.app_context(): // Uncomment if you have models
