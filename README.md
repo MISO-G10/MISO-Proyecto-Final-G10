@@ -88,6 +88,8 @@ despliegue de la aplicación en diferentes entornos.
 docker-compose -f apps/<nombre_del_microservicio>/compose.dev.yaml up
 ```
 
+Dependiendo del microservicio, puede que sea necesario modificar el archivo `compose.dev.yaml` para ajustar los puertos.
+
 ## Ejecución
 
 ### Desarrollo
