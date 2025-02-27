@@ -1,6 +1,6 @@
 # CCP Miso
 
-## Folder Structure
+## Estructura de archivos
 
 ```
 .
