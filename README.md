@@ -1,4 +1,4 @@
-# CC Gestión - Miso Grupo 10
+# CCP Gestión - Miso Grupo 10
 
 ## Estructura de archivos
 
