@@ -16,4 +16,5 @@ pip install locust
 
 # Ejecutar Locust con el archivo de pruebas (locustfile.py) y especificar el host
 echo "Ejecutando Locust..."
-locust -f locustfile.py --host http://localhost:3003
+#locust -f locustfile.py --host http://localhost:3003
+locust -f locustfile.py

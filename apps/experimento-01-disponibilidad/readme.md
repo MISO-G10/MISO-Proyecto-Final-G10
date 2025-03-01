@@ -45,7 +45,7 @@ experimento-disponibilidad/
 └── locustfile.py              # Script para ejecutar pruebas de carga con Locust
 ```
 
-## Instrucciones para Ejecutar Pruebas de Carga con Locust
+## Instrucciones para Ejecutar Pruebas de Carga con Locust, y ver sus respectivas métricas
 
 El experimento se centra en garantizar que el componente Monitor reciba y procese el estado del InventarioService en tiempo real, detectando fallas en menos de 2 segundos. Por ello, las pruebas de carga se enfocan en:
 
@@ -99,11 +99,11 @@ Desde allí podrás:
 - Iniciar y detener la prueba de carga.
 - Ver métricas en tiempo real (tiempo de respuesta, tasa de fallos, etc.).
 
-**Nota:** Se ha creado un archivo `run_locust.sh` en la raiz del experimento para simplificar el proceso.
+**Nota:** Se ha creado un archivo `run-locust.sh` en la raiz del experimento para simplificar el proceso.
 Para ejecutarlo debes darle permisos de acceso con:
 
 ```bash
-chmod +x run_locust.sh
+chmod +x run-locust.sh
 ```
 
 Luego ejecuta el script:
@@ -111,3 +111,26 @@ Luego ejecuta el script:
 ```bash
 ./run_locust.sh
 ```
+
+## Instrucciones para revisar métricas con Redis Insight
+
+El propósito de Redis Insight en este experimento es revisar que las colas de mensajes se estén ejecutando correctamente y no existan problemas de congestionamiento.
+
+- Descargar Redis Insight: <https://redis.io/insight/>
+- Correr el ejecutable para instalarlo, y luego abre la aplicación
+- Asegurarse de que se está corriendo en el puerto por defecto: 6379
+
+**Nota:**
+
+También se puede monitorear los pings y sus respuestas mediante la consola de logs de docker-compose:
+
+e.g ejecutando:
+
+```bash
+docker-compose logs -f monitor-service
+```
+
+obtendrá respuestas con si respectiva latencia en segundos:
+
+```bash
+monitor-service | [OK] Ping recibido en 0.005 s. Respuesta: InventarioService responde correctamente - OK

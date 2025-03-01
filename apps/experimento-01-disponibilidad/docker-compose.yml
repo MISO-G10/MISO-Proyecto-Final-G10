@@ -53,13 +53,14 @@ services:
     networks:
       - experimento-net
     environment:
+      - PYTHONUNBUFFERED=1
       - FLASK_APP=app.py
       - FLASK_ENV=development
       - CELERY_BROKER_URL=redis://redis:6379/0   # para que Monitor pueda enviar tareas a Redis
       - CELERY_RESULT_BACKEND=redis://redis:6379/0  # para que Monitor pueda recibir resultados de Redis
     ports:
       - "3002:5000"   # expone Monitor en el puerto 5000 para pruebas
-    command: flask run --host=0.0.0.0
+    command: ["python", "app.py"]
 
 networks:
   experimento-net:

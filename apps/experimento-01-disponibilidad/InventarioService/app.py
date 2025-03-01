@@ -15,15 +15,15 @@ db.init_app(app)
 
 # Configurar Celery
 celery = Celery(app.name,
-                broker=os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379/0'),
-                backend=os.environ.get('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0'))
+                broker=os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0'),
+                backend=os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379/0'))
 
 
-# Ejemplo: tarea Celery para obtener estado (ping) del servicio
+# Tarea Celery para obtener estado (ping) del servicio de inventario
 @celery.task
 def obtener_estado():
     # Esta tarea podría chequear la base de datos o variables internas
-    return "OK"
+    return "InventarioService responde correctamente - OK"
 
 # Endpoint Flask para listar productos (sin usar Celery, acceso directo a DB)
 @app.route("/inventario", methods=["GET"])
