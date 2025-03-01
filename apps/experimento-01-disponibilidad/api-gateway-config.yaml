@@ -1,0 +1,32 @@
+swagger: "2.0"
+info:
+  title: "Experimento Disponibilidad de InventarioService"
+  description: "Gateway para Monitor e InventarioService"
+  version: "1.0.0"
+# Definir esquema y host vacío, GCP Gateway proporcionará el dominio
+schemes:
+  - https
+paths:
+  /inventario:
+    get:
+      summary: "Consultar productos disponibles"
+      operationId: getInventario
+      responses:
+        "200":
+          description: "Lista de productos en inventario"
+      # Backend de Cloud Run para /inventario
+      x-google-backend:
+        address: "https://<URL-cloudrun-inventario>/inventario"
+        protocol: "h2"
+        # path_translation: APPEND_PATH_TO_ADDRESS (por defecto en nivel operación es CONSTANT_ADDRESS)
+  /monitor:
+    get:
+      summary: "Obtener logs/estado del InventarioService"
+      operationId: getMonitorStatus
+      responses:
+        "200":
+          description: "Estado actual de InventarioService"
+      # Backend de Cloud Run para /monitor
+      x-google-backend:
+        address: "https://<URL-cloudrun-monitor>/monitor"
+        protocol: "h2"

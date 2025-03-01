@@ -26,6 +26,9 @@ def create(name: str = typer.Argument(..., help="The name of the project")):
     print(f"[green]Creating project {name} in {target_dir}[/green] :thumbs_up:")
 
     try:
+        print(f"[yellow]Creating project directory {target_dir}[/yellow] :package:")
+        os.makedirs(target_dir)
+
         subprocess.run(
             [
                 "uv",
@@ -35,6 +38,7 @@ def create(name: str = typer.Argument(..., help="The name of the project")):
                 str(STUBS_DIR),
                 f"--output-dir={APPS_DIR}",
                 f"project_name={name}",
+                "--overwrite-if-exists"
             ],
             check=True,
         )
