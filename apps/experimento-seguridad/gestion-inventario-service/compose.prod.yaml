@@ -1,0 +1,31 @@
+services:
+  gestion-inventario-service:
+    image: gestion-inventario-service:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=app/app.py
+      - FLASK_RUN_PORT=5000
+      - FLASK_DEBUG=true
+      - DATABASE_URL=postgresql://postgres:password@db:5432/gestion-inventario-service
+    depends_on:
+      - gestion-inventario-service-db
+    networks:
+      - gestion-inventario-service-net
+  exp-01-db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=gestion-inventario-service
+    ports:
+      - "5432:5432"
+    networks:
+      - gestion-inventario-service-net
+
+networks:
+  gestion-inventario-service-net:
+    driver: bridge
