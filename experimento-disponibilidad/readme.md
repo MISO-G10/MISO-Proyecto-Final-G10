@@ -5,7 +5,7 @@ Este experimento tiene como objetivo evaluar la disponibilidad y la latencia del
 ## Instalación
 
 - Asegúrese de tener Docker instalado en su máquina
-- Ejecute: ```docker-compose up --build````
+- Ejecute: ```docker-compose up --build```
 - El servicio InventarioService correrá en el puerto 3001 y el servicio Monitor en el puerto 3002
 
 Puede consultar los servicios de cada microservicio:
