@@ -38,7 +38,7 @@ El sistema está compuesto por los siguientes microservicios y componentes:
 - **Locust**:
   - Herramienta para realizar pruebas de carga simulando múltiples usuarios.
 - **Redis Insight**:
-  - Para monitorear en tiempo real la instancia de Redis (opcional para análisis).
+  - Para monitorear en tiempo real la instancia de Redis
 
 ## Estructura del Proyecto
 
@@ -46,7 +46,7 @@ El sistema está compuesto por los siguientes microservicios y componentes:
 experimento-disponibilidad/
 ├── docker-compose.yml
 ├── README.md
-├── api-gateway-config.yaml    # (Configuración para despliegue en GCP, opcional)
+├── api-gateway-config.yaml    # (Configuración para despliegue en GCP, avance)
 ├── InventarioService/
 │   ├── Dockerfile
 │   ├── requirements.txt
@@ -90,7 +90,7 @@ Para evitar conflictos con otras dependencias y asegurar que se instale Locust e
 
 ### 1. Crear y Activar el Entorno Virtual
 
-Abre una terminal en la raíz del proyecto y ejecuta:
+Abrir una terminal en la raíz del proyecto y ejecuta:
 
 ```bash
 python3 -m venv venv
