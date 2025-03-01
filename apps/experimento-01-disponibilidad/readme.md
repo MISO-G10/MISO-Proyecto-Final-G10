@@ -27,7 +27,7 @@ El sistema está compuesto por los siguientes microservicios y componentes:
 ## Estructura del Proyecto
 
 ```plaintext
-mi-experimento/
+experimento-disponibilidad/
 ├── docker-compose.yml
 ├── README.md
 ├── api-gateway-config.yaml    # (Configuración para despliegue en GCP, opcional)
@@ -38,7 +38,6 @@ mi-experimento/
 │   ├── models.py              # Definición del modelo Producto
 │   ├── database.py            # Contiene la instancia: db = SQLAlchemy()
 │   ├── seed_data.py           # Función seed_database() para precargar 20 productos
-│   └── ... (otros archivos, si los hubiera)
 ├── MonitorService/
 │   ├── Dockerfile
 │   ├── requirements.txt
@@ -48,7 +47,20 @@ mi-experimento/
 
 ## Instrucciones para Ejecutar Pruebas de Carga con Locust
 
-COmo correr las pruebas de carga simulando múltiples usuarios:
+El experimento se centra en garantizar que el componente Monitor reciba y procese el estado del InventarioService en tiempo real, detectando fallas en menos de 2 segundos. Por ello, las pruebas de carga se enfocan en:
+
+1. El mecanismo ping-echo implementado en Monitor:
+
+- Objetivo: Verificar que, bajo alta frecuencia o demanda de pings, el Monitor pueda seguir enviando peticiones, recibir las respuestas de InventarioService y medir la latencia sin que se exceda el umbral de 2 segundos.
+- Pruebas: Simular múltiples pings concurrentes para evaluar la capacidad de respuesta y la estabilidad del proceso de verificación de salud.
+
+2. El comportamiento de InventarioService bajo carga:
+
+- Objetivo: Asegurarse de que InventarioService mantenga su capacidad de respuesta ante múltiples peticiones simultáneas, ya que un retraso en este servicio repercutiría directamente en la capacidad del Monitor para detectar fallas rápidamente.
+
+- Pruebas: Generar una carga elevada sobre el endpoint de InventarioService para medir tiempos de respuesta y detectar posibles cuellos de botella.
+
+Esta herramienta se utilizará para simular pruebas de carga sobre el proceso de ping-echo del Monitor (ya que es el encargado de iniciar las peticiones y evaluar la disponibilidad) y, de forma complementaria, sobre InventarioService para evaluar cómo impacta su rendimiento en la detección de fallos. Esto permitirá obtener un análisis integral de la capacidad del sistema para responder en tiempo real bajo condiciones de alta demanda.
 
 ## Requisitos Previos
 
