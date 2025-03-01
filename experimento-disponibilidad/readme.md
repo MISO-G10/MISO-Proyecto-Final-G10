@@ -2,7 +2,23 @@
 
 Este experimento tiene como objetivo evaluar la disponibilidad y la latencia del servicio **InventarioService** mediante la implementación del patrón **ping-echo**. El componente **Monitor** envía pings periódicos a InventarioService utilizando Celery y Redis para la comunicación asíncrona, y mide el tiempo de respuesta con `time.perf_counter()`. Se espera detectar fallos o demoras en la respuesta en menos de 2 segundos.
 
-## Arquitectura del Experimento
+## Instalación
+
+- Asegúrese de tener Docker instalado en su máquina
+- Ejecute: ```docker-compose up --build````
+- El servicio InventarioService correrá en el puerto 3001 y el servicio Monitor en el puerto 3002
+
+Puede consultar los servicios de cada microservicio:
+
+```Bash
+http://localhost:3001/inventario
+```
+
+```Bash
+http://localhost:3002/monitor
+```
+
+## Generalidades
 
 El sistema está compuesto por los siguientes microservicios y componentes:
 
