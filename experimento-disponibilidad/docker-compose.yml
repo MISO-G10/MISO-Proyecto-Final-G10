@@ -1,0 +1,70 @@
+services:
+  redis:
+    image: redis:6-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - experimento-net
+
+  inventario-service:
+    build:
+      context: ./InventarioService
+      dockerfile: Dockerfile
+    container_name: inventario-service
+    depends_on:
+      - redis
+    networks:
+      - experimento-net
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - DATABASE_URL=sqlite:///data/inventario.db
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    volumes:
+      - inventario_data:/app/data
+    ports:
+      - "3001:5000"
+    command: ["sh", "-c", "python app.py"]
+
+  inventario-worker:
+    build:
+      context: ./InventarioService
+      dockerfile: Dockerfile
+    container_name: inventario-worker
+    depends_on:
+      - redis
+    networks:
+      - experimento-net
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    command: ["celery", "-A", "app.celery", "worker", "--loglevel=info"]
+
+
+  monitor-service:
+    build:
+      context: ./MonitorService 
+      dockerfile: Dockerfile
+    container_name: monitor-service
+    depends_on:
+      - redis
+    networks:
+      - experimento-net
+    environment:
+      - PYTHONUNBUFFERED=1
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - CELERY_BROKER_URL=redis://redis:6379/0   # para que Monitor pueda enviar tareas a Redis
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0  # para que Monitor pueda recibir resultados de Redis
+    ports:
+      - "3002:5000"   # expone Monitor en el puerto 5000 para pruebas
+    command: ["python", "app.py"]
+
+networks:
+  experimento-net:
+    driver: bridge
+
+volumes:
+  inventario_data:
