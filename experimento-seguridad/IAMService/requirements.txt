@@ -1,0 +1,5 @@
+flask_jwt_extended==4.7.1
+SQLAlchemy==1.4.32
+Flask-SQLAlchemy==2.5.1
+flask==3.1.0 
+Werkzeug==3.1.3
