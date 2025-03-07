@@ -1,8 +1,23 @@
-FROM python:3.11-slim-buster
+# Usa una imagen ligera de Python
+FROM python:3.9-slim
+
+# Define el directorio de trabajo
 WORKDIR /app
+
+# Copiar archivo de requerimientos e instalar dependencias
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar el resto del código fuente
 COPY . .
+
+# Configurar variables de entorno para Flask
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=5000
+
+# Exponer el puerto en el que correrá la app
 EXPOSE 5000
-# Ejecutar la aplicación Flask (para exponer el endpoint /monitor)
-CMD ["flask", "run", "--host=0.0.0.0"]
+
+# Comando para iniciar la aplicación
+CMD ["flask", "run"]
