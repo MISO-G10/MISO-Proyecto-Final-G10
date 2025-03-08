@@ -1,14 +1,17 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request, current_app
 from database import db  
 from models import Producto, InventarioBodega
 from seed_data import seed_productos_inventario
 
-
+# Se cargan las variables de entorno
+load_dotenv()
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3')
-host = os.environ.get("FLASK_RUN_HOST", "0.0.0.0")  
-port = int(os.environ.get("FLASK_RUN_PORT", 5000)) 
+IAM_SERVICE_URL = os.getenv("IAM_SERVICE_URL", "http://IAMService:5002")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
+host = os.getenv("FLASK_RUN_HOST", "0.0.0.0")
+port = int(os.getenv("FLASK_RUN_PORT", 5001))
 db.init_app(app)
         
 '''Método para verificar el estado del servicio'''
@@ -64,6 +67,9 @@ def reset_db():
         except Exception as e:
             db.session.rollback()
             return jsonify({"error": f"Error al reiniciar la base de datos: {str(e)}"}), 500       
+        
+
+
 
 if __name__ == "__main__":
     with app.app_context():

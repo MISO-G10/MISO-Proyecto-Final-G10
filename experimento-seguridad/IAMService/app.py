@@ -1,16 +1,18 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request, current_app
 from flask_jwt_extended import create_access_token, current_user, jwt_required, JWTManager
 from database import db  
 from models import User
 from seed_data import seed_users
 
-
+# Se cargan las variables de entorno
+load_dotenv()
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3')
-app.config['JWT_SECRET_KEY'] = "secret"
-host = os.environ.get("FLASK_RUN_HOST", "0.0.0.0")  
-port = int(os.environ.get("FLASK_RUN_PORT", 5000)) 
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'secret-exp-g10')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
+host = os.getenv("FLASK_RUN_HOST", "0.0.0.0")
+port = int(os.getenv("FLASK_RUN_PORT", 5002))
 db.init_app(app)
 jwt = JWTManager(app)
 

@@ -11,10 +11,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar el resto del código fuente
 COPY . .
 
-# Configurar variables de entorno para Flask
-ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_RUN_PORT=5002
+# Copiar el archivo .env al contenedor
+COPY .env .env
 
 # Exponer el puerto en el que correrá la app
 EXPOSE 5002

@@ -12,3 +12,4 @@ gunicorn>=23.0.0
 flask-marshmallow>=1.3.0
 marshmallow-sqlalchemy>=1.4.1
 Faker
+dotenv

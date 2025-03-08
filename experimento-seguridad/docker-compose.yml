@@ -1,0 +1,28 @@
+services:
+  invservice:
+    build: ./InventarioService
+    container_name: InventarioService
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./InventarioService/.env
+    volumes:
+      - ./InventarioService/instance:/app/instance 
+    networks:
+      - seg-network
+
+  iamservice:
+    build: ./IAMService
+    container_name: IAMService
+    ports:
+      - "5002:5002"
+    env_file:
+      - ./IAMService/.env
+    volumes:
+      - ./IAMService/instance:/app/instance
+    networks:
+      - seg-network 
+
+networks:
+  seg-network:
+    driver: bridge
