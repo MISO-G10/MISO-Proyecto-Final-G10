@@ -1,0 +1,14 @@
+Flask>=3.1.0
+sqlalchemy>2
+Flask-SQLAlchemy==3.1.1
+Werkzeug>=3.1
+flask_jwt_extended>=4.7.1
+flask-limiter>=3.10.1
+flask-migrate>=4.1.0
+python-dotenv>=1.0.1
+sqlalchemy-mixins>=2.0.5
+uuid7>=0.1.0
+gunicorn>=23.0.0
+flask-marshmallow>=1.3.0
+marshmallow-sqlalchemy>=1.4.1
+Faker

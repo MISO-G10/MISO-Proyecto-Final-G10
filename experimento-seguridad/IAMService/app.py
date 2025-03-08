@@ -9,6 +9,8 @@ from seed_data import seed_users
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3')
 app.config['JWT_SECRET_KEY'] = "secret"
+host = os.environ.get("FLASK_RUN_HOST", "0.0.0.0")  
+port = int(os.environ.get("FLASK_RUN_PORT", 5000)) 
 db.init_app(app)
 jwt = JWTManager(app)
 
@@ -21,7 +23,7 @@ def load_user_callback(_jwt_header, jwt_data):
 '''Método para verificar el estado del servicio'''
 @app.route('/health', methods=['GET'])
 def health():
-    return {'status': 'ok'}
+    return {'status': 'ok iam'}
 
 '''Método para obtener un usuario aleatorio de la bdd. Si se proporciona un rol en el request, se filtra tambièn por ese rol'''
 @app.route("/fetch_users", methods=["GET"])
@@ -46,7 +48,7 @@ def check_users():
         else:
             return jsonify({"message": "No se encontraron usuarios en la base de datos"}), 404
         
-
+#COMPONENTE AUTENTICADOR
 '''Método para que un usuario haga login en la aplicación, requiere una combinación usuario y 
 contraseña que exista en la base de datos para generar un token de acceso'''
 @app.route("/login", methods=["POST"])
@@ -62,7 +64,7 @@ def login():
     else:
         return jsonify({"mensaje": "Credenciales inválidas"}), 401    
 
-
+#COMPONENTE VALIDADOR
 '''Método para verificar que el token de acceso exista en la consulta y sea de un usuario válido
 si es válido retorna las reglas de acceso de dicho usuario'''
 @app.route("/check_token", methods=["POST"])
@@ -103,4 +105,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
         print("Tablas creadas")        
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host=host, port=port, debug=True)
