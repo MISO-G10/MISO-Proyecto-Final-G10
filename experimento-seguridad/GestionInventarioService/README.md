@@ -1,162 +1,118 @@
-# API de Autenticación y Gestión de Usuarios
+# Servicio de Gestión de Inventarios
 
-Esta es una API desarrollada en **Flask** con autenticación basada en **JWT** (JSON Web Tokens). Permite la gestión de usuarios, autenticación y consulta de información de acceso.
+Esta es una API desarrollada en **Flask**. Permite la consulta de inventarios para los productos disponibles.
 
 ## Características
 
-- Autenticación con **JWT**.
+- Conexión con el servicio de control de indentidad y acceso para proveer una capa de seguridad.
 - Base de datos gestionada con **SQLAlchemy**.
-- Endpoints para verificar estado del servicio, autenticación y validación de usuarios.
+- Endpoints para verificar estado del servicio y consultar inventarios de determinados productos.
 - Soporte para inicialización y reseteo de la base de datos.
 
 ## Requisitos
 
-- **Python 3.9+**
-- **pip**
-- **Docker** (opcional, para despliegue con contenedores)
+- Python 3.9 o superior
+- Flask
+- SQLAlchemy
+- Un gestor de base de datos compatible (por defecto SQLite)
 
 ## Instalación
 
-1. Clona el repositorio:
-
-   ```sh
-   git clone <repositorio>
-   cd <directorio>
+1. Clonar este repositorio:
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   cd <NOMBRE_DEL_REPOSITORIO>
    ```
 
-2. Crea un entorno virtual (opcional pero recomendado):
-
-   ```sh
+2. Crear un entorno virtual y activarlo:
+   ```bash
    python -m venv venv
-   source venv/bin/activate  # En Windows: venv\Scripts\activate
+   source venv/bin/activate  # En Linux/Mac
+   venv\Scripts\activate  # En Windows
    ```
 
-3. Instala las dependencias:
-
-   ```sh
+3. Instalar las dependencias:
+   ```bash
    pip install -r requirements.txt
    ```
 
-4. Ejecuta la aplicación:
-
-   ```sh
-   python app.py
-   ```
-
-La API correrá en `http://localhost:5000`.
-
-## Uso de la API
-
-### 1. Verificar el estado del servicio
-
-```sh
-GET /health
-```
-
-**Respuesta:**
-
-```json
-{ "status": "ok" }
-```
-
-### 2. Obtener un usuario aleatorio
-
-```sh
-GET /fetch_users
-```
-
-Parámetro opcional: `?rol=<rol>` para filtrar por rol.
-
-### 3. Login y obtención de token
-
-```sh
-POST /login
-```
-
-**Body:**
-
-```json
-{
-  "username": "usuario",
-  "password": "contraseña"
-}
-```
-
-**Respuesta:**
-
-```json
-{ "token": "<jwt_token>" }
-```
-
-### 4. Validar token y obtener permisos
-
-```sh
-POST /check_token
-```
-
-**Headers:**
-
-```
-Authorization: Bearer <jwt_token>
-```
-
-**Respuesta:**
-
-```json
-{
-  "uuid": "uuid_usuario",
-  "rol": "rol_usuario"
-}
-```
-
-### 5. Inicializar la base de datos con datos de prueba
-
-```sh
-POST /init_seeder
-```
-
-Inserta 100 usuarios de prueba en la base de datos.
-
-### 6. Resetear la base de datos
-
-```sh
-POST /reset_db
-```
-
-## Despliegue con Docker
-
-### Construir la imagen:
-
-```sh
- docker build -t iamsrv .
-```
-
-### Ejecutar el contenedor en el puerto 5001:
-
-```sh
-docker run -p 5001:5000 iamsrv
-```
-
-La API estará disponible en `http://localhost:5001`.
-
 ## Configuración
 
-La aplicación utiliza variables de entorno para la configuración:
+Este servicio utiliza variables de entorno para definir la configuración de la base de datos y el puerto en el que corre la aplicación.
 
-- **DATABASE\_URL**: URL de la base de datos (por defecto usa SQLite `sqlite:///db.sqlite3`)
-- **JWT\_SECRET\_KEY**: Clave secreta para firmar los tokens JWT
+### Variables de entorno
 
-Puedes definirlas en un archivo `.env` o exportarlas manualmente:
+- `DATABASE_URL`: URL de la base de datos (por defecto, SQLite `sqlite:///db.sqlite3`)
+- `FLASK_RUN_HOST`: Host en el que corre Flask (por defecto `0.0.0.0`)
+- `FLASK_RUN_PORT`: Puerto en el que corre Flask (por defecto `5000`)
 
-```sh
-export DATABASE_URL="sqlite:///db.sqlite3"
-export JWT_SECRET_KEY="supersecreto"
+## Uso
+
+### 1. Iniciar el servicio
+
+Ejecuta el siguiente comando:
+```bash
+flask run
+```
+Por defecto, el servicio estará disponible en `http://localhost:5000`.
+
+### 2. Endpoints disponibles
+
+#### Verificar estado del servicio
+```http
+GET /health
+```
+**Respuesta:**
+```json
+{"status": "ok gestionInventarioService"}
 ```
 
-## Tecnologías Utilizadas
+#### Consultar inventario de productos
+```http
+GET /consulta-productos
+```
+**Respuesta:**
+```json
+[
+  {
+    "producto_id": 1,
+    "sku": "123456",
+    "nombre": "Laptop Dell",
+    "descripcion_producto": "Laptop de alta gama",
+    "inventario": 10,
+    "ubicacion_inventario": "Bodega Central"
+  }
+]
+```
 
-- **Flask**: Framework web en Python
-- **Flask-JWT-Extended**: Manejo de autenticación con JWT
-- **SQLAlchemy**: ORM para manejar la base de datos
-- **Docker**: Para contenedorización de la aplicación
+#### Inicializar la base de datos con datos de prueba
+```http
+POST /init_seeder
+```
+**Respuesta:**
+```json
+{"message": "Productos e inventarios insertados correctamente."}
+```
 
+#### Resetear la base de datos
+```http
+POST /reset_db
+```
+**Respuesta:**
+```json
+{"message": "Base de datos reiniciada correctamente"}
+```
+
+## Docker
+
+### Construcción de la imagen Docker
+```bash
+docker build -t gestion_inventario .
+```
+
+### Ejecución del contenedor
+```bash
+docker run -p 5001:5001 gestion_inventario
+```
+
+El servicio estará disponible en `http://localhost:5001`.
