@@ -19,20 +19,20 @@ URL_INVENTORY = f"{GESTION_INVENTARIO_URL}{ENDPOINT_INV}"
 CSV_FILE = "users.csv"
 # Archivo de log para registrar las respuestas
 LOG_FILE = "log_experimento.json"
-# Almacenar los resultados del experimento
+# Variable paraa lmacenar los resultados del experimento
 resultados = []
 # Limpiar el archivo de log antes de iniciar el experimento
 open(LOG_FILE, "w").close()
 
-#Base para generar tokens invalidos
-token_valido = ""
+#Variable Base para generar tokens invalidos
+token_valido = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MTU1NzY2MSwianRpIjoiMTMxNmZiY2ItNDIwYy00MmRkLTk3MDktOTMyMTRmZjZiMjU5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImZkMmIzYTU3LTFhMjUtNDZlNy1hMWRjLWU5ZjNkMDQ0MjUxOSIsIm5iZiI6MTc0MTU1NzY2MSwiY3NyZiI6ImFjNDljZjBmLTM2ZDktNDEzZi1hMTUxLWQ3ZWViYzBjODAyYiIsImV4cCI6MTc0MTU1ODU2MX0.9D4LFTZRMFUtRxq2GulIIGGhZrGDMCArSxTuMyFbPd4"
 
 # Clave secreta que usa el IAM Service para validar los tokens
 JWT_SECRET_KEY = "experimento-error"
 ALGORITHM = "HS256"
 
 def autenticar_usuario(username, password):
-    """Realiza login en el IAM Service y devuelve el token de acceso."""
+    #Se hace el callout con el nombre de usuario y contraseña al servicio IAM para obtener el token de acceso
     payload = {"username": username, "password": password}
     response = requests.post(URL_LOGIN, json=payload)
     
@@ -41,23 +41,22 @@ def autenticar_usuario(username, password):
     return None
 
 def consultar_inventario(token):
-    """Consulta el servicio de inventario con el token obtenido."""
+    #Se hace el llamado al servicio Gestion inventario utilizando un token de acceso, para obtener la lista de productos e inventarios precargados
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.get(URL_INVENTORY, headers=headers)
     return response.status_code, response.json() if response.status_code == 200 else response.text
 
 def generar_tokens_invalidos(token_valido):
-    """Genera tokens inválidos y expirados a partir de un token válido."""
 
     ## Decodificar el token válido sin validar la firma
     payload = jwt.decode(token_valido, options={"verify_signature": False})
 
-    # Token expirado: Crear un nuevo token con fecha de expiración en el pasado
+    # Se crea un nuevo token con fecha de expiración en el pasado
     payload["exp"] = datetime.utcnow() - timedelta(seconds=10)  # Expirado hace 10 segundos
     token_expirado = jwt.encode(payload, JWT_SECRET_KEY, algorithm=ALGORITHM)
 
-    # Token inválido: Modificar manualmente el token válido (cambiando los últimos caracteres)
-    token_invalido = token_valido[:-5] + "abcde"  # Se altera el final del token
+    # Se altera con valores inválidos el token válido con el que inicia la ejecución
+    token_invalido = token_valido[:-5] + "abcde" 
 
     return {
         "token_expirado": f"Bearer {token_expirado}",
@@ -68,17 +67,15 @@ def generar_tokens_invalidos(token_valido):
 
 
 # FASE 1: TOKENS VÁLIDOS Y DIFERENTES NIVELES DE SERVICIO
-# Leer el archivo CSV con usuarios y contraseñas
+# Se lee el archivo CSV con usuarios y contraseñas, y con el estado esperado de la respuesta (dependiendo si
+#el usuario cuenta o no con el rol gestion_inventarios)
 with open(CSV_FILE, newline="", encoding="utf-8") as csvfile:
     reader = csv.DictReader(csvfile, delimiter=";")
     
-    #for row in reader:
-    for i, row in enumerate(reader):  # 🔹 `enumerate()` agrega un contador `i`
-        if i >= 5:  # 🔹 Detiene el loop después de 5 iteraciones
-            break
+    for row in reader:
         username = row["username"]
         password = row["password"]
-        expected_inv_status = int(row["estado_esperado"])  # Estado esperado del inventario
+        expected_inv_status = int(row["estado_esperado"])  
 
         log_entry = {
             "timestamp": datetime.now().isoformat(),
@@ -91,7 +88,7 @@ with open(CSV_FILE, newline="", encoding="utf-8") as csvfile:
             "match_inventory": False,
         }
 
-        # Intentar autenticación
+        # Callout a la API de autenticaion
         token = autenticar_usuario(username, password)
         if not token:
             log_entry["actual_status"] = 401  # Fallo de autenticación
@@ -99,7 +96,7 @@ with open(CSV_FILE, newline="", encoding="utf-8") as csvfile:
         else:
             log_entry["actual_status"] = 200  # Login exitoso
             log_entry["match_login"] = True
-            token_valido = token
+            
 
             # Consultar inventario con el token
             sleep(2)
@@ -139,9 +136,7 @@ for tipo, token in tokens_invalidos.items():
     print(f"Token Esperado: {status_esperado}, Obtenido: {response.status_code}")
 
 
-
-
-# Guardar el log en un archivo JSON
+# Se guarda el log en un archivo JSON
 with open(LOG_FILE, "w", encoding="utf-8") as file:
     json.dump(resultados, file, indent=4, ensure_ascii=False)
 

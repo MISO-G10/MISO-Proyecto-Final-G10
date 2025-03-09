@@ -1,142 +1,1006 @@
 [
     {
-        "timestamp": "2025-03-09T16:04:01.283370",
+        "timestamp": "2025-03-09T17:02:47.766806",
         "username": "michaelperez",
         "expected_status": 200,
         "expected_inv_status": 401,
-        "actual_status": 200,
-        "actual_inv_status": 401,
-        "match_login": true,
-        "match_inventory": true,
-        "inventory_response": "{\"mensaje\":\"El usuario no cuenta con el nivel de acceso requerido\"}\n"
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
     },
     {
-        "timestamp": "2025-03-09T16:04:03.386052",
+        "timestamp": "2025-03-09T17:02:47.794256",
         "username": "caitlyn75",
         "expected_status": 200,
         "expected_inv_status": 401,
-        "actual_status": 200,
-        "actual_inv_status": 401,
-        "match_login": true,
-        "match_inventory": true,
-        "inventory_response": "{\"mensaje\":\"El usuario no cuenta con el nivel de acceso requerido\"}\n"
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
     },
     {
-        "timestamp": "2025-03-09T16:04:05.425922",
+        "timestamp": "2025-03-09T17:02:47.796471",
         "username": "zstone",
         "expected_status": 200,
         "expected_inv_status": 200,
-        "actual_status": 200,
-        "actual_inv_status": 200,
-        "match_login": true,
-        "match_inventory": true,
-        "inventory_response": [
-            {
-                "descripcion_producto": "Sport partner no take foreign bag.",
-                "inventario": 80,
-                "nombre": "necessary",
-                "producto_id": 1,
-                "sku": "1214140130735",
-                "ubicacion_inventario": "USS Cobb\nFPO AP 55871"
-            },
-            {
-                "descripcion_producto": "Current discussion wish two think mission.",
-                "inventario": 13,
-                "nombre": "those",
-                "producto_id": 2,
-                "sku": "0965701706821",
-                "ubicacion_inventario": "818 Woods Forge Suite 782\nMeganfort, PR 92518"
-            },
-            {
-                "descripcion_producto": "Life agent letter address.",
-                "inventario": 55,
-                "nombre": "hospital",
-                "producto_id": 3,
-                "sku": "1555765621810",
-                "ubicacion_inventario": "144 Anderson Walk\nPort Brittany, MD 99654"
-            },
-            {
-                "descripcion_producto": "Between blood public person focus.",
-                "inventario": 78,
-                "nombre": "start",
-                "producto_id": 4,
-                "sku": "1154293884171",
-                "ubicacion_inventario": "360 Kendra Dam\nNew Shelleyshire, MH 40022"
-            },
-            {
-                "descripcion_producto": "Begin write response term task five property page.",
-                "inventario": 23,
-                "nombre": "seven",
-                "producto_id": 5,
-                "sku": "8245285689973",
-                "ubicacion_inventario": "516 Nichole Valley Apt. 268\nCharlesview, DE 30164"
-            },
-            {
-                "descripcion_producto": "To likely score magazine religious.",
-                "inventario": 94,
-                "nombre": "involve",
-                "producto_id": 6,
-                "sku": "9531388347520",
-                "ubicacion_inventario": "55653 Whitaker Glens\nPort Lisa, PR 67031"
-            },
-            {
-                "descripcion_producto": "Carry this various three measure TV but.",
-                "inventario": 44,
-                "nombre": "important",
-                "producto_id": 7,
-                "sku": "3269276233018",
-                "ubicacion_inventario": "895 Anderson Overpass\nContrerasfurt, NH 71540"
-            },
-            {
-                "descripcion_producto": "Institution language Republican young whatever wife five onto.",
-                "inventario": 38,
-                "nombre": "star",
-                "producto_id": 8,
-                "sku": "0637500719738",
-                "ubicacion_inventario": "0087 Rachel Shores Suite 897\nWest Angela, DE 21904"
-            },
-            {
-                "descripcion_producto": "Professional floor spring like.",
-                "inventario": 53,
-                "nombre": "form",
-                "producto_id": 9,
-                "sku": "8562328812649",
-                "ubicacion_inventario": "1602 Austin Knolls Suite 310\nEast Valerie, AS 71493"
-            },
-            {
-                "descripcion_producto": "Exactly sit happy too fear major.",
-                "inventario": 57,
-                "nombre": "scene",
-                "producto_id": 10,
-                "sku": "4313364922144",
-                "ubicacion_inventario": "54768 Connor Shore Apt. 863\nEast Daniel, OH 51419"
-            }
-        ]
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
     },
     {
-        "timestamp": "2025-03-09T16:04:07.473900",
+        "timestamp": "2025-03-09T17:02:47.798566",
         "username": "alyssagardner",
         "expected_status": 200,
         "expected_inv_status": 401,
-        "actual_status": 200,
-        "actual_inv_status": 401,
-        "match_login": true,
-        "match_inventory": true,
-        "inventory_response": "{\"mensaje\":\"El usuario no cuenta con el nivel de acceso requerido\"}\n"
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
     },
     {
-        "timestamp": "2025-03-09T16:04:09.501125",
+        "timestamp": "2025-03-09T17:02:47.799847",
         "username": "charlene24",
         "expected_status": 200,
         "expected_inv_status": 401,
-        "actual_status": 200,
-        "actual_inv_status": 401,
-        "match_login": true,
-        "match_inventory": true,
-        "inventory_response": "{\"mensaje\":\"El usuario no cuenta con el nivel de acceso requerido\"}\n"
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
     },
     {
-        "timestamp": "2025-03-09T16:04:11.545206",
+        "timestamp": "2025-03-09T17:02:47.804126",
+        "username": "destiny95",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.805430",
+        "username": "jesuscollins",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.806573",
+        "username": "whiterebecca",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.807681",
+        "username": "vsmith",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.808734",
+        "username": "jamesrodriguez",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.810017",
+        "username": "myoung",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.811245",
+        "username": "chelsea61",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.812241",
+        "username": "yjones",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.813483",
+        "username": "dgolden",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.814429",
+        "username": "ddavis",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.815472",
+        "username": "michael98",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.816452",
+        "username": "robertsantana",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.817412",
+        "username": "salazardaniel",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.818720",
+        "username": "dalvarez",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.819895",
+        "username": "zdunlap",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.821097",
+        "username": "cynthiagraham",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.822132",
+        "username": "sandrasimpson",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.823372",
+        "username": "uespinoza",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.824587",
+        "username": "philip10",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.825744",
+        "username": "howardthomas",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.827016",
+        "username": "leslie15",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.828015",
+        "username": "valenzuelaanna",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.829032",
+        "username": "rjones",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.830243",
+        "username": "scott20",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.831480",
+        "username": "gdrake",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.832604",
+        "username": "garygonzalez",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.833608",
+        "username": "matthewanderson",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.834739",
+        "username": "hsanchez",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.835747",
+        "username": "josephwilliams",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.836738",
+        "username": "kromero",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.837711",
+        "username": "bking",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.838688",
+        "username": "nicholas83",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.839600",
+        "username": "maria40",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.840514",
+        "username": "sanchezmichelle",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.841579",
+        "username": "cartervanessa",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.842638",
+        "username": "scott83",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.843546",
+        "username": "mgonzales",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.844595",
+        "username": "trevormartinez",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.845696",
+        "username": "glennmoon",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.846798",
+        "username": "bairdlisa",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.848086",
+        "username": "matthewsrobert",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.849112",
+        "username": "christopherdavis",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.850212",
+        "username": "jennifer54",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.851236",
+        "username": "richard02",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.852266",
+        "username": "sarahdavis",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.853683",
+        "username": "gprince",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.854778",
+        "username": "michael10",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.856298",
+        "username": "todd41",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.857631",
+        "username": "nicole08",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.858988",
+        "username": "millscaitlin",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.860040",
+        "username": "martinhayley",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.861025",
+        "username": "danielreyes",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.862065",
+        "username": "whenderson",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.863056",
+        "username": "careyerin",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.864186",
+        "username": "xfowler",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.865600",
+        "username": "logankevin",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.866957",
+        "username": "foxmichael",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.867994",
+        "username": "christy39",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.868964",
+        "username": "michaelherrera",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.870235",
+        "username": "kaylawheeler",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.871282",
+        "username": "rosemitchell",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.872736",
+        "username": "michellerobles",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.874699",
+        "username": "barrettmatthew",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.876346",
+        "username": "kristaharris",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.877557",
+        "username": "sgriffith",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.878659",
+        "username": "maurice36",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.879808",
+        "username": "jessica11",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.881305",
+        "username": "kristi40",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.882619",
+        "username": "torresamy",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.883687",
+        "username": "kristy01",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.884974",
+        "username": "christygreen",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.886087",
+        "username": "matthewsmith",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.887523",
+        "username": "wilsonjared",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.888591",
+        "username": "anna93",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.889895",
+        "username": "nicolebradford",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.891030",
+        "username": "ashleyorozco",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.892071",
+        "username": "amy77",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.893397",
+        "username": "ejuarez",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.894517",
+        "username": "troy73",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.895641",
+        "username": "ujackson",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.896793",
+        "username": "larryking",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.898641",
+        "username": "nhill",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.899828",
+        "username": "nford",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.901062",
+        "username": "michaelruiz",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.902323",
+        "username": "zpaul",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.903491",
+        "username": "wlang",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.904649",
+        "username": "mathewsaustin",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.905779",
+        "username": "john69",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.907086",
+        "username": "ysnyder",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.908256",
+        "username": "brobertson",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.909764",
+        "username": "riveraheather",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.911176",
+        "username": "michael88",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.912831",
+        "username": "henrywashington",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.915411",
+        "username": "timothy87",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.917031",
+        "username": "emontoya",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 401,
+        "actual_inv_status": null,
+        "match_login": false,
+        "match_inventory": false
+    },
+    {
+        "timestamp": "2025-03-09T17:02:47.938729",
         "username": null,
         "expected_status": null,
         "expected_inv_status": 422,
@@ -147,7 +1011,7 @@
         "inventory_response": "{\"msg\":\"Bad Authorization header. Expected 'Authorization: Bearer <JWT>'\"}\n"
     },
     {
-        "timestamp": "2025-03-09T16:04:11.553608",
+        "timestamp": "2025-03-09T17:02:47.943200",
         "username": null,
         "expected_status": null,
         "expected_inv_status": 422,
@@ -158,7 +1022,7 @@
         "inventory_response": "{\"msg\":\"Bad Authorization header. Expected 'Authorization: Bearer <JWT>'\"}\n"
     },
     {
-        "timestamp": "2025-03-09T16:04:11.560209",
+        "timestamp": "2025-03-09T17:02:47.946107",
         "username": null,
         "expected_status": null,
         "expected_inv_status": 401,
