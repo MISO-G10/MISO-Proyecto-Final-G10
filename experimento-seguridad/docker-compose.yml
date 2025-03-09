@@ -29,6 +29,18 @@ services:
     networks:
       - seg-network 
 
+  logger-experimento-seguridad:
+    build: ./Logger
+    container_name: Logger
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - iamservice
+      - invservice
+    networks:
+      - seg-network
+    command: sleep infinity 
+
 networks:
   seg-network:
     driver: bridge
