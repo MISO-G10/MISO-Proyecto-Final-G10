@@ -1,0 +1,34 @@
+services:
+  invservice:
+    build: ./GestionInventarioService
+    container_name: GestionInventarioService
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./GestionInventarioService/.env
+    volumes:
+      - ./GestionInventarioService/instance:/app/instance 
+    networks:
+      - seg-network
+    depends_on:
+      - iamservice 
+
+  iamservice:
+    build: ./IAMService
+    container_name: IAMService
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "5002:5002"
+    env_file:
+      - ./IAMService/.env
+    volumes:
+      - ./IAMService/instance:/app/instance
+    networks:
+      - seg-network 
+
+networks:
+  seg-network:
+    driver: bridge

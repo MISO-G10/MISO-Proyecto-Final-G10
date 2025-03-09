@@ -1,14 +1,18 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request, current_app
 from flask_jwt_extended import create_access_token, current_user, jwt_required, JWTManager
 from database import db  
 from models import User
 from seed_data import seed_users
 
-
+# Se cargan las variables de entorno
+load_dotenv()
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3')
-app.config['JWT_SECRET_KEY'] = "secret"
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'secret-exp-g10')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
+host = os.getenv("FLASK_RUN_HOST", "0.0.0.0")
+port = int(os.getenv("FLASK_RUN_PORT", 5002))
 db.init_app(app)
 jwt = JWTManager(app)
 
@@ -21,12 +25,13 @@ def load_user_callback(_jwt_header, jwt_data):
 '''Método para verificar el estado del servicio'''
 @app.route('/health', methods=['GET'])
 def health():
-    return {'status': 'ok'}
+    return {'status': 'ok iam'}
 
 '''Método para obtener un usuario aleatorio de la bdd. Si se proporciona un rol en el request, se filtra tambièn por ese rol'''
 @app.route("/fetch_users", methods=["GET"])
 def check_users():
     rol = request.args.get("rol")
+    print("ROL: ",str(rol), flush=True)
     with current_app.app_context():
         query = db.session.query(User)
 
@@ -34,7 +39,6 @@ def check_users():
             query = query.filter(User.accesslevel == rol)
 
         user = query.order_by(db.func.random()).first()    
-        user = db.session.query(User).order_by(db.func.random()).first()  
 
         if user:
             return jsonify({
@@ -46,7 +50,7 @@ def check_users():
         else:
             return jsonify({"message": "No se encontraron usuarios en la base de datos"}), 404
         
-
+#COMPONENTE AUTENTICADOR
 '''Método para que un usuario haga login en la aplicación, requiere una combinación usuario y 
 contraseña que exista en la base de datos para generar un token de acceso'''
 @app.route("/login", methods=["POST"])
@@ -62,7 +66,7 @@ def login():
     else:
         return jsonify({"mensaje": "Credenciales inválidas"}), 401    
 
-
+#COMPONENTE VALIDADOR
 '''Método para verificar que el token de acceso exista en la consulta y sea de un usuario válido
 si es válido retorna las reglas de acceso de dicho usuario'''
 @app.route("/check_token", methods=["POST"])
@@ -103,4 +107,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
         print("Tablas creadas")        
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host=host, port=port, debug=True)

@@ -15,7 +15,7 @@ COPY . .
 COPY .env .env
 
 # Exponer el puerto en el que correrá la app
-EXPOSE 5002
+EXPOSE 5001
 
 # Comando para iniciar la aplicación
 CMD ["flask", "run"]
