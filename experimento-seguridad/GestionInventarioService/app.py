@@ -1,4 +1,5 @@
 import os
+import requests
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, current_app
 from database import db  
@@ -22,27 +23,34 @@ def health():
 '''Método para consultar inventario de productos de la base de datos'''
 @app.route("/consulta-productos", methods=["GET"])
 def consulta_inventario_productos():
-    try:
-        # Consultar todos los productos con su inventario
-        inventario = db.session.query(InventarioBodega, Producto).join(Producto).all()
+    identidad_valida, msj, statuscode = verificar_identidad()
 
-        
-        res = [
-            {
-                "producto_id": producto.id,
-                "sku": producto.sku,
-                "nombre": producto.nombre,
-                "descripcion_producto": producto.descripcion,
-                "inventario": inventario.cantidad,
-                "ubicacion_inventario": inventario.ubicacion  
-            }
-            for inventario, producto in inventario
-        ]
+    if identidad_valida:
+        try:
+            # Consultar todos los productos con su inventario
+            inventario = db.session.query(InventarioBodega, Producto).join(Producto).all()
 
-        return jsonify(res), 200
+            
+            res = [
+                {
+                    "producto_id": producto.id,
+                    "sku": producto.sku,
+                    "nombre": producto.nombre,
+                    "descripcion_producto": producto.descripcion,
+                    "inventario": inventario.cantidad,
+                    "ubicacion_inventario": inventario.ubicacion  
+                }
+                for inventario, producto in inventario
+            ]
 
-    except Exception as e:
-        return jsonify({"error": f"Error al consultar inventario: {str(e)}"}), 500
+            return jsonify(res), 200
+
+        except Exception as e:
+            return jsonify({"error": f"Error al consultar inventario: {str(e)}"}), 500
+    
+    else:
+        return msj, statuscode
+    
 
 
 '''Método para inicializar la bdd y cargar datos de prueba'''
@@ -68,7 +76,36 @@ def reset_db():
             db.session.rollback()
             return jsonify({"error": f"Error al reiniciar la base de datos: {str(e)}"}), 500       
         
+'''Método para hacer un llamado al servicio IAM para verificar y validar los Tokens de acceso'''
+def verificar_identidad():
+    authorization_token = request.headers.get('Authorization')
+    url = IAM_SERVICE_URL + "/check_token"
+    headers = {
+        "Authorization": f"{authorization_token}"
+    }
+    print("Auth token: ",str(authorization_token), flush=True)
+    #return True, True
+    try:
+        response = requests.post(url, headers=headers)
+        print("status code: ",str(response.status_code), flush=True)
+        
+        if response.status_code == 200:
+            res = response.json()
+            rol = res.get("rol")
+            print("response: ",res, flush=True)
+            print("ROLLLLL: ",rol, flush=True)
+            if rol == "gestor_inventario":
+                return True, None, 200
+            else:
+                return False, jsonify({"mensaje": "El usuario no cuenta con el nivel de acceso requerido"}), 401
 
+        else:
+            return False, jsonify(response.json()), response.status_code
+
+    except requests.exceptions.RequestException as e:
+        print("Error IAMService: ",str(e), flush=True)
+        return False, jsonify({"error": f"Error de conexión con IAMService: {str(e)}"}), 500
+    
 
 
 if __name__ == "__main__":

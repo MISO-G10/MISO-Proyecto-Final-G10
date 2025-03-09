@@ -31,6 +31,7 @@ def health():
 @app.route("/fetch_users", methods=["GET"])
 def check_users():
     rol = request.args.get("rol")
+    print("ROL: ",str(rol), flush=True)
     with current_app.app_context():
         query = db.session.query(User)
 
@@ -38,7 +39,6 @@ def check_users():
             query = query.filter(User.accesslevel == rol)
 
         user = query.order_by(db.func.random()).first()    
-        user = db.session.query(User).order_by(db.func.random()).first()  
 
         if user:
             return jsonify({
