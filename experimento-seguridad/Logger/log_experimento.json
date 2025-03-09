@@ -1,0 +1,171 @@
+[
+    {
+        "timestamp": "2025-03-09T16:04:01.283370",
+        "username": "michaelperez",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 200,
+        "actual_inv_status": 401,
+        "match_login": true,
+        "match_inventory": true,
+        "inventory_response": "{\"mensaje\":\"El usuario no cuenta con el nivel de acceso requerido\"}\n"
+    },
+    {
+        "timestamp": "2025-03-09T16:04:03.386052",
+        "username": "caitlyn75",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 200,
+        "actual_inv_status": 401,
+        "match_login": true,
+        "match_inventory": true,
+        "inventory_response": "{\"mensaje\":\"El usuario no cuenta con el nivel de acceso requerido\"}\n"
+    },
+    {
+        "timestamp": "2025-03-09T16:04:05.425922",
+        "username": "zstone",
+        "expected_status": 200,
+        "expected_inv_status": 200,
+        "actual_status": 200,
+        "actual_inv_status": 200,
+        "match_login": true,
+        "match_inventory": true,
+        "inventory_response": [
+            {
+                "descripcion_producto": "Sport partner no take foreign bag.",
+                "inventario": 80,
+                "nombre": "necessary",
+                "producto_id": 1,
+                "sku": "1214140130735",
+                "ubicacion_inventario": "USS Cobb\nFPO AP 55871"
+            },
+            {
+                "descripcion_producto": "Current discussion wish two think mission.",
+                "inventario": 13,
+                "nombre": "those",
+                "producto_id": 2,
+                "sku": "0965701706821",
+                "ubicacion_inventario": "818 Woods Forge Suite 782\nMeganfort, PR 92518"
+            },
+            {
+                "descripcion_producto": "Life agent letter address.",
+                "inventario": 55,
+                "nombre": "hospital",
+                "producto_id": 3,
+                "sku": "1555765621810",
+                "ubicacion_inventario": "144 Anderson Walk\nPort Brittany, MD 99654"
+            },
+            {
+                "descripcion_producto": "Between blood public person focus.",
+                "inventario": 78,
+                "nombre": "start",
+                "producto_id": 4,
+                "sku": "1154293884171",
+                "ubicacion_inventario": "360 Kendra Dam\nNew Shelleyshire, MH 40022"
+            },
+            {
+                "descripcion_producto": "Begin write response term task five property page.",
+                "inventario": 23,
+                "nombre": "seven",
+                "producto_id": 5,
+                "sku": "8245285689973",
+                "ubicacion_inventario": "516 Nichole Valley Apt. 268\nCharlesview, DE 30164"
+            },
+            {
+                "descripcion_producto": "To likely score magazine religious.",
+                "inventario": 94,
+                "nombre": "involve",
+                "producto_id": 6,
+                "sku": "9531388347520",
+                "ubicacion_inventario": "55653 Whitaker Glens\nPort Lisa, PR 67031"
+            },
+            {
+                "descripcion_producto": "Carry this various three measure TV but.",
+                "inventario": 44,
+                "nombre": "important",
+                "producto_id": 7,
+                "sku": "3269276233018",
+                "ubicacion_inventario": "895 Anderson Overpass\nContrerasfurt, NH 71540"
+            },
+            {
+                "descripcion_producto": "Institution language Republican young whatever wife five onto.",
+                "inventario": 38,
+                "nombre": "star",
+                "producto_id": 8,
+                "sku": "0637500719738",
+                "ubicacion_inventario": "0087 Rachel Shores Suite 897\nWest Angela, DE 21904"
+            },
+            {
+                "descripcion_producto": "Professional floor spring like.",
+                "inventario": 53,
+                "nombre": "form",
+                "producto_id": 9,
+                "sku": "8562328812649",
+                "ubicacion_inventario": "1602 Austin Knolls Suite 310\nEast Valerie, AS 71493"
+            },
+            {
+                "descripcion_producto": "Exactly sit happy too fear major.",
+                "inventario": 57,
+                "nombre": "scene",
+                "producto_id": 10,
+                "sku": "4313364922144",
+                "ubicacion_inventario": "54768 Connor Shore Apt. 863\nEast Daniel, OH 51419"
+            }
+        ]
+    },
+    {
+        "timestamp": "2025-03-09T16:04:07.473900",
+        "username": "alyssagardner",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 200,
+        "actual_inv_status": 401,
+        "match_login": true,
+        "match_inventory": true,
+        "inventory_response": "{\"mensaje\":\"El usuario no cuenta con el nivel de acceso requerido\"}\n"
+    },
+    {
+        "timestamp": "2025-03-09T16:04:09.501125",
+        "username": "charlene24",
+        "expected_status": 200,
+        "expected_inv_status": 401,
+        "actual_status": 200,
+        "actual_inv_status": 401,
+        "match_login": true,
+        "match_inventory": true,
+        "inventory_response": "{\"mensaje\":\"El usuario no cuenta con el nivel de acceso requerido\"}\n"
+    },
+    {
+        "timestamp": "2025-03-09T16:04:11.545206",
+        "username": null,
+        "expected_status": null,
+        "expected_inv_status": 422,
+        "actual_status": null,
+        "actual_inv_status": 422,
+        "match_login": false,
+        "match_inventory": true,
+        "inventory_response": "{\"msg\":\"Bad Authorization header. Expected 'Authorization: Bearer <JWT>'\"}\n"
+    },
+    {
+        "timestamp": "2025-03-09T16:04:11.553608",
+        "username": null,
+        "expected_status": null,
+        "expected_inv_status": 422,
+        "actual_status": null,
+        "actual_inv_status": 422,
+        "match_login": false,
+        "match_inventory": true,
+        "inventory_response": "{\"msg\":\"Bad Authorization header. Expected 'Authorization: Bearer <JWT>'\"}\n"
+    },
+    {
+        "timestamp": "2025-03-09T16:04:11.560209",
+        "username": null,
+        "expected_status": null,
+        "expected_inv_status": 401,
+        "actual_status": null,
+        "actual_inv_status": 401,
+        "match_login": false,
+        "match_inventory": true,
+        "inventory_response": "{\"msg\":\"Missing 'Bearer' type in 'Authorization' header. Expected 'Authorization: Bearer <JWT>'\"}\n"
+    }
+]
