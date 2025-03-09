@@ -1,0 +1,104 @@
+{
+	"info": {
+		"_postman_id": "ce533f21-525b-4932-8621-ff6b85023848",
+		"name": "exp-seguridad-gestion-inventario",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11107066"
+	},
+	"item": [
+		{
+			"name": "healthCheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{base-url}}:{{port-inv}}/health",
+					"protocol": "http",
+					"host": [
+						"{{base-url}}"
+					],
+					"port": "{{port-inv}}",
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "resetBDD",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://{{base-url}}:{{port-inv}}/reset_db",
+					"protocol": "http",
+					"host": [
+						"{{base-url}}"
+					],
+					"port": "{{port-inv}}",
+					"path": [
+						"reset_db"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "seeder",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://{{base-url}}:{{port-inv}}/init_seeder",
+					"protocol": "http",
+					"host": [
+						"{{base-url}}"
+					],
+					"port": "{{port-inv}}",
+					"path": [
+						"init_seeder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetchProducts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{base-url}}:{{port-inv}}/consulta-productos",
+					"protocol": "http",
+					"host": [
+						"{{base-url}}"
+					],
+					"port": "{{port-inv}}",
+					"path": [
+						"consulta-productos"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
