@@ -13,6 +13,11 @@ celery = Celery(__name__,
 
 # Esta función envía el ping y mide el tiempo de respuesta
 def ping_inventario():
+    """
+    Envía pings al InventarioService y registra el tiempo de respuesta.
+    Si el tiempo de respuesta supera 2 segundos, se muestra una alerta.
+    El hilo se ejecuta en background y no detiene el programa principal.
+    """
     while True:
         start = time.perf_counter()
         try:
@@ -30,12 +35,24 @@ def ping_inventario():
 
 # Hilo de fondo para enviar pings continuamente
 def start_ping_thread():
+    """
+    Inicia un hilo de fondo que envía pings al InventarioService de manera
+    continua. Si el tiempo de respuesta supera 2 segundos, se muestra una alerta.
+    """
     thread = threading.Thread(target=ping_inventario, daemon=True)
     thread.start()
 
 # Endpoint para consulta manual (opcional)
 @app.route("/monitor", methods=["GET"])
 def verificar_inventario():
+    """
+    Endpoint para verificar manualmente el estado del InventarioService.
+
+    Envía una tarea asíncrona al InventarioService para obtener su estado actual.
+    Devuelve el estado como una respuesta JSON con código de estado HTTP 200 si la operación es exitosa.
+    Si ocurre un error, devuelve un mensaje de error en formato JSON con código de estado HTTP 500.
+    """
+
     try:
         result = celery.send_task("app.obtener_estado")
         estado = result.get(timeout=5)

@@ -1,7 +1,10 @@
 from locust import HttpUser, task, between
 
+GCP_IP = "35.239.230.106"
+LOCALHOST_IP = "localhost"
+
 class MonitorUser(HttpUser):
-    host = "http://localhost:3002"  # Monitor
+    host = "http://" + GCP_IP + ":3002"  # Monitor
     wait_time = between(1, 2)
 
     @task
@@ -9,7 +12,7 @@ class MonitorUser(HttpUser):
         self.client.get("/monitor")
 
 class InventarioUser(HttpUser):
-    host = "http://localhost:3001"  # InventarioService
+    host = "http://" + GCP_IP + ":3001"  # InventarioService
     wait_time = between(1, 2)
 
     @task
