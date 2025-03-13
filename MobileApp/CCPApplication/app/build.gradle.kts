@@ -69,6 +69,7 @@ dependencies {
     implementation("androidx.camera:camera-core:1.3.0")
     implementation("androidx.navigation:navigation-compose:2.7.5")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
-    
+    //iconos adicionales
+    implementation("androidx.compose.material:material-icons-extended:1.7.0")
 
 }

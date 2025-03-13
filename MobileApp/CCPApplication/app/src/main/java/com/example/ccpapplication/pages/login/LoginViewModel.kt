@@ -23,6 +23,7 @@ import java.io.IOException
 data class LoginPageState(
     val email: MutableState<String>,
     val password: MutableState<String>,
+    val passwordVisible:MutableState<Boolean>
 )
 
 class LoginViewModel(
@@ -32,7 +33,8 @@ class LoginViewModel(
     var formState: LoginPageState by mutableStateOf(
         LoginPageState(
             email = mutableStateOf(""),
-            password = mutableStateOf("")
+            password = mutableStateOf(""),
+            passwordVisible= mutableStateOf(false)
         )
     )
     fun loginUser(){
@@ -57,6 +59,9 @@ class LoginViewModel(
             }
 
         }
+    }
+    fun togglePasswordVisibility() {
+        formState.passwordVisible.value = !formState.passwordVisible.value
     }
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {

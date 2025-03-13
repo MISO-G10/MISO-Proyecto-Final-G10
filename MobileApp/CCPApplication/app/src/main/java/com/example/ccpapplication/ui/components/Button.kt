@@ -1,6 +1,5 @@
 package com.example.ccpapplication.ui.components
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -26,8 +25,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.ccpapplication.ui.theme.AppTheme
 
 
@@ -43,6 +46,11 @@ fun GenericButton(
     label: String? = null,
     type: ButtonType = ButtonType.PRIMARY,
     icon: ImageVector? = null,
+    textStyle: TextStyle = when (type) { // Style by default
+        ButtonType.PRIMARY -> MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold, fontSize = 14.sp)
+        ButtonType.ALTERNATIVE -> MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Normal, fontSize = 14.sp)
+        else -> MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium, fontSize = 14.sp)
+    },
 ) {
     val hasIcon = icon != null
 
@@ -67,19 +75,21 @@ fun GenericButton(
             shape = shape,
             contentPadding = padding
         ) {
-            ButtonContent(icon, label, type)
+            ButtonContent(icon, label, type, textStyle)
         }
         return
     }
 
     Button(
         contentPadding = padding,
-        onClick = onClick, colors = ButtonDefaults.buttonColors(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
             containerColor = when (type) {
                 ButtonType.PRIMARY -> MaterialTheme.colorScheme.primary
                 ButtonType.ALTERNATIVE -> MaterialTheme.colorScheme.primaryContainer
                 else -> Color.Transparent
-            }, contentColor = when (type) {
+            },
+            contentColor = when (type) {
                 ButtonType.PRIMARY -> White
                 ButtonType.ALTERNATIVE -> MaterialTheme.colorScheme.primary
                 else -> MaterialTheme.colorScheme.primary
@@ -88,28 +98,38 @@ fun GenericButton(
         shape = shape,
         modifier = customModifier
     ) {
-        Box {
-            ButtonContent(icon, label, type)
-        }
+        ButtonContent(icon, label, type, textStyle)
     }
 }
-@Composable
-fun ButtonContent(icon: ImageVector?, label: String?, type: ButtonType) {
-    if (icon != null) {
-        val color = when (type) {
-            ButtonType.PRIMARY -> White
-            ButtonType.ALTERNATIVE -> MaterialTheme.colorScheme.tertiary
-            else -> MaterialTheme.colorScheme.primary
-        }
 
-        Icon(
-            imageVector = icon,
-            contentDescription = icon.name,
-            tint = color,
-            modifier = Modifier.size(24.dp)
-        )
-    } else {
-        label?.let { Text(text = it) }
+@Composable
+fun ButtonContent(icon: ImageVector?, label: String?, type: ButtonType, textStyle: TextStyle) {
+    val contentColor = when (type) {
+        ButtonType.PRIMARY -> White
+        ButtonType.ALTERNATIVE -> MaterialTheme.colorScheme.tertiary
+        else -> MaterialTheme.colorScheme.primary
+    }
+
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = icon.name,
+                tint = contentColor,
+                modifier = Modifier.size(24.dp)
+            )
+            if (label != null) {
+                Spacer(modifier = Modifier.width(8.dp))
+            }
+        }
+        if (label != null) {
+            Text(
+                text = label,
+                style = textStyle,
+                color = contentColor,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 @Preview(showBackground = true, widthDp = 300)
@@ -122,7 +142,8 @@ fun GenericButtonPreview() {
                     label = "Iniciar sesión",
                     onClick = { /*TODO*/ },
                     type = ButtonType.PRIMARY,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+
                 )
             }
             Row {
@@ -135,7 +156,8 @@ fun GenericButtonPreview() {
                         label = "Save",
                         onClick = { /*TODO*/ },
                         type = ButtonType.SECONDARY,
-                        modifier = Modifier.width(100.dp)
+                        modifier = Modifier.width(100.dp),
+
                     )
                     GenericButton(
                         label = "Save",
