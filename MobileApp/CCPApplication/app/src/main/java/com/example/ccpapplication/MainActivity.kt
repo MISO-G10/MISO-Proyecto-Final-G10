@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ccpapplication.navigation.AppNavigation
 import com.example.ccpapplication.pages.login.Login
 import com.example.ccpapplication.pages.login.LoginViewModel
 import com.example.ccpapplication.ui.theme.AppTheme
@@ -22,29 +23,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                AppNavigation()
             }
         }
     }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Login(
-        userViewModel = viewModel(factory = LoginViewModel.Factory)
-    )
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     AppTheme {
-        Greeting("Android")
+        AppNavigation()
     }
 }

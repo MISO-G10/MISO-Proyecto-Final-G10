@@ -12,7 +12,7 @@ class UserRepositoryImpl (
     }
 
     override suspend fun login(userLogin: UserLogin): User? {
-        TODO("Not yet implemented")
+        return User(id=12334,username="user1",password="1234",name="user1",rol="user")
     }
 
 

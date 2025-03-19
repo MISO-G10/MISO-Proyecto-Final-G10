@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CCP Application</string>
+    <string name="home">Inicio</string>
 </resources>

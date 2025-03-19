@@ -1,5 +1,6 @@
 package com.example.ccpapplication.pages.login
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.ccpapplication.ui.components.ButtonType
 
 import com.example.ccpapplication.ui.components.CircleWithText
@@ -38,7 +40,8 @@ import com.example.ccpapplication.ui.components.GenericButton
 
 @Composable
 fun Login(
-    userViewModel: LoginViewModel
+    userViewModel: LoginViewModel,
+    navController:NavController
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -55,6 +58,8 @@ fun Login(
                 .wrapContentHeight()
                 .padding(16.dp),
             onTogglePasswordVisibility = { userViewModel.togglePasswordVisibility() },
+            onLoginFunction={ userViewModel.loginUser(navController) },
+            onNavigateRegister={userViewModel.navigateRegisterPage(navController)}
         )
     }
 }
@@ -62,7 +67,9 @@ fun Login(
 fun FormLayout(
     modifier: Modifier = Modifier,
     formState: LoginPageState,
-    onTogglePasswordVisibility: () -> Unit
+    onTogglePasswordVisibility: () -> Unit,
+    onLoginFunction:()-> Unit ,
+    onNavigateRegister:()->Unit
 ){
 
     val (email,password,passwordVisible) = formState
@@ -107,7 +114,7 @@ fun FormLayout(
         )
         GenericButton(
             label = "Iniciar sesión",
-            onClick = { /*TODO*/ },
+            onClick = onLoginFunction,
             type = ButtonType.PRIMARY,
             modifier = Modifier.fillMaxWidth()
         )
@@ -129,6 +136,7 @@ fun FormLayout(
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp
                     ),
+                modifier = Modifier.clickable { onNavigateRegister() },
 
             )
         }
@@ -139,7 +147,5 @@ fun FormLayout(
 @Composable
 fun HomePagePreview() {
 
-    Login(
-        userViewModel = viewModel(factory = LoginViewModel.Factory)
-    )
+
 }

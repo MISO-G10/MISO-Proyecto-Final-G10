@@ -1,6 +1,5 @@
 package com.example.ccpapplication.pages.login
 
-import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,11 +10,13 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.navigation.NavController
 import com.example.ccpapplication.App
-import com.example.ccpapplication.data.model.User
 import com.example.ccpapplication.data.model.UserLogin
 import com.example.ccpapplication.data.repository.UserRepository
-import com.example.ccpapplication.navegation.state.DataUiState
+import com.example.ccpapplication.navigation.AppPages
+import com.example.ccpapplication.navigation.graph.Graph
+import com.example.ccpapplication.navigation.state.DataUiState
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -26,8 +27,10 @@ data class LoginPageState(
     val passwordVisible:MutableState<Boolean>
 )
 
+
 class LoginViewModel(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+
 ): ViewModel() {
     var uiState: DataUiState<UserLogin> by mutableStateOf(DataUiState.Loading)
     var formState: LoginPageState by mutableStateOf(
@@ -37,7 +40,10 @@ class LoginViewModel(
             passwordVisible= mutableStateOf(false)
         )
     )
-    fun loginUser(){
+
+
+
+    fun loginUser(navController: NavController){
         viewModelScope.launch {
             uiState = try {
                 val user = UserLogin(
@@ -45,10 +51,10 @@ class LoginViewModel(
                     password = formState.password.value,
 
                     )
-                val createResult = userRepository.login(user)
-
+                val loginResult = userRepository.login(user)
+                navController.navigate(Graph.MAIN)
                 DataUiState.Success(
-                    createResult
+                    loginResult
                 )
             }catch (e: IOException) {
 
@@ -63,6 +69,12 @@ class LoginViewModel(
     fun togglePasswordVisibility() {
         formState.passwordVisible.value = !formState.passwordVisible.value
     }
+    fun navigateRegisterPage(navController: NavController){
+        navController.navigate(AppPages.RegisterPage.route)
+
+    }
+
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
