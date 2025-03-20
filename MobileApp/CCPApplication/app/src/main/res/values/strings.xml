@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">CCP Application</string>
-    <string name="home">Inicio</string>
+    <string name="home">Home</string>
+    <string name="app_icon_tittle">CCP</string>
+    <string name="login_email_input_placeholder">JhonDoe@gmail.com</string>
+    <string name="login_email_input_label">Email</string>
+    <string name="login_password_input_label">Password</string>
+    <string name="login_password_input_trailing_true">Hide password</string>
+    <string name="login_password_input_trailing_false">Show password</string>
+    <string name="login_submit_button_label">Log In</string>
+    <string name="login_register_sub_1">Don\'t have an account yet?</string>
+    <string name="login_register_sub_2">Sign Up</string>
+    <string name="login_text_lang_1">Spanish</string>
+    <string name="login_text_lang_2">English</string>
+
 </resources>

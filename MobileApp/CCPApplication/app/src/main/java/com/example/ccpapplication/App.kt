@@ -1,19 +1,33 @@
 package com.example.ccpapplication
 
 import android.app.Application
+import android.content.Context
+import android.content.res.Configuration
 import androidx.annotation.StringRes
+import androidx.lifecycle.viewmodel.compose.viewModel
+import java.util.Locale
 
 
-class App: Application() {
+
+class App: Application(
+
+) {
     /** instance used by the rest of classes to obtain dependencies */
     lateinit var container: AppContainer
     companion object {
         lateinit var instance: App private set
+        fun updateLocale(context: Context, locale: Locale) {
+            val resources = context.resources
+            val configuration = resources.configuration
+            configuration.setLocale(locale)
+            resources.updateConfiguration(configuration, resources.displayMetrics)
+        }
     }
     override fun onCreate() {
         super.onCreate()
         instance = this
         container = DefaultAppContainer()
+        updateLocale(this, Locale("es"))
     }
 
 }

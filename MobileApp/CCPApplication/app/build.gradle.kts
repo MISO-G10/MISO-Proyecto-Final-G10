@@ -73,5 +73,5 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     //iconos adicionales
     implementation("androidx.compose.material:material-icons-extended:1.7.0")
-
+    implementation("androidx.appcompat:appcompat:1.7.0")
 }

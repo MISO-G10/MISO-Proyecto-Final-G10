@@ -10,8 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.ccpapplication.AppViewModel
+import com.example.ccpapplication.ChangeLanguage
 import com.example.ccpapplication.navigation.graph.AppNavGraph
 import com.example.ccpapplication.navigation.graph.NavigationDrawer
 
@@ -26,7 +29,9 @@ sealed class BottomNavItem(
 }
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(appViewModel: AppViewModel,
+                  viewModel: NavigationViewModel= viewModel()
+) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -44,7 +49,8 @@ fun AppNavigation() {
     ) { innerPadding ->
         AppNavGraph(
             navController = navController,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            appViewModel = appViewModel,
         )
     }
 }

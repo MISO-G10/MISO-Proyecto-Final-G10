@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Aplicación CCP</string>
+    <string name="home">Inicio</string>
+    <string name="app_icon_tittle">CCP</string>
+    <string name="login_email_input_placeholder">JhonDoe@gmail.com</string>
+    <string name="login_email_input_label">Correo Electrónico</string>
+    <string name="login_password_input_label">Contraseña</string>
+    <string name="login_password_input_trailing_true">Ocultar contraseña</string>
+    <string name="login_password_input_trailing_false">Mostrar contraseña</string>
+    <string name="login_submit_button_label">Iniciar Sesión</string>">
+    <string name="login_register_sub_1">No tienes cuenta aún? </string>">
+    <string name="login_register_sub_2">Regístrate</string>">
+    <string name="login_text_lang_1">Español</string>
+    <string name="login_text_lang_2">Ingles</string>
+</resources>

@@ -24,7 +24,8 @@ import java.io.IOException
 data class LoginPageState(
     val email: MutableState<String>,
     val password: MutableState<String>,
-    val passwordVisible:MutableState<Boolean>
+    val passwordVisible:MutableState<Boolean>,
+    val selectedLanguage: MutableState<String>
 )
 
 
@@ -37,7 +38,8 @@ class LoginViewModel(
         LoginPageState(
             email = mutableStateOf(""),
             password = mutableStateOf(""),
-            passwordVisible= mutableStateOf(false)
+            passwordVisible= mutableStateOf(false),
+            selectedLanguage=mutableStateOf("en")
         )
     )
 
@@ -68,6 +70,9 @@ class LoginViewModel(
     }
     fun togglePasswordVisibility() {
         formState.passwordVisible.value = !formState.passwordVisible.value
+    }
+    fun onToggleLanguage(language:String){
+        formState.selectedLanguage.value=language
     }
     fun navigateRegisterPage(navController: NavController){
         navController.navigate(AppPages.RegisterPage.route)

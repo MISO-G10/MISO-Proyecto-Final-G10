@@ -1,38 +1,40 @@
 package com.example.ccpapplication
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalConfiguration
 import com.example.ccpapplication.navigation.AppNavigation
-import com.example.ccpapplication.pages.login.Login
-import com.example.ccpapplication.pages.login.LoginViewModel
 import com.example.ccpapplication.ui.theme.AppTheme
 
+class MainActivity : AppCompatActivity() {
+    private val appViewModel: AppViewModel by viewModels()
 
-class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        appViewModel.setFirstLocale()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.auto(
+                android.graphics.Color.TRANSPARENT,
+                android.graphics.Color.TRANSPARENT,
+            )
+        )
+
         setContent {
+            var currentLocale by remember { mutableStateOf(appViewModel.currentLocale.value) }
+            currentLocale = appViewModel.currentLocale.value
+            val configuration = LocalConfiguration.current
+            configuration.setLocale(java.util.Locale(currentLocale))
             AppTheme {
-                AppNavigation()
+                AppNavigation(appViewModel =appViewModel )
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AppTheme {
-        AppNavigation()
     }
 }
