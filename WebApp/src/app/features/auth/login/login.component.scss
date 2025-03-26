@@ -1,0 +1,23 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .logo {
+    margin-bottom: 20px;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    width: 100%;
+  }
+  
+  mat-form-field {
+    margin-bottom: 16px;
+  }
+  
