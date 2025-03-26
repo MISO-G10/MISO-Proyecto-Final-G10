@@ -2,12 +2,8 @@ package com.example.ccpapplication
 
 import android.app.Application
 import android.content.Context
-import android.content.res.Configuration
 import androidx.annotation.StringRes
-import androidx.lifecycle.viewmodel.compose.viewModel
 import java.util.Locale
-
-
 
 class App: Application(
 

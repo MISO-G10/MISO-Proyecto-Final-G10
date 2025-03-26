@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -51,8 +52,8 @@ fun NavigationDrawer(
         val currentRoute = navBackStackEntry?.destination?.route
         menus.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(imageVector = item.icon, contentDescription = item.title) },
-                label = { Text(text = item.title) },
+                icon = { Icon(imageVector = item.icon, contentDescription = stringResource(item.title) ) },
+                label = { Text(text = stringResource(item.title)) },
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {

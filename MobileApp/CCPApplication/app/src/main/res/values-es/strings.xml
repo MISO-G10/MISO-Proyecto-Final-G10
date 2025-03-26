@@ -7,9 +7,12 @@
     <string name="login_password_input_label">Contraseña</string>
     <string name="login_password_input_trailing_true">Ocultar contraseña</string>
     <string name="login_password_input_trailing_false">Mostrar contraseña</string>
-    <string name="login_submit_button_label">Iniciar Sesión</string>">
-    <string name="login_register_sub_1">No tienes cuenta aún? </string>">
-    <string name="login_register_sub_2">Regístrate</string>">
+    <string name="login_submit_button_label">Iniciar Sesión</string>
+    <string name="login_register_sub_1">No tienes cuenta aún? </string>
+    <string name="login_register_sub_2">Regístrate</string>
     <string name="login_text_lang_1">Español</string>
     <string name="login_text_lang_2">Ingles</string>
+    <string name="bottom_nav_1">Inicio</string>
+    <string name="bottom_nav_2">Ordenes</string>
+    <string name="bottom_nav_3">Carrito</string>
 </resources>

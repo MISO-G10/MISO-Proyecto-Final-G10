@@ -14,18 +14,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.ccpapplication.AppViewModel
-import com.example.ccpapplication.ChangeLanguage
+import com.example.ccpapplication.R
 import com.example.ccpapplication.navigation.graph.AppNavGraph
 import com.example.ccpapplication.navigation.graph.NavigationDrawer
 
 sealed class BottomNavItem(
     val route: String,
-    val title: String,
+    val title: Int,
     val icon: ImageVector
 ) {
-    object Home : BottomNavItem("home", "Inicio", Icons.Filled.Home)
-    object Orders : BottomNavItem("orders", "Ordenes", Icons.Filled.AddToPhotos)
-    object Shopping : BottomNavItem("shoppingCar", "Carrito", Icons.Filled.ShoppingCart)
+    object Home : BottomNavItem("home", R.string.bottom_nav_1, Icons.Filled.Home)
+    object Orders : BottomNavItem("orders", R.string.bottom_nav_2, Icons.Filled.AddToPhotos)
+    object Shopping : BottomNavItem("shoppingCar", R.string.bottom_nav_3, Icons.Filled.ShoppingCart)
 }
 
 @Composable

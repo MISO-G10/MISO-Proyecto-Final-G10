@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.ccpapplication.AppViewModel
-import com.example.ccpapplication.ChangeLanguage
 
 object Graph {
     const val AUTHENTICATION = "auth_graph"

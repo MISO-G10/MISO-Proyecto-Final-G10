@@ -12,5 +12,8 @@
     <string name="login_register_sub_2">Sign Up</string>
     <string name="login_text_lang_1">Spanish</string>
     <string name="login_text_lang_2">English</string>
+    <string name="bottom_nav_1">Home</string>
+    <string name="bottom_nav_2">Orders</string>
+    <string name="bottom_nav_3">Shopping</string>
 
 </resources>
