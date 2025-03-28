@@ -8,7 +8,7 @@ Este microservicio corresponden a la gestión de usuarios, el cual permite la cr
 2. [Ejecución](#ejecución)
 3. [Uso](#uso)
 4. [Pruebas](#pruebas)
-5. [Otras caracteristicas](#Otras Características (opcional))
+5. [Otras características](#otras-características)
 6. [Autor](#autor)
 
 ## Estructura
@@ -33,6 +33,8 @@ usuarios/
 │   ├── commands/
 │   ├── __init__.py
 │   └── conftest.py
+│
+├── scripts/
 │
 ├── .env
 ├── .env.template
@@ -72,6 +74,8 @@ usuarios/
   - __init__.py: Similar al archivo en src/, indica que la carpeta tests/ es un paquete de Python.
 
   - conftest.py: Archivo de configuración para pytest que permite definir fixtures y configuraciones comunes para todos los tests.
+
+- scripts/: Contiene scripts que permiten llenar la base de datos con pruebas
 
 - .env: Archivo que contiene variables de entorno para la configuración de la aplicación en un entorno específico (desarrollo, producción, etc.).
 
@@ -125,7 +129,14 @@ $env:FLASK_APP = "./src/main.py"
 pipenv run flask run --debug -p 3000
 ```
 
-> Si quiere conectarse a un cliente de base de datos, la base de datosa de este microservicio se encuentra en el puerto 5430
+> Para macOs y Linux
+
+```bash
+export FLASK_APP="./src/main.py"
+flask run --debug -p 3001
+```
+
+> Si quiere conectarse a un cliente de base de datos, la base de datos de este microservicio se encuentra en el puerto 5430 (usando el servicio de docker). Sin embargo para facilidad de desarrollo se recomienda instalar Postgres directamente en la maquina local, corriendo en el puerto por defecto 5432
 
 ## Uso
 
@@ -185,3 +196,5 @@ docker-compose up -d usuarios
 > No es necesario especificar las variables de entorno, ya que estas se encuentran en la definición del archivo docker-compose.yml
 
 ## Autor
+
+- Nombre: [Oscar Andrés García](https://github.com/oagarcia)
