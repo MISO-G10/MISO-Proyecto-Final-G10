@@ -28,7 +28,7 @@ class Login(BaseCommannd):
             # Generar un nuevo token
             token = str(uuid.uuid4())
             # Establecer la expiración del token
-            token_expiration = datetime.now() + timedelta(hours=1)
+            token_expiration = datetime.now() + timedelta(days=90)  # expiración: 3 meses (99 dias)
             expire_at = token_expiration.isoformat()
             
             current_usuario.token = token
