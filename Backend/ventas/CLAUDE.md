@@ -27,13 +27,25 @@
 - Use snake_case for variables/functions and PascalCase for classes
 - Imports order: standard library → third-party → local (separated by newlines)
 - Use explicit error handling with specific exception types
-- Document functions with descriptive docstrings
 - Use 4-space indentation
 - Add type hints for function parameters and return values
 - Organize code using Flask blueprints for separation of concerns
-- Follow project structure with blueprints, models, schemas, and lib folders
+
+### Database Queries
+- Use SQLAlchemy 2.0 style for all database operations
+- Use `db.session.get(Model, id)` for direct ID lookups
+- Use `scalar_one_or_none()` method for safe query execution that returns a single result or None
+- Avoid using `Model.query.*` pattern (deprecated in SQLAlchemy 2.0)
+
+### Code Organization
+- Follow command pattern for business logic (app/commands/)
+- Centralize validation logic in app/lib/validators.py
+- Use custom error classes from app/lib/errors.py
+- Minimize comments - code should be self-explanatory
+- Keep docstrings minimal and focused on "why" not "what"
+- Date handling: store as string in YYYY-MM-DD format, validate using validator functions
 
 ## Project Structure Notes
-- API routes are registered with prefix '/sales'
+- API routes have no prefix - use direct endpoint names (e.g., '/sales-plans')
 - Service name in Docker configuration is 'sales'
 - Project name in pyproject.toml is 'sales'
