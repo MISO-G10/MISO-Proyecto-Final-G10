@@ -28,7 +28,7 @@ services:
       - '5430:5432'
     networks:
       - ccp_gestion_net
-  
+
   fabricantes:
     build:
       context: ./fabricantes
@@ -55,6 +55,31 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - '5431:5432'
+    networks:
+      - ccp_gestion_net
+
+  ventas:
+    build:
+      context: ./ventas
+      dockerfile: Dockerfile
+    ports:
+      - "3002:5000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@ventas_db:5432/ventas
+    networks:
+      - ccp_gestion_net
+    depends_on:
+      - ventas_db
+
+  ventas_db:
+    image: postgres
+    environment:
+      POSTGRES_HOST: localhost
+      POSTGRES_DB: ventas
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5433:5432'
     networks:
       - ccp_gestion_net
 
