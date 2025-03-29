@@ -1,6 +1,4 @@
-from datetime import date
-
-from sqlalchemy import Integer, String, Float, Date, ForeignKey, Table, Column
+from sqlalchemy import Integer, String, Float, ForeignKey, Table, Column
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from app.lib.database import db
@@ -25,8 +23,8 @@ class SalesPlan(db.Model, Model):
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[str] = mapped_column(String(500), nullable=False)
     target_amount: Mapped[float] = mapped_column(Float, nullable=False)
-    start_date: Mapped[date] = mapped_column(Date, nullable=False)
-    end_date: Mapped[date] = mapped_column(Date, nullable=False)
+    start_date: Mapped[str] = mapped_column(String(10), nullable=False)  # YYYY-MM-DD format (10 chars)
+    end_date: Mapped[str] = mapped_column(String(10), nullable=False)  # YYYY-MM-DD format (10 chars)
 
     # Many-to-many relationship with sellers
     sellers = relationship(

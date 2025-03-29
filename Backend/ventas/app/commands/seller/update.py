@@ -5,37 +5,18 @@ from app.lib.errors import NotFoundError
 
 
 class UpdateSellerCommand(BaseCommand):
-    """
-    Command to update an existing seller reference.
-    """
-    
     def __init__(self, seller_id, data):
-        """
-        Initialize the command with the seller ID and validated data.
-        
-        Args:
-            seller_id (int): The external ID of the seller to update.
-            data (dict): The validated data from the SellerUpdateSchema.
-        """
         self.seller_id = seller_id
         self.data = data
     
     def execute(self):
-        """
-        Execute the command to update a seller reference.
+        seller = db.session.execute(
+            db.select(Seller).where(Seller.seller_id == self.seller_id)
+        ).scalar_one_or_none()
         
-        Returns:
-            Seller: The updated seller.
-            
-        Raises:
-            NotFoundError: If the seller is not found.
-        """
-        # Get the seller
-        seller = Seller.query.filter_by(seller_id=self.seller_id).first()
         if not seller:
             raise NotFoundError(f"Seller with ID {self.seller_id} not found")
         
-        # Update fields
         if 'name' in self.data:
             seller.name = self.data['name']
         

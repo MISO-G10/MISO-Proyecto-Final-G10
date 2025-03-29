@@ -21,4 +21,12 @@ dependencies = [
     "pytest>=8.3.4",
     "pytest-dotenv>=0.5.2",
     "requests>=2.32.3",
+    "flask-smorest>=0.45.0",
+    "flask-openapi3>=4.1.0",
+    "flask-pydantic>=0.12.0",
+]
+
+[dependency-groups]
+dev = [
+    "responses>=0.25.7",
 ]

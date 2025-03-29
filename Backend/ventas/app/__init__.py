@@ -1,8 +1,10 @@
-from flask import Flask, jsonify, json
+from flask_openapi3 import OpenAPI, Info
+from flask import jsonify, json, redirect
 from werkzeug.exceptions import HTTPException
 from marshmallow import ValidationError
+from flask_openapi3.models import Server, SecurityScheme
 
-from app.blueprints import api
+from app.blueprints import api, command_bp
 from app.blueprints.commands import commands
 from app.config.application import ApplicationConfig
 from app.lib.database import db, migrate
@@ -11,7 +13,47 @@ from app.lib.errors import ApiError
 
 
 def create_app():
-    app = Flask(__name__)
+    # Set up API info for OpenAPI documentation
+    info = Info(
+        title="Sales API",
+        version="1.0.0",
+        description=(
+            "Sales microservice API for CCP Gestión.\n\n"
+            "This API manages sales plans and sellers integration.\n\n"
+            "Features:\n"
+            "* Sales Plans management (CRUD operations)\n"
+            "* Sellers management (CRUD operations)\n"
+            "* JWT-based authentication"
+        )
+    )
+
+    # Set up security schemes
+    security_schemes = {
+        "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT",
+            "description": "Enter JWT token obtained from authentication"
+        }
+    }
+
+    # Configure API servers
+    servers = [
+        Server(url="/", description="Local development server")
+    ]
+
+    # Initialize OpenAPI application with configuration
+    app = OpenAPI(
+        __name__,
+        info=info,
+        security_schemes=security_schemes,
+        servers=servers,
+        doc_prefix="/api",
+        doc_ui=True,
+        doc_url="/openapi.json"
+    )
+
+    # Load application configuration
     app.config.from_object(ApplicationConfig)
 
     """
@@ -58,8 +100,25 @@ def create_app():
     """
     The following code snippet registers the blueprints for the application.
     """
-    app.register_blueprint(api, url_prefix='/sales')
-    app.register_blueprint(commands)
+    app.register_api(api)  # Register the OpenAPI APIBlueprint
+    app.register_blueprint(command_bp)  # Register regular blueprint for commands
+    app.register_blueprint(commands)  # Register commands blueprint
+
+    # Configure security schemes for OpenAPI
+    app.security_schemes = {
+        "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT",
+            "description": "Enter JWT token obtained from authentication"
+        }
+    }
+
+    # Add a documentation index page
+    @app.route('/docs')
+    def api_docs():
+        """Redirect to Swagger UI documentation"""
+        return redirect('/api/swagger')
 
     """
     The following code snippet initializes the application context and imports the models.

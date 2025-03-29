@@ -1,5 +1,13 @@
+from flask_openapi3 import Tag
 from . import api
 
-@api.route('/health', methods=['GET'])
+from app.responses.health import HealthResponse
+
+# Define API tag
+health_tag = Tag(name="Health", description="API health check operations")
+
+
+@api.get('/health', tags=[health_tag], security=[{"bearerAuth": []}])
 def health():
-    return {'status': 'ok'}
+    """Health check endpoint to verify the API is running"""
+    return HealthResponse(status="ok").model_dump()

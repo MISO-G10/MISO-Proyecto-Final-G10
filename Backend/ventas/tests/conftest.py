@@ -2,7 +2,8 @@ import pytest
 import sys
 import os
 import importlib
-from unittest.mock import patch
+import json
+from unittest.mock import patch, Mock
 from functools import wraps
 
 from app import create_app
@@ -53,6 +54,7 @@ def app():
     # Create the app
     testing_app = create_app()
     testing_app.config['TESTING'] = True
+    testing_app.config['USERS_SERVICE_URL'] = 'http://test-users-service'
     
     # Store the auth module for reference
     testing_app.auth_module = app.lib.auth
@@ -95,6 +97,30 @@ def auth_client(app):
         # Remove the before_request handler
         app.before_request_funcs[None].remove(before_request)
 
+
+class MockResponse:
+    def __init__(self, json_data, status_code):
+        self.json_data = json_data
+        self.status_code = status_code
+
+    def json(self):
+        return self.json_data
+
+@pytest.fixture(autouse=True)
+def mock_requests(monkeypatch):
+    """Mock the requests.get method to return a successful auth response"""
+    def mock_get(*args, **kwargs):
+        if '/me' in args[0]:
+            return MockResponse({
+                'id': 1,
+                'username': 'test_user',
+                'rol': 'ADMINISTRADOR'
+            }, 200)
+        return MockResponse(None, 404)
+
+    # Apply the monkeypatch to replace requests.get with our mock
+    import requests
+    monkeypatch.setattr(requests, "get", mock_get)
 
 @pytest.fixture
 def db_session(app):
