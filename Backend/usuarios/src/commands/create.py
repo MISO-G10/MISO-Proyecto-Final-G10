@@ -57,7 +57,7 @@ class Create(BaseCommannd):
         return all(field in self.data for field in ['username', 'password', 'nombre', 'apellido', 'rol'])
     
     def username_is_valid(self, username):
-        pattern = r'^[a-zA-Z0-9]+$'
+        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' # El username debe ser un correo
         return re.match(pattern, username) and len(username) > 0
     
     def password_is_valid(self, password):
