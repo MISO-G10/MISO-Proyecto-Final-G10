@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   web-tests:
+    if: startsWith(github.head_ref, 'HUW') || startsWith(github.head_ref, 'huw')
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -55,8 +56,120 @@ jobs:
           MENSAJE_EXITO: Todas las pruebas fueron exitosas
         run: echo "${MENSAJE_EXITO}"
 
-      - name: Approve PR
+  backend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies usuarios
+        working-directory: ./Backend/usuarios
+        run: |
+          echo "Installing dependencies usuarios..."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Install dependencies fabricantes
+        working-directory: ./Backend/fabricantes
+        run: |
+          echo "Installing dependencies fabricantes..."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Run usuarios tests
+        id: usuarios_tests
+        working-directory: ./Backend/usuarios
+        run: pytest tests/ --cov=. --cov-report=term-missing
+
+      - name: Run fabricantes tests
+        id: fabricantes_tests
+        working-directory: ./Backend/fabricantes
+        run: pytest tests/ --cov=. --cov-report=term-missing
+
+      - name: Validate if test failed
+        id: result_with_error
+        if: steps.usuarios_tests.outcome == 'failure' || steps.fabricantes_tests.outcome == 'failure'
+        env:
+          MENSAJE_ERROR: Una o varias pruebas del backend fallaron
+        run: |
+          echo "${MENSAJE_ERROR}"
+          exit 1
+
+      - name: Validate if test passed
+        id: result_with_success
+        if: steps.usuarios_tests.outcome == 'success' && steps.fabricantes_tests.outcome == 'success'
+        env:
+          MENSAJE_EXITO: Todas las pruebas del backend fueron exitosas
+        run: echo "${MENSAJE_EXITO}"
+
+  mobile-tests:
+    if: startsWith(github.head_ref, 'HUM') || startsWith(github.head_ref, 'hum')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./MobileApp
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: './MobileApp/package-lock.json'
+
+      - name: Install global dependencies
+        run: |
+          npm i -g react-native-cli
+
+      - name: Install project dependencies
+        id: install_dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        id: run_tests
+        run: npm run test:coverage -- --watch=false --no-progress
+
+      - name: Validate if test failed
+        id: result_with_error
+        if: steps.run_tests.outcome == 'failure'
+        env:
+          MENSAJE_ERROR: Una o varias pruebas fallaron
+        run: |
+          echo "${MENSAJE_ERROR}"
+          exit 1
+
+      - name: Validate if test passed
+        id: result_with_success
         if: steps.run_tests.outcome == 'success'
+        env:
+          MENSAJE_EXITO: Todas las pruebas fueron exitosas
+        run: echo "${MENSAJE_EXITO}"
+
+  approve-pr:
+    needs: [web-tests, backend-tests, mobile-tests]
+    runs-on: ubuntu-latest
+    if: |
+      always() && (
+        (startsWith(github.head_ref, 'HUW') || startsWith(github.head_ref, 'huw')) && needs.web-tests.result == 'success' && needs.backend-tests.result == 'success' ||
+        (startsWith(github.head_ref, 'HUM') || startsWith(github.head_ref, 'hum')) && needs.mobile-tests.result == 'success' && needs.backend-tests.result == 'success'
+      )
+    steps:
+      - name: Approve PR
         uses: actions/github-script@v6
         with:
           script: |
@@ -66,6 +179,4 @@ jobs:
               pull_number: context.issue.number,
               event: "APPROVE"
             });
-            console.log('PR Review Status:', result.status);
-            
-            
+            console.log('Estado de revision del PR:', result.status);
