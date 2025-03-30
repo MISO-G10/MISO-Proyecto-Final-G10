@@ -60,6 +60,13 @@ jobs:
     defaults:
       run:
         working-directory: ./Backend
+    env:
+      FLASK_ENV: test  
+      DB_NAME: usuarios
+      DB_HOST: usuarios_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
 
     steps:
       - name: Checkout repository
