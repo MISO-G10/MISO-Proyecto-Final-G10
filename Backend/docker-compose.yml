@@ -5,7 +5,7 @@ services:
       context: ./usuarios
       dockerfile: Dockerfile
     ports:
-      - "3000:5000"
+      - "3000:3000"
     environment:
       DB_NAME: usuarios
       DB_HOST: usuarios_db
@@ -20,7 +20,7 @@ services:
   usuarios_db:
     image: postgres
     environment:
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: usuarios_db
       POSTGRES_DB: usuarios
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -34,7 +34,7 @@ services:
       context: ./fabricantes
       dockerfile: Dockerfile
     ports:
-      - "3001:5000"
+      - "3001:3001"
     environment:
       DB_NAME: fabricantes
       DB_HOST: fabricantes_db
@@ -49,7 +49,7 @@ services:
   fabricantes_db:
     image: postgres
     environment:
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: fabricantes_db
       POSTGRES_DB: fabricantes
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
