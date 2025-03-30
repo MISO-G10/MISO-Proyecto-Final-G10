@@ -16,6 +16,6 @@ pytest-flask = "*"
 pytest-mock = "*"
 pytest-cov = "*"
 pytest-env = "*"
-
+flask-cors = "*"
 [requires]
 python_version = "3.11"
