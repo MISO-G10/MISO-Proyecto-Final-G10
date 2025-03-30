@@ -14,7 +14,7 @@ def mock_session():
 
 def test_create_usuario_success(mock_session):
     data = {
-        'username': 'testuser',
+        'username': 'testuser@gmail.com',
         'password': 'password123',
         'nombre': 'Test',
         'apellido': 'User',
@@ -45,7 +45,7 @@ def test_create_usuario_success(mock_session):
 
 def test_create_usuario_invalid_data(mock_session):
     data = {
-        'username': 'testuser',
+        'username': 'testuser@gmail.com',
         'nombre': 'testuser'
     }
     
@@ -57,7 +57,7 @@ def test_create_usuario_invalid_data(mock_session):
 
 def test_create_usuario_already_exists(mock_session):
     data = {
-        'username': 'testuser',
+        'username': 'testuser@gmail.com',
         'password': 'password123'
     }
     
@@ -87,7 +87,7 @@ def test_create_usuario_invalid_username(mock_session):
         
 def test_create_usuario_invalid_password(mock_session):
     data = {
-        'username': 'Juan',
+        'username': 'testuser@gmail.com',
         'password': '',
         'nombre': 'Test 2',
         'apellido': 'User 2'
@@ -103,7 +103,7 @@ def test_create_usuario_invalid_password(mock_session):
 
 def test_create_usuario_exception(mock_session):
     data = {
-        'username': 'testuser',
+        'username': 'testuser@gmail.com',
         'password': 'password123'
     }
     

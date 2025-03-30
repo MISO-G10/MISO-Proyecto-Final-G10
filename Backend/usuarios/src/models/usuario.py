@@ -8,6 +8,7 @@ class UsuarioRol(enum.Enum):
     TENDERO = "TENDERO"
     VENDEDOR = "VENDEDOR"
     LOGISTICA = "LOGISTICA"
+    DIRECTOR_VENTAS = "DIRECTOR_VENTAS"
 
 class Usuario(Base, Model):
     __tablename__ = 'Usuario'
