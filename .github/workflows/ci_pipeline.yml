@@ -130,28 +130,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
         with:
-          node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: './MobileApp/package-lock.json'
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
 
-      - name: Install global dependencies
-        run: |
-          npm i -g react-native-cli
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
 
-      - name: Install project dependencies
-        id: install_dependencies
-        run: npm ci
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-      - name: Run tests with coverage
+      - name: Run tests
         id: run_tests
-        run: npm run test:coverage -- --watch=false --no-progress
+        run: ./gradlew test
+
+      - name: Run instrumentation tests
+        id: run_instrumented_tests
+        run: ./gradlew connectedAndroidTest
 
       - name: Validate if test failed
         id: result_with_error
-        if: steps.run_tests.outcome == 'failure'
+        if: steps.run_tests.outcome == 'failure' || steps.run_instrumented_tests.outcome == 'failure'
         env:
           MENSAJE_ERROR: Una o varias pruebas fallaron
         run: |
@@ -160,7 +162,7 @@ jobs:
 
       - name: Validate if test passed
         id: result_with_success
-        if: steps.run_tests.outcome == 'success'
+        if: steps.run_tests.outcome == 'success' && steps.run_instrumented_tests.outcome == 'success'
         env:
           MENSAJE_EXITO: Todas las pruebas fueron exitosas
         run: echo "${MENSAJE_EXITO}"
