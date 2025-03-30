@@ -50,3 +50,16 @@ jobs:
         env:
           MENSAJE_EXITO: Todas las pruebas fueron exitosas
         run: echo "${MENSAJE_EXITO}"
+
+      - name: Approve PR
+        if: steps.run_tests.outcome == 'success'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const result = await github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              event: "APPROVE"
+            });
+            console.log('PR Review Status:', result.status);
