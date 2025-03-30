@@ -3,10 +3,10 @@ from typing import Optional, List
 from pydantic import BaseModel, Field, field_validator
 from flask_openapi3 import Tag
 
-from app.commands.seller.create import CreateSellerCommand
-from app.commands.seller.delete import DeleteSellerCommand
-from app.commands.seller.get import GetSellerCommand, GetAllSellersCommand
-from app.commands.seller.update import UpdateSellerCommand
+from app.commands.sales_plan_seller.create import CreateSalesPlanSellerCommand
+from app.commands.sales_plan_seller.delete import DeleteSalesPlanSellerCommand
+from app.commands.sales_plan_seller.get import GetSalesPlanSellerCommand, GetAllSalesPlanSellersCommand
+from app.commands.sales_plan_seller.update import UpdateSalesPlanSellerCommand
 from app.lib.auth import validate_token
 from . import api
 
@@ -35,7 +35,7 @@ class SellerUpdate(BaseModel):
 def get_sellers():
     """Get all sellers"""
     # Execute the command to get all sellers
-    sellers = GetAllSellersCommand().execute()
+    sellers = GetAllSalesPlanSellersCommand().execute()
 
     # Return as Pydantic models
     return SellerListResponse(
@@ -55,7 +55,7 @@ def get_seller(path: SellerPath):
     """Get a specific seller by ID"""
     id = path.id
     # Execute the command to get the seller
-    seller = GetSellerCommand(id).execute()
+    seller = GetSalesPlanSellerCommand(id).execute()
 
     # Return as Pydantic model
     return SellerResponse(
@@ -70,7 +70,7 @@ def get_seller(path: SellerPath):
 def create_seller(body: SellerCreate):
     """Create a new seller reference"""
     # Execute the command to create a seller with validated data
-    seller = CreateSellerCommand(body.model_dump()).execute()
+    seller = CreateSalesPlanSellerCommand(body.model_dump()).execute()
 
     # Return as Pydantic model
     response = SellerResponse(
@@ -89,7 +89,7 @@ def update_seller(path: SellerPath, body: SellerUpdate):
     """Update a seller reference"""
     id = path.id
     # Execute the command to update the seller with validated data
-    seller = UpdateSellerCommand(id, body.model_dump(exclude_none=True)).execute()
+    seller = UpdateSalesPlanSellerCommand(id, body.model_dump(exclude_none=True)).execute()
 
     # Return as Pydantic model
     return SellerResponse(
@@ -105,6 +105,6 @@ def delete_seller(path: SellerPath):
     """Delete a seller reference"""
     id = path.id
     # Execute the command to delete the seller
-    DeleteSellerCommand(id).execute()
+    DeleteSalesPlanSellerCommand(id).execute()
 
     return '', 204

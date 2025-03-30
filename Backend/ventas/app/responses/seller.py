@@ -1,4 +1,4 @@
-"""Seller response models."""
+"""SalesPlanSeller response models."""
 from typing import List
 from pydantic import BaseModel, Field
 

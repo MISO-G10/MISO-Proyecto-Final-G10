@@ -3,14 +3,14 @@ from datetime import date, timedelta
 import pytest
 
 from app.models.sales_plan import SalesPlan
-from app.models.seller import Seller
+from app.models.sales_plan_seller import SalesPlanSeller
 from app.lib.database import db
 
 
 class TestSalesPlan:
     def test_create_sales_plan(self, auth_client, db_session):
         # Create a test seller
-        seller = Seller(
+        seller = SalesPlanSeller(
             name="Test Seller",
             seller_id=1
         )
@@ -55,7 +55,7 @@ class TestSalesPlan:
     
     def test_get_sales_plans(self, auth_client, db_session):
         # Create a test seller
-        seller = Seller(
+        seller = SalesPlanSeller(
             name="Test Seller",
             seller_id=1
         )
@@ -96,7 +96,7 @@ class TestSalesPlan:
         This tests that dates must be valid calendar dates.
         """
         # Create a test seller for the plan
-        seller = Seller(
+        seller = SalesPlanSeller(
             name="Test Seller",
             seller_id=1
         )
@@ -137,7 +137,7 @@ class TestSalesPlan:
         This tests that dates must be in YYYY-MM-DD format.
         """
         # Create a test seller for the plan
-        seller = Seller(
+        seller = SalesPlanSeller(
             name="Test Seller",
             seller_id=1
         )
@@ -178,7 +178,7 @@ class TestSalesPlan:
         This tests the API validation directly.
         """
         # Create a test seller for the plan
-        seller = Seller(
+        seller = SalesPlanSeller(
             name="Test Seller",
             seller_id=1
         )
@@ -220,7 +220,7 @@ class TestSalesPlan:
     def test_get_sales_plan_by_id(self, auth_client, db_session):
         """Test getting a specific sales plan by ID"""
         # Create a test seller
-        seller = Seller(
+        seller = SalesPlanSeller(
             name="Test Seller",
             seller_id=1
         )
@@ -263,7 +263,7 @@ class TestSalesPlan:
     def test_update_sales_plan(self, auth_client, db_session):
         """Test updating a sales plan"""
         # Create a test seller
-        seller = Seller(
+        seller = SalesPlanSeller(
             name="Test Seller",
             seller_id=1
         )
@@ -320,7 +320,7 @@ class TestSalesPlan:
     def test_delete_sales_plan(self, auth_client, db_session):
         """Test deleting a sales plan"""
         # Create a test seller
-        seller = Seller(
+        seller = SalesPlanSeller(
             name="Test Seller",
             seller_id=1
         )

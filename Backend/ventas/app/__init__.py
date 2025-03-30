@@ -124,6 +124,6 @@ def create_app():
     The following code snippet initializes the application context and imports the models.
     """
     with app.app_context():
-        from app.models import user
+        from app.models import sales_plan_seller, sales_plan
 
     return app

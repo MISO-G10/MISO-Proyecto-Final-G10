@@ -15,10 +15,14 @@ def validate_token(f):
     def decorated_function(*args, **kwargs):
         # Get the Authorization header
         auth_header = request.headers.get('Authorization')
+
         if not auth_header:
             return jsonify({'message': 'Missing authorization header'}), 401
 
+        # In a real implementation, make a request to the usuarios microservice
+        # to validate the token. Here's a placeholder for the actual implementation.
         try:
+            # Example of how to call the usuarios microservice
             response = requests.get(
                 f"{ApplicationConfig.USERS_SERVICE_URL}/me",
                 headers={'Authorization': auth_header}

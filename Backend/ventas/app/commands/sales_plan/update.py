@@ -1,6 +1,6 @@
 from app.commands.base_command import BaseCommand
 from app.models.sales_plan import SalesPlan
-from app.models.seller import Seller
+from app.models.sales_plan_seller import SalesPlanSeller
 from app.lib.database import db
 from app.lib.errors import NotFoundError, BadRequestError
 from app.lib.validators import validate_date_range
@@ -43,11 +43,11 @@ class UpdateSalesPlanCommand(BaseCommand):
 
             for seller_id in seller_ids:
                 seller = db.session.execute(
-                    db.select(Seller).where(Seller.seller_id == seller_id)
+                    db.select(SalesPlanSeller).where(SalesPlanSeller.seller_id == seller_id)
                 ).scalar_one_or_none()
 
                 if not seller:
-                    seller = Seller(
+                    seller = SalesPlanSeller(
                         name=f"Seller {seller_id}",
                         seller_id=seller_id
                     )

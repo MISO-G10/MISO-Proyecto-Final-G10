@@ -2,7 +2,7 @@ from app.commands.base_command import BaseCommand
 from app.lib.database import db
 from app.lib.errors import BadRequestError
 from app.models.sales_plan import SalesPlan
-from app.models.seller import Seller
+from app.models.sales_plan_seller import SalesPlanSeller
 from app.lib.validators import validate_date_range
 
 
@@ -28,12 +28,12 @@ class CreateSalesPlanCommand(BaseCommand):
 
         for seller_id in seller_ids:
             seller = db.session.execute(
-                db.select(Seller).where(Seller.seller_id == seller_id)
+                db.select(SalesPlanSeller).where(SalesPlanSeller.seller_id == seller_id)
             ).scalar_one_or_none()
 
             if not seller:
                 # In a real implementation, make an authenticated API call to users microservice
-                seller = Seller(
+                seller = SalesPlanSeller(
                     name=f"Seller {seller_id}",  # This would come from the users microservice
                     seller_id=seller_id
                 )
