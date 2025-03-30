@@ -25,15 +25,15 @@ jobs:
 
       - name: Install global dependencies
         run: |
-          npm i -g @angular/cli jest jest-preset-angular typescript ts-jest
+          npm i -g @angular/cli
 
       - name: Install project dependencies
         id: install_dependencies
         run: npm ci
 
-      - name: Run tests
+      - name: Run tests with coverage
         id: run_tests
-        run: npm run test -- --browsers=ChromeHeadless --watch=false --no-progress
+        run: npm run test:coverage -- --browsers=ChromeHeadless --watch=false --no-progress
 
       - name: Validate if test failed
         id: result_with_error
@@ -50,8 +50,3 @@ jobs:
         env:
           MENSAJE_EXITO: Todas las pruebas fueron exitosas
         run: echo "${MENSAJE_EXITO}"
-
-      - name: Test coverage
-        id: test_coverage
-        if: steps.run_tests.outcome == 'success'
-        run: npm run test:coverage
