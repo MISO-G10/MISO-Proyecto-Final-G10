@@ -3,12 +3,12 @@
   <button mat-icon-button (click)="toggleByClick()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>My App</span>
+  <span>CCP App</span>
   <span class="spacer"></span>
-  <button mat-icon-button>
+  <button mat-icon-button matTooltip="Ver usuario">
     <mat-icon>account_circle</mat-icon>
   </button>
-  <button mat-icon-button (click)="logOut()">
+  <button mat-icon-button matTooltip="Salir"(click)="logOut()">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
@@ -34,11 +34,7 @@
 
   <mat-sidenav-content class="main-content" [style.margin-left.px]="isClickExpanded ? expandedWidth : collapsedWidth">
     <div class="content-wrapper">
-      <router-outlet></router-outlet>
-      <button mat-fab extended>
-        <mat-icon>favorite</mat-icon>
-        Basic
-      </button>
+      <router-outlet></router-outlet>      
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

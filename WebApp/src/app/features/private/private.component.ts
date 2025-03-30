@@ -6,6 +6,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     selector: 'app-private',
@@ -16,6 +17,7 @@ import { CommonModule } from '@angular/common';
           MatIconModule,
           MatSidenavModule,
           MatListModule,
+          MatTooltipModule,
         ],
     templateUrl: './private.component.html',
     styleUrl: './private.component.scss'
