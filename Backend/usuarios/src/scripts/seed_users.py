@@ -93,6 +93,15 @@ def seed_all_users():
         UsuarioRol.LOGISTICA
     )
     
+    # Create director ventas user
+    director_ventas_id = create_test_user(
+        "directorventas", 
+        "directorventas123", 
+        "Director", 
+        "Ventas", 
+        UsuarioRol.DIRECTOR_VENTAS
+    )
+    
     print("Proceso de creación de usuarios de prueba completado.")
 
 
