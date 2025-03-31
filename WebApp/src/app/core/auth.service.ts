@@ -4,9 +4,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 interface AuthResponse {
-  success: boolean;
-  user?: any;
-  message?: string;
+  expireAt: string;
+  id: string;
+  token: string;
+  message:string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -20,10 +21,11 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth`, { username, password })
       .subscribe({
         next: (response) => {
-          if (response.success) {
-            localStorage.setItem('auth', JSON.stringify(response.user));
+        console.log(response)
+          if (response.token) {
+            localStorage.setItem('auth', JSON.stringify(response.token));
             this.snackBar.open('Bienvenido', 'Cerrar', { duration: 3000 });
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['private/home']);
           } else {
             this.snackBar.open(response.message || 'Credenciales incorrectas', 'Cerrar');
           }
