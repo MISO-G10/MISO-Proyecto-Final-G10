@@ -35,11 +35,11 @@ export class AuthService {
     return !!localStorage.getItem('auth');
   }
   logout(): void {
-    localStorage.removeItem('auth');
+    localStorage.clear();
     this.router.navigate(['/login']);
     this.snackBar.open('Sesión cerrada', 'Cerrar', { duration: 3000 });
   }
-  
+
   getToken(): string | null {
     return localStorage.getItem('auth');
   }

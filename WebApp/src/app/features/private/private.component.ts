@@ -7,6 +7,7 @@ import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
     selector: 'app-private',
@@ -25,6 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class PrivateComponent {
     @ViewChild('sidenav') sidenav!: MatSidenav;
     private readonly router = inject(Router);
+    private readonly authService = inject(AuthService);
     isClickExpanded = false;
     isHoverExpanded = false;
     expandedWidth = 200;
@@ -52,6 +54,6 @@ export class PrivateComponent {
       return this.collapsedWidth;
     }
     logOut(){
-        this.router.navigate(['/login']);
+      this.authService.logout();
     }
 }
