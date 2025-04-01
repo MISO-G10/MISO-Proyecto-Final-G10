@@ -1,4 +1,22 @@
+version: "3.8"
 services:
+  ccp_gestion_db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - '5432:5432'
+    networks:
+      - ccp_gestion_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
 
   usuarios:
     build:
@@ -8,26 +26,15 @@ services:
       - "3000:3000"
     environment:
       DB_NAME: usuarios
-      DB_HOST: usuarios_db
+      DB_HOST: ccp_gestion_db
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
     networks:
       - ccp_gestion_net
     depends_on:
-      - usuarios_db
-
-  usuarios_db:
-    image: postgres
-    environment:
-      POSTGRES_HOST: usuarios_db
-      POSTGRES_DB: usuarios
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - '5430:5432'
-    networks:
-      - ccp_gestion_net
+      ccp_gestion_db:
+        condition: service_healthy
 
   fabricantes:
     build:
@@ -37,26 +44,15 @@ services:
       - "3001:3001"
     environment:
       DB_NAME: fabricantes
-      DB_HOST: fabricantes_db
+      DB_HOST: ccp_gestion_db
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
     networks:
       - ccp_gestion_net
     depends_on:
-      - fabricantes_db
-
-  fabricantes_db:
-    image: postgres
-    environment:
-      POSTGRES_HOST: fabricantes_db
-      POSTGRES_DB: fabricantes
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - '5431:5432'
-    networks:
-      - ccp_gestion_net
+      ccp_gestion_db:
+        condition: service_healthy
 
   ventas:
     build:
@@ -65,23 +61,16 @@ services:
     ports:
       - "3002:5000"
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@ventas_db:5432/ventas
+      DB_NAME: ventas
+      DB_HOST: ccp_gestion_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
     networks:
       - ccp_gestion_net
     depends_on:
-      - ventas_db
-
-  ventas_db:
-    image: postgres
-    environment:
-      POSTGRES_HOST: localhost
-      POSTGRES_DB: ventas
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - '5433:5432'
-    networks:
-      - ccp_gestion_net
+      ccp_gestion_db:
+        condition: service_healthy
 
 networks:
   ccp_gestion_net:
