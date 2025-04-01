@@ -9,6 +9,9 @@ sqlalchemy = "*"
 flask = "*"
 python-dotenv = "*"
 psycopg2-binary = "*"
+flask-cors = "*"
+requests = "*"
+marshmallow = "*"
 
 [dev-packages]
 pytest = "*"
@@ -16,6 +19,5 @@ pytest-flask = "*"
 pytest-mock = "*"
 pytest-cov = "*"
 pytest-env = "*"
-flask-cors = "*"
 [requires]
 python_version = "3.11"
