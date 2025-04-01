@@ -1,15 +1,15 @@
-from flask_openapi3 import OpenAPI, Info
 from flask import jsonify, json, redirect
-from werkzeug.exceptions import HTTPException
+from flask_openapi3 import OpenAPI, Info
+from flask_openapi3.models import Server
 from marshmallow import ValidationError
-from flask_openapi3.models import Server, SecurityScheme
+from werkzeug.exceptions import HTTPException
 
 from app.blueprints import api, command_bp
 from app.blueprints.commands import commands
 from app.config.application import ApplicationConfig
 from app.lib.database import db, migrate
-from app.lib.schema import marshmallow
 from app.lib.errors import ApiError
+from app.lib.schema import marshmallow
 
 
 def create_app():
