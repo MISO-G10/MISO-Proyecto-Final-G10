@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 class SellerPath(BaseModel):
     """Path parameters for Seller routes"""
-    id: int = Field(..., description="Seller ID")
+    seller_id: int = Field(..., description="Seller ID")
 
 
 class SellerResponse(BaseModel):

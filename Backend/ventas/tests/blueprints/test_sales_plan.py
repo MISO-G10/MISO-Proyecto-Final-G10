@@ -36,7 +36,7 @@ class TestSalesPlan:
 
         # Create a sales plan
         response = auth_client.post(
-            '/sales-plans',
+            '/planes',
             json=data,
             headers={'Authorization': auth_header}
         )
@@ -82,7 +82,7 @@ class TestSalesPlan:
 
         # Get all sales plans
         response = auth_client.get(
-            '/sales-plans',
+            '/planes',
             headers={'Authorization': auth_header}
         )
 
@@ -118,7 +118,7 @@ class TestSalesPlan:
 
         # Make a request to create a sales plan with invalid calendar date
         response = auth_client.post(
-            '/sales-plans',
+            '/planes',
             json=data,
             headers={'Authorization': auth_header}
         )
@@ -161,7 +161,7 @@ class TestSalesPlan:
 
         # Make a request to create a sales plan with invalid date format
         response = auth_client.post(
-            '/sales-plans',
+            '/planes',
             json=data,
             headers={'Authorization': auth_header}
         )
@@ -207,7 +207,7 @@ class TestSalesPlan:
 
         # Make a request to create a sales plan with invalid dates
         response = auth_client.post(
-            '/sales-plans',
+            '/planes',
             json=data,
             headers={'Authorization': auth_header}
         )
@@ -254,7 +254,7 @@ class TestSalesPlan:
 
         # Get the sales plan by ID
         response = auth_client.get(
-            f'/sales-plans/{sales_plan_id}',
+            f'/planes/{sales_plan_id}',
             headers={'Authorization': auth_header}
         )
 
@@ -307,7 +307,7 @@ class TestSalesPlan:
 
         # Update the sales plan
         response = auth_client.put(
-            f'/sales-plans/{sales_plan_id}',
+            f'/planes/{sales_plan_id}',
             json=update_data,
             headers={'Authorization': auth_header}
         )
@@ -356,7 +356,7 @@ class TestSalesPlan:
 
         # Delete the sales plan
         response = auth_client.delete(
-            f'/sales-plans/{sales_plan_id}',
+            f'/planes/{sales_plan_id}',
             headers={'Authorization': auth_header}
         )
 

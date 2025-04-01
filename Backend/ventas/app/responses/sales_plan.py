@@ -7,7 +7,7 @@ from app.responses.seller import SellerResponse
 
 class SalesPlanPath(BaseModel):
     """Path parameters for SalesPlan routes"""
-    id: int = Field(..., description="Sales plan ID")
+    plan_id: int = Field(..., description="Sales plan ID")
 
 
 class SalesPlanResponse(BaseModel):

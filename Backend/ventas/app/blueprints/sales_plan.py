@@ -11,7 +11,7 @@ from app.commands.sales_plan.delete import DeleteSalesPlanCommand
 from app.commands.sales_plan.get import GetSalesPlanCommand, GetAllSalesPlansCommand
 from app.commands.sales_plan.update import UpdateSalesPlanCommand
 from app.lib.auth import validate_token, director_required
-from . import api
+from . import plan_blueprint
 
 from app.responses.sales_plan import SalesPlanResponse, SalesPlanListResponse, SalesPlanPath
 from app.responses.seller import SellerResponse
@@ -29,22 +29,22 @@ class SalesPlanCreate(BaseModel):
     start_date: str = Field(..., description="Start date in format YYYY-MM-DD")
     end_date: str = Field(..., description="End date in format YYYY-MM-DD")
     seller_ids: List[int] = Field(..., description="List of seller IDs assigned to this plan")
-    
+
     @field_validator('start_date', 'end_date', mode='after')
     @classmethod
     def validate_date(cls, value: str) -> str:
         """Validate that the date string represents a valid date"""
         return validate_date_string(value)
-    
+
     @model_validator(mode='after')
     def validate_dates(self):
         """Validate that end_date is after start_date"""
         if not hasattr(self, 'start_date') or not hasattr(self, 'end_date'):
             return self
-            
+
         validate_date_range(self.start_date, self.end_date)
         return self
-        
+
     @field_validator('seller_ids', mode='after')
     @classmethod
     def validate_seller_ids(cls, v: List[int]) -> List[int]:
@@ -62,22 +62,22 @@ class SalesPlanUpdate(BaseModel):
     start_date: Optional[str] = Field(None, description="Start date in format YYYY-MM-DD")
     end_date: Optional[str] = Field(None, description="End date in format YYYY-MM-DD")
     seller_ids: Optional[List[int]] = Field(None, description="List of seller IDs assigned to this plan")
-    
+
     @field_validator('start_date', 'end_date', mode='after')
     @classmethod
     def validate_date(cls, value: Optional[str]) -> Optional[str]:
         """Validate that the date string represents a valid date if provided"""
         return validate_date_string(value)
-    
+
     @model_validator(mode='after')
     def validate_dates(self):
         """Validate that end_date is after start_date if both are provided"""
         if not hasattr(self, 'start_date') or not hasattr(self, 'end_date'):
             return self
-            
+
         validate_date_range(self.start_date, self.end_date)
         return self
-    
+
     @field_validator('seller_ids', mode='after')
     @classmethod
     def validate_seller_ids(cls, v: Optional[List[int]]) -> Optional[List[int]]:
@@ -87,7 +87,7 @@ class SalesPlanUpdate(BaseModel):
         return v
 
 
-@api.get('/sales-plans', tags=[sales_plan_tag], responses={200: SalesPlanListResponse})
+@plan_blueprint.get('', tags=[sales_plan_tag], responses={200: SalesPlanListResponse})
 @validate_token
 def get_sales_plans():
     """Get all sales plans"""
@@ -114,11 +114,11 @@ def get_sales_plans():
     ).model_dump()
 
 
-@api.get('/sales-plans/<int:id>', tags=[sales_plan_tag], responses={200: SalesPlanResponse, 404: ErrorResponse})
+@plan_blueprint.get('/<plan_id>', tags=[sales_plan_tag], responses={200: SalesPlanResponse, 404: ErrorResponse})
 @validate_token
 def get_sales_plan(path: SalesPlanPath):
     """Get a specific sales plan by ID"""
-    sales_plan = GetSalesPlanCommand(path.id).execute()
+    sales_plan = GetSalesPlanCommand(path.plan_id).execute()
 
     return SalesPlanResponse(
         id=sales_plan.id,
@@ -137,8 +137,8 @@ def get_sales_plan(path: SalesPlanPath):
     ).model_dump()
 
 
-@api.post('/sales-plans', tags=[sales_plan_tag],
-          responses={201: SalesPlanResponse, 400: ErrorResponse, 403: ErrorResponse})
+@plan_blueprint.post('', tags=[sales_plan_tag],
+                     responses={201: SalesPlanResponse, 400: ErrorResponse, 403: ErrorResponse})
 @validate_token
 @director_required
 def create_sales_plan(body: SalesPlanCreate):
@@ -164,13 +164,13 @@ def create_sales_plan(body: SalesPlanCreate):
     return response.model_dump(), 201
 
 
-@api.put('/sales-plans/<int:id>', tags=[sales_plan_tag],
-         responses={200: SalesPlanResponse, 400: ErrorResponse, 403: ErrorResponse, 404: ErrorResponse})
+@plan_blueprint.put('/<plan_id>', tags=[sales_plan_tag],
+                    responses={200: SalesPlanResponse, 400: ErrorResponse, 403: ErrorResponse, 404: ErrorResponse})
 @validate_token
 @director_required
 def update_sales_plan(path: SalesPlanPath, body: SalesPlanUpdate):
     """Update an existing sales plan - requires Director role"""
-    id = path.id
+    id = path.plan_id
     sales_plan = UpdateSalesPlanCommand(id, body.model_dump(exclude_none=True)).execute()
 
     return SalesPlanResponse(
@@ -190,13 +190,13 @@ def update_sales_plan(path: SalesPlanPath, body: SalesPlanUpdate):
     ).model_dump()
 
 
-@api.delete('/sales-plans/<int:id>', tags=[sales_plan_tag],
-            responses={204: None, 403: ErrorResponse, 404: ErrorResponse})
+@plan_blueprint.delete('/<plan_id>', tags=[sales_plan_tag],
+                       responses={204: None, 403: ErrorResponse, 404: ErrorResponse})
 @validate_token
 @director_required
 def delete_sales_plan(path: SalesPlanPath):
     """Delete a sales plan - requires Director role"""
-    id = path.id
+    id = path.plan_id
     DeleteSalesPlanCommand(id).execute()
 
     return '', 204

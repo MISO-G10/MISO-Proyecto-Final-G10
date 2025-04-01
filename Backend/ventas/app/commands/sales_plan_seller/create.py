@@ -18,7 +18,8 @@ class CreateSalesPlanSellerCommand(BaseCommand):
 
         seller = SalesPlanSeller(
             name=self.data['name'],
-            seller_id=self.data['seller_id']
+            seller_id=self.data['seller_id'],
+            sales_plan_id=self.data.get('sales_plan_id')
         )
 
         db.session.add(seller)
