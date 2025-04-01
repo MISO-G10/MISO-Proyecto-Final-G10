@@ -12,10 +12,10 @@ interface AuthResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private http = inject(HttpClient);
-  private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
-  private apiUrl = 'http://localhost:3000/usuarios';
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
+  private readonly snackBar = inject(MatSnackBar);
+  private readonly apiUrl = 'http://localhost:3000/usuarios';
 
   login(username: string, password: string) {
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth`, { username, password })
@@ -26,11 +26,21 @@ export class AuthService {
             localStorage.setItem('auth', JSON.stringify(response.token));
             this.snackBar.open('Bienvenido', 'Cerrar', { duration: 3000 });
             this.router.navigate(['private/home']);
-          } else {
-            this.snackBar.open(response.message || 'Credenciales incorrectas', 'Cerrar');
           }
         }
-        // El error ya lo maneja el interceptor
+        
       });
+  }
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('auth');
+  }
+  logout(): void {
+    localStorage.removeItem('auth');
+    this.router.navigate(['/login']);
+    this.snackBar.open('Sesión cerrada', 'Cerrar', { duration: 3000 });
+  }
+  
+  getToken(): string | null {
+    return localStorage.getItem('auth');
   }
 }
