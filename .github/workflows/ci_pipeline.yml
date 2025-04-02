@@ -110,11 +110,7 @@ jobs:
         run: |
           echo "Installing dependencies inventario..."
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          else
-            pip install Flask Flask-SQLAlchemy Flask-Cors pytest pytest-cov requests
-          fi
+          pip install -r requirements.txt
           pip install pytest pytest-cov
 
       - name: Run usuarios tests
