@@ -23,5 +23,6 @@ class Producto(Base, Model):
     reglasComerciales = Column(String, nullable=False)
     reglasTributarias = Column(String, nullable=False)
     categoria = Column(db.Enum(Categoria), nullable=False)
+    fabricante_id = Column(String, nullable=False) #Almacena el id del Fabricante asociado
 
     
