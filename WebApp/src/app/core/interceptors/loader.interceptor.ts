@@ -9,7 +9,7 @@ import { LoadingService } from '../services/loading.services';
 export function loaderInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
   const loadingService = inject(LoadingService);
   
-  // Mostrar loader solo para ciertas peticiones (opcional)
+  // Mostrar loader solo para ciertas peticiones
   if (!request.url.includes('/notifications')) {
     loadingService.show();
   }
