@@ -293,6 +293,81 @@
 				}
 			],
 			"description": "Usuarios service endpoints"
+		},
+		{
+			"name": "Inventarios",
+			"item": [
+				{
+					"name": "Create Producto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Producto Test\",\n    \"descripcion\": \"Descripción del producto\",\n    \"perecedero\": true,\n    \"fechaVencimiento\": \"2024-12-31T00:00:00.000Z\",\n    \"valorUnidad\": 10000,\n    \"tiempoEntrega\": \"2024-05-15T00:00:00.000Z\",\n    \"condicionAlmacenamiento\": \"Refrigerado\",\n    \"reglasLegales\": \"Reglas legales del producto\",\n    \"reglasComerciales\": \"Reglas comerciales del producto\",\n    \"reglasTributarias\": \"Reglas tributarias del producto\",\n    \"categoria\": \"ALIMENTOS_BEBIDAS\",\n    \"fabricante_id\": \"{{fabricante_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{inventarios_url}}/createproduct",
+							"host": [
+								"{{inventarios_url}}"
+							],
+							"path": [
+								"createproduct"
+							]
+						},
+						"description": "Create a new producto"
+					},
+					"response": []
+				},
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{inventarios_url}}/ping",
+							"host": [
+								"{{inventarios_url}}"
+							],
+							"path": [
+								"ping"
+							]
+						},
+						"description": "Check the health of the inventarios service"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Database",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{inventarios_url}}/reset",
+							"host": [
+								"{{inventarios_url}}"
+							],
+							"path": [
+								"reset"
+							]
+						},
+						"description": "Reset the inventarios database"
+					},
+					"response": []
+				}
+			],
+			"description": "Inventarios service endpoints"
 		}
 	],
 	"event": [
@@ -327,18 +402,28 @@
 			"type": "string"
 		},
 		{
+			"key": "inventarios_url",
+			"value": "http://localhost:3003/inventarios",
+			"type": "string"
+		},
+		{
 			"key": "token",
 			"value": "Bearer your_jwt_token_here",
 			"type": "string"
 		},
 		{
 			"key": "fabricante_id",
-			"value": "fabricante_id_here",
+			"value": "fabricante_1234",
 			"type": "string"
 		},
 		{
 			"key": "usuario_id",
 			"value": "usuario_id_here",
+			"type": "string"
+		},
+		{
+			"key": "producto_sku",
+			"value": "producto_sku_here",
 			"type": "string"
 		}
 	]
