@@ -25,7 +25,7 @@
         </a>
       
       
-      <a mat-list-item routerLink="sellers">
+      <a mat-list-item routerLink="sellers" *ngIf="canRenderRole(['ADMINISTRADOR','DIRECTOR_VENTAS'])">
         <mat-icon mat-list-icon>supervisor_account</mat-icon>
         <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Vendedores</span>
       </a>      

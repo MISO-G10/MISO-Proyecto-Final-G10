@@ -8,20 +8,23 @@ export function errorInterceptor(request: HttpRequest<unknown>, next: HttpHandle
   
   return next(request).pipe(
     catchError((error: HttpErrorResponse) => {
-      let errorMessage = 'Error desconocido';
-      
-      if (error.error?.message) {
-        errorMessage = error.error.message;
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
 
-      snackBar.open(errorMessage, 'Cerrar', {
-        duration: 3000,
-        panelClass: ['error-snackbar']
-      });
-      
+      if (error.status !== 401) {
+        let errorMessage = 'Error desconocido';
+        
+        if (error.error?.message) {
+          errorMessage = error.error.message;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+
+        snackBar.open(errorMessage, 'Cerrar', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      }
       return throwError(() => error);
+
     })
   );
 }

@@ -185,6 +185,10 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
+<mat-progress-bar 
+  mode="indeterminate" 
+  color="primary"
+  *ngIf="loadingService.loading$ | async">
+</mat-progress-bar>
 
 <router-outlet />
