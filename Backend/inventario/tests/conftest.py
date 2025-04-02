@@ -43,7 +43,15 @@ def client():
         # Mockear el inspector
         mock_inspect.return_value.get_table_names.return_value = []
 
-        yield client
+        # Mockear la validación de tokens
+        with patch('requests.get') as mock_get:
+            # Configurar el mock para devolver una respuesta exitosa
+            mock_response = MagicMock()
+            mock_response.status_code = 200
+            mock_response.json.return_value = {"id": "12345", "nombre": "Test Usuario"}
+            mock_get.return_value = mock_response
+            
+            yield client
 
 
 @pytest.fixture

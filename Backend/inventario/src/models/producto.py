@@ -1,4 +1,5 @@
-from sqlalchemy import Column, String, Boolean, DateTime, Float
+from sqlalchemy import Column, String, Boolean, DateTime, Float, Enum
+import enum
 from src.db.base import Base
 from .model import Model
 
@@ -22,7 +23,5 @@ class Producto(Base, Model):
     reglasLegales = Column(String, nullable=False)
     reglasComerciales = Column(String, nullable=False)
     reglasTributarias = Column(String, nullable=False)
-    categoria = Column(db.Enum(Categoria), nullable=False)
+    categoria = Column(Enum(Categoria), nullable=False)
     fabricante_id = Column(String, nullable=False) #Almacena el id del Fabricante asociado
-
-    

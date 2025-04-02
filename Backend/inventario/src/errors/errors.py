@@ -22,3 +22,11 @@ class Unauthorized(ApiError):
 class Forbidden(ApiError):
     code = 403
     description = "Acceso no autorizado"
+
+class Forbidden(ApiError):
+    code = 403
+    description = "Acceso no autorizado"
+
+class InvalidProductoData(ApiError):
+    code = 400
+    description = "Datos del producto no válidos"

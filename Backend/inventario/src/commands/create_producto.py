@@ -1,6 +1,7 @@
 from flask import jsonify
 from marshmallow import ValidationError, Schema, fields, validates_schema
 from datetime import datetime
+import hashlib
 
 from src.db.session import SessionLocal
 from src.errors.errors import InvalidProductoData
