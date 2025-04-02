@@ -5,7 +5,7 @@ from src.utils.validate_token import token_required
 import os
 
 
-operations_blueprint = Blueprint('productos', __name__)
+operations_blueprint = Blueprint('inventarios', __name__)
 
 
 # Consulta de salud del servicio

@@ -15,7 +15,7 @@ from .errors.errors import ApiError
 def create_app(env_name='development'):
     get_config(env_name)
     app = Flask(__name__)
-    app.register_blueprint(operations_blueprint, url_prefix='/productos')
+    app.register_blueprint(operations_blueprint, url_prefix='/inventarios')
 
     # Initialize the database
     initialize_database()

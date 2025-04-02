@@ -3,12 +3,15 @@ from src.db.base import Base
 from .model import Model
 
 class Categoria(enum.Enum):
-    PERECEDERO = 'PERECEDERO'
-    NO_PERECEDERO = 'NO_PERECEDERO'
+    ALIMENTOS_BEBIDAS = "ALIMENTOS Y BEBIDAS"
+    CUIDADO_PERSONAL = "CUIDADO PERSONAL"
+    LIMPIEZA_HOGAR = "LIMPIEZA Y HOGAR"
+    BEBES = "BEBÉS"
+    MASCOTAS = "MASCOTAS"
 
 class Producto(Base, Model):
     __tablename__ = 'Producto'
-    
+    sku = Column(String, primary_key=True, nullable=False)  #SKU calculado como id fabricante+id producto
     nombre = Column(String, nullable=False)
     descripcion = Column(String, nullable=False)
     perecedero = Column(Boolean, nullable=False)
