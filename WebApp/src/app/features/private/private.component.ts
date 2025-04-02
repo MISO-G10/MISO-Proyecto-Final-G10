@@ -56,4 +56,9 @@ export class PrivateComponent {
     logOut(){
       this.authService.logout();
     }
+
+    canRenderRole(roles: string[]): boolean {
+      const user = this.authService.getCurrentUser();
+      return user ? roles.includes(user.rol) : false;
+    }
 }
