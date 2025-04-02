@@ -72,6 +72,25 @@ services:
       ccp_gestion_db:
         condition: service_healthy
 
+  inventarios:
+    build:
+      context: ./inventario
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    environment:
+      DB_NAME: inventarios
+      DB_HOST: ccp_gestion_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      USUARIOS_PATH: http://usuarios:3000
+    networks:
+      - ccp_gestion_net
+    depends_on:
+      ccp_gestion_db:
+        condition: service_healthy
+
 networks:
   ccp_gestion_net:
     driver: bridge
