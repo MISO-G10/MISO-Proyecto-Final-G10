@@ -64,15 +64,14 @@
           </mat-form-field>
   
           <div class="button-group">
-            <button mat-raised-button color="warn" type="button" (click)="onCancelCreate()" class="cancel-button">
+            <button mat-stroked-button type="button" (click)="onCancelCreate()" class="cancel-button">
               <mat-icon>cancel</mat-icon>
               Cancelar
             </button>
-            <button mat-raised-button color="primary" type="submit" [disabled]="sellerForm.invalid" class="submit-button">
+            <button mat-flat-button color="primary" type="submit" [disabled]="sellerForm.invalid" class="submit-button">
               <mat-icon>person_add</mat-icon>
               Registrar Vendedor
-            </button>
-            <button mat-button color="warn">Botón</button>
+            </button>            
           </div>
         </form>
       </mat-card-content>
