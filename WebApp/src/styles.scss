@@ -1,25 +1,37 @@
 
-@use '@angular/material' as mat;
-@include mat.core();
+@use '@angular/material';
+@use './theming/_theme-colors' as my-theme;
 
-html, body { height: 100%; }
-body { margin: 0;}
+html {
+  // Apply the dark theme by default
+  color-scheme: light dark;
+  @include material.theme((
+    color: (
+      primary: my-theme.$primary-palette,
+      tertiary: my-theme.$tertiary-palette,
+      
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
 
+  // Use high contrast dark theme colors when users prefer contrast
+  @media (prefers-contrast: more) {
+    @include my-theme.high-contrast-overrides(color-scheme);
+  }
+}
 
 .success-snackbar {
-    --mdc-snackbar-container-color: #4CAF50;
-    --mdc-snackbar-supporting-text-color: white;
-    --mat-mdc-snack-bar-button-color: white;
-  }
-  
-  .error-snackbar {
-    --mdc-snackbar-container-color: #F44336;
-    --mdc-snackbar-supporting-text-color: white;
-    --mat-mdc-snack-bar-button-color: white;
-  }
-  
-  .warning-snackbar {
-    --mdc-snackbar-container-color: #FFC107;
-    --mdc-snackbar-supporting-text-color: rgba(0, 0, 0, 0.87);
-    --mat-mdc-snack-bar-button-color: rgba(0, 0, 0, 0.6);
-  }
+  --mdc-snackbar-container-color: var(--mat-sys-primary);  
+  --mat-mdc-snack-bar-button-color: var(--mat-sys-on-primary);
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: var(--mat-sys-error);  
+  --mat-mdc-snack-bar-button-color: var(--mat-sys-on-error);
+}
+
+.warning-snackbar {
+  --mdc-snackbar-container-color: var(--mat-sys-warning);  
+  --mat-mdc-snack-bar-button-color: var(--mat-sys-on-warning);
+}

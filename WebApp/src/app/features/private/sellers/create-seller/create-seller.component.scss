@@ -1,8 +1,7 @@
 
 .seller-container {
     display: flex;
-    justify-content: center;    
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    justify-content: center;
     padding: 2rem;
   }
   
@@ -65,13 +64,8 @@
         height: 1.2rem;
         width: 1.2rem;
       }
-    }
-  
-    .cancel-button { 
-      &:hover {
-        background-color: #ffebee; // Color red-50
-      }
     }  
+     
   }
   
   @media (max-width: 600px) {
