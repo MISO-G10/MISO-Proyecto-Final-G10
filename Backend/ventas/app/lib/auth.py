@@ -56,7 +56,7 @@ def director_required(f):
         if not hasattr(request, 'user'):
             return jsonify({'message': 'Authentication required'}), 401
 
-        if request.user.get('rol') != 'ADMINISTRADOR':
+        if request.user.get('rol') != 'DIRECTOR_VENTAS':
             return jsonify({'message': 'Permission denied. Director role required'}), 403
 
         return f(*args, **kwargs)

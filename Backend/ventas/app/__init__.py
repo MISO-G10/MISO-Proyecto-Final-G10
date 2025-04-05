@@ -3,6 +3,7 @@ from flask_openapi3 import OpenAPI, Info
 from flask_openapi3.models import Server
 from marshmallow import ValidationError
 from werkzeug.exceptions import HTTPException
+from flask_cors import CORS
 
 from app.blueprints import api, plan_blueprint, seller_blueprint, command_bp
 from app.blueprints.commands import commands
@@ -51,6 +52,19 @@ def create_app():
         doc_prefix="/api",
         doc_ui=True,
         doc_url="/openapi.json"
+    )
+
+    # Enable CORS for the application
+    CORS(
+        app,
+        resources={
+            r"/*": {
+                "origins": ["http://localhost:4200"],
+                "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+                "allow_headers": ["Content-Type", "Authorization"],
+                "supports_credentials": True
+            }
+        }
     )
 
     # Load application configuration
