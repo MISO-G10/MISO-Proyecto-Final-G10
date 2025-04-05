@@ -1,0 +1,79 @@
+<div class="seller-container">
+    <mat-card class="seller-card">
+      <mat-card-header>
+        <mat-card-title class="seller-title">Registro de Vendedor</mat-card-title>        
+      </mat-card-header>
+  
+      <mat-card-content>
+        <form [formGroup]="sellerForm" (ngSubmit)="onCreateSeller()" class="seller-form">
+          <!-- Nombre -->
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="name" placeholder="Ej: Carlos">
+            <mat-icon matPrefix>person</mat-icon>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(sellerForm.get('name'), validaciones['name'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Apellido -->
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="lastName" placeholder="Ej: Mendoza">
+            <mat-icon matPrefix>people</mat-icon>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(sellerForm.get('lastName'), validaciones['lastName'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Email -->
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="Ej: vendedor@tienda.com">
+            <mat-icon matPrefix>email</mat-icon>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(sellerForm.get('email'), validaciones['email'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Contraseña -->
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Contraseña</mat-label>
+            <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="password">
+            <mat-icon matPrefix>lock</mat-icon>
+            <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'" type="button">
+              <mat-icon>{{ hide1 ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(sellerForm.get('password'), validaciones['password'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Confirmar Contraseña -->
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Confirmar Contraseña</mat-label>
+            <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="confirmPassword">
+            <mat-icon matPrefix>lock_reset</mat-icon>
+            <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" type="button">
+              <mat-icon>{{ hide2 ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(sellerForm.get('confirmPassword'), validaciones['confirmPassword'])">
+              {{ message }}
+            </mat-error>
+            
+          </mat-form-field>
+  
+          <div class="button-group">
+            <button mat-stroked-button type="button" (click)="onCancelCreate()" class="cancel-button">
+              <mat-icon>cancel</mat-icon>
+              Cancelar
+            </button>
+            <button mat-flat-button color="primary" type="submit" [disabled]="sellerForm.invalid" class="submit-button">
+              <mat-icon>person_add</mat-icon>
+              Registrar Vendedor
+            </button>            
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>

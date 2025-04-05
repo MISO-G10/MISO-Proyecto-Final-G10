@@ -6,14 +6,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
 import {Seller} from './models/seller';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-sellers',
     imports: [
         CommonModule,
+        RouterModule,
         MatTableModule,
         MatInputModule,
         MatIconModule,
@@ -25,7 +26,7 @@ import { FormsModule } from '@angular/forms';
     styleUrl: './sellers.component.scss'
 })
 export class SellersComponent {
-    private dialog = inject(MatDialog);
+    private readonly dialog = inject(MatDialog);
 
     displayedColumns: string[] = ['name', 'email', 'phone', 'joinDate', 'actions'];
     sellers = signal<Seller[]>([

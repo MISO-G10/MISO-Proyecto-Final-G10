@@ -14,6 +14,13 @@ export const PRIVATE_ROUTES: Routes = [
           canActivate: [RoleGuard],
           data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
         }, 
+
+        { path: 'sellers/create', loadComponent: () => import('./sellers/create-seller/create-seller.component').then(m => m.CreateSellerComponent),
+          canActivate: [RoleGuard],
+          data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
+        }, 
+        
+
         { path: 'fabricantes-temp', loadComponent: () => import('./fabricantes-temp/fabricantes-temp.component').then(m => m.FabricantesTempComponent),
           canActivate: [RoleGuard],
           data: { roles: ['ADMINISTRADOR'] }
@@ -22,6 +29,7 @@ export const PRIVATE_ROUTES: Routes = [
           canActivate: [RoleGuard],
           data: { roles: ['ADMINISTRADOR'] }
         },*/
+
         { path: '', redirectTo: 'home', pathMatch: 'full' },
          
       ]
