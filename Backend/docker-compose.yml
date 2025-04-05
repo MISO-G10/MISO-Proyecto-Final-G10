@@ -48,6 +48,7 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
+      USUARIOS_PATH: http://usuarios:3000
     networks:
       - ccp_gestion_net
     depends_on:
