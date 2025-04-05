@@ -28,7 +28,12 @@
       <a mat-list-item routerLink="sellers" *ngIf="canRenderRole(['ADMINISTRADOR','DIRECTOR_VENTAS'])">
         <mat-icon mat-list-icon>supervisor_account</mat-icon>
         <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Vendedores</span>
-      </a>      
+      </a>
+      
+      <a mat-list-item routerLink="fabricantes-temp" *ngIf="canRenderRole(['ADMINISTRADOR'])">
+        <mat-icon mat-list-icon>business</mat-icon>
+        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Temp - Crear fabricantes</span>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
 
