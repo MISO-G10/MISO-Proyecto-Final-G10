@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { User } from '../../features/auth/login/models/user';
-
+import { environment } from '../../../environment/environment';
 interface AuthResponse {
   expireAt: string;
   id: string;
@@ -16,7 +16,7 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
-  private readonly apiUrl = 'http://localhost:3000/usuarios';
+  private readonly apiUrl = environment.apiUrl+'/usuarios';
 
   login(username: string, password: string) {
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth`, { username, password })

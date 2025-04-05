@@ -1,0 +1,90 @@
+
+.seller-container {
+    display: flex;
+    justify-content: center;    
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 2rem;
+  }
+  
+  .seller-card {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+  
+ 
+  
+  .seller-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  
+    .mat-form-field-wrapper {
+      padding-bottom: 0.5em;
+    }
+  
+    .mat-form-field-outline {
+      background-color: white;
+      border-radius: 8px;
+    }
+  
+    
+  }
+  
+ 
+  
+  .button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  
+    button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      padding: 0 1.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+  
+      mat-icon {
+        font-size: 1.2rem;
+        height: 1.2rem;
+        width: 1.2rem;
+      }
+    }
+  
+    .cancel-button { 
+      &:hover {
+        background-color: #ffebee; // Color red-50
+      }
+    }  
+  }
+  
+  @media (max-width: 600px) {
+    .seller-container {
+      padding: 1rem;
+    }
+  
+    .button-group {
+      flex-direction: column-reverse;
+  
+      button {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }

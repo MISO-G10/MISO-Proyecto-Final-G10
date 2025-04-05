@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import  {getErrorMessages} from '../../../shared/validators/error-messages';
-import validaciones from '../../../shared/validators/login-validator'
+import validaciones from '../../../shared/validators/error_validators/login-validator'
 import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
