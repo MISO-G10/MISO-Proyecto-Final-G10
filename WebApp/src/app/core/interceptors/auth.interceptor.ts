@@ -2,13 +2,9 @@
 import { HttpRequest, HttpHandlerFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 export function authInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
   const authService = inject(AuthService);
-  const router = inject(Router);
-  const snackBar = inject(MatSnackBar);
   
   // Excluir endpoints de autenticación
   if (request.url.includes('/auth')) {

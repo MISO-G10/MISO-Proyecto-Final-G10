@@ -38,8 +38,8 @@ export class LoginComponent {
 
     loginForm = this.fb.group({
         email: ['', [Validators.required,
-             //Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]
-                ]],
+                    Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]
+                ],
         password: ['', [Validators.required]]
     });
       
