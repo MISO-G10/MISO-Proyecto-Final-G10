@@ -1,4 +1,6 @@
 
+@use '@angular/material' as mat;
+@include mat.core();
 
 html, body { height: 100%; }
 body { margin: 0;}
