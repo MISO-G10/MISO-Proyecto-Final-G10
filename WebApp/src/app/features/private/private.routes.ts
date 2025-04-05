@@ -14,7 +14,14 @@ export const PRIVATE_ROUTES: Routes = [
           canActivate: [RoleGuard],
           data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
         }, 
-        
+        { path: 'fabricantes-temp', loadComponent: () => import('./fabricantes-temp/fabricantes-temp.component').then(m => m.FabricantesTempComponent),
+          canActivate: [RoleGuard],
+          data: { roles: ['ADMINISTRADOR'] }
+        },/*
+        { path: 'add-product/:manufacturerId', loadComponent: () => import('./products/add-product/add-product.component').then(m => m.AddProductComponent),
+          canActivate: [RoleGuard],
+          data: { roles: ['ADMINISTRADOR'] }
+        },*/
         { path: '', redirectTo: 'home', pathMatch: 'full' },
          
       ]
