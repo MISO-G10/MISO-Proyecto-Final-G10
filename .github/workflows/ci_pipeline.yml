@@ -13,8 +13,8 @@ jobs:
   check-branch-name:
     runs-on: ubuntu-latest
     outputs:
-      rama_web: ${{ startsWith(github.head_ref, 'huw') || startsWith(github.head_ref, 'HUW') }}
-      rama_mobile: ${{ startsWith(github.head_ref, 'hum') || startsWith(github.head_ref, 'HUM') }}
+      rama_web: ${{ startsWith(github.head_ref, 'feature/huw') || startsWith(github.head_ref, 'feature/HUW') }}
+      rama_mobile: ${{ startsWith(github.head_ref, 'feature/hum') || startsWith(github.head_ref, 'feature/HUM') }}
     steps:
       - name: Check branch name
         run: echo "Pull request desde ${{ github.head_ref }}"
@@ -105,6 +105,14 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-cov
 
+      - name: Install dependencies inventario
+        working-directory: ./Backend/inventario
+        run: |
+          echo "Installing dependencies inventario..."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
       - name: Run usuarios tests
         id: usuarios_tests
         working-directory: ./Backend/usuarios
@@ -115,9 +123,14 @@ jobs:
         working-directory: ./Backend/fabricantes
         run: pytest tests/ --cov=. --cov-report=term-missing
 
+      - name: Run inventario tests
+        id: inventario_tests
+        working-directory: ./Backend/inventario
+        run: pytest tests/ --cov=. --cov-report=term-missing
+
       - name: Validate if test failed
         id: result_with_error
-        if: steps.usuarios_tests.outcome == 'failure' || steps.fabricantes_tests.outcome == 'failure'
+        if: steps.usuarios_tests.outcome == 'failure' || steps.fabricantes_tests.outcome == 'failure' || steps.inventario_tests.outcome == 'failure'
         env:
           MENSAJE_ERROR: Una o varias pruebas del backend fallaron
         run: |
@@ -126,7 +139,7 @@ jobs:
 
       - name: Validate if test passed
         id: result_with_success
-        if: steps.usuarios_tests.outcome == 'success' && steps.fabricantes_tests.outcome == 'success'
+        if: steps.usuarios_tests.outcome == 'success' && steps.fabricantes_tests.outcome == 'success' && (steps.inventario_tests.outcome == 'success' || steps.inventario_tests.outcome == 'skipped')
         env:
           MENSAJE_EXITO: Todas las pruebas del backend fueron exitosas
         run: echo "${MENSAJE_EXITO}"
