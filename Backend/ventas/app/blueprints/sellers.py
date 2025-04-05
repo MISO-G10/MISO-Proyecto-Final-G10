@@ -14,32 +14,32 @@ from app.responses.seller import SellerResponse, SellerListResponse
 from . import seller_blueprint
 
 # Define API tag
-sellers_tag = Tag(name="Plan Sellers", description="Operations on sellers assigned to sales plans")
+sellers_tag = Tag(name="Vendedores", description="Operaciones sobre vendedores asignados a planes de venta")
 
 
 # Pydantic models for request data
 class SellerCreate(BaseModel):
-    """Schema for creating a new Seller"""
-    name: str = Field(..., min_length=2, max_length=255, description="Seller name")
-    seller_id: int = Field(..., gt=0, description="Seller ID from the users service")
+    """Esquema para crear un nuevo Vendedor"""
+    nombre: str = Field(..., min_length=2, max_length=255, description="Nombre del vendedor")
+    seller_id: int = Field(..., gt=0, description="ID del vendedor del servicio de usuarios")
 
 
 class SellerUpdate(BaseModel):
-    """Schema for updating an existing Seller"""
-    name: Optional[str] = Field(None, min_length=2, max_length=255, description="Seller name")
+    """Esquema para actualizar un Vendedor existente"""
+    nombre: Optional[str] = Field(None, min_length=2, max_length=255, description="Nombre del vendedor")
 
 
 class PlanSellerPath(BaseModel):
-    """Path parameters for Plan Seller routes"""
-    plan_id: int = Field(..., description="Sales Plan ID")
-    seller_id: int = Field(..., description="Seller ID")
+    """Parámetros de ruta para las rutas de Vendedores"""
+    plan_id: int = Field(..., description="ID del plan de ventas")
+    seller_id: int = Field(..., description="ID del vendedor")
 
 
 @seller_blueprint.get('', tags=[sellers_tag],
                       responses={200: SellerListResponse, 404: ErrorResponse})
 @validate_token
 def get_plan_sellers(path: SalesPlanPath):
-    """Get all sellers assigned to a specific sales plan"""
+    """Obtener todos los vendedores asignados a un plan de venta específico"""
     plan_id = path.plan_id
     # Get sellers for the specified plan using the optimized command
     plan_sellers = GetPlanSellersCommand(plan_id).execute()
@@ -49,7 +49,7 @@ def get_plan_sellers(path: SalesPlanPath):
         items=[
             SellerResponse(
                 id=seller.id,
-                name=seller.name,
+                nombre=seller.nombre,
                 seller_id=seller.seller_id
             ) for seller in plan_sellers
         ]
@@ -60,14 +60,14 @@ def get_plan_sellers(path: SalesPlanPath):
                       responses={200: SellerResponse, 404: ErrorResponse})
 @validate_token
 def get_plan_seller(path: PlanSellerPath):
-    """Get a specific seller by ID within a sales plan"""
+    """Obtener un vendedor específico por ID dentro de un plan de venta"""
     # Execute the command to get the seller, passing plan_id for verification
     seller = GetSalesPlanSellerCommand(path.seller_id, plan_id=path.plan_id).execute()
 
     # Return as Pydantic model
     return SellerResponse(
         id=seller.id,
-        name=seller.name,
+        nombre=seller.nombre,
         seller_id=seller.seller_id
     ).model_dump()
 
@@ -77,7 +77,7 @@ def get_plan_seller(path: PlanSellerPath):
 @validate_token
 @director_required
 def add_seller_to_plan(path: SalesPlanPath, body: SellerCreate):
-    """Add a new seller to a sales plan - requires Director role"""
+    """Añadir un nuevo vendedor a un plan de venta - requiere rol de Director"""
     plan_id = path.plan_id
 
     # Prepare data with plan_id
@@ -90,7 +90,7 @@ def add_seller_to_plan(path: SalesPlanPath, body: SellerCreate):
     # Return as Pydantic model
     response = SellerResponse(
         id=seller.id,
-        name=seller.name,
+        nombre=seller.nombre,
         seller_id=seller.seller_id
     )
 
@@ -102,7 +102,7 @@ def add_seller_to_plan(path: SalesPlanPath, body: SellerCreate):
 @validate_token
 @director_required
 def update_plan_seller(path: PlanSellerPath, body: SellerUpdate):
-    """Update a seller within a sales plan - requires Director role"""
+    """Actualizar un vendedor dentro de un plan de venta - requiere rol de Director"""
     seller_id = path.seller_id
     plan_id = path.plan_id
 
@@ -115,7 +115,7 @@ def update_plan_seller(path: PlanSellerPath, body: SellerUpdate):
     # Return as Pydantic model
     return SellerResponse(
         id=updated_seller.id,
-        name=updated_seller.name,
+        nombre=updated_seller.nombre,
         seller_id=updated_seller.seller_id
     ).model_dump()
 
@@ -125,7 +125,7 @@ def update_plan_seller(path: PlanSellerPath, body: SellerUpdate):
 @validate_token
 @director_required
 def remove_seller_from_plan(path: PlanSellerPath):
-    """Remove a seller from a sales plan - requires Director role"""
+    """Eliminar un vendedor de un plan de venta - requiere rol de Director"""
     seller_id = path.seller_id
     plan_id = path.plan_id
 

@@ -18,11 +18,11 @@ class TestSellers:
         end_date = today + timedelta(days=30)
 
         sales_plan = SalesPlan(
-            name="Test Plan",
-            description="A test sales plan",
-            target_amount=1000.0,
-            start_date=today,
-            end_date=end_date
+            nombre="Test Plan",
+            descripcion="A test sales plan",
+            valor_objetivo=1000.0,
+            fecha_inicio=today,
+            fecha_fin=end_date
         )
         db_session.add(sales_plan)
         db_session.commit()
@@ -34,7 +34,7 @@ class TestSellers:
 
         # Define test seller data
         data = {
-            "name": "Test Seller",
+            "nombre": "Test Seller",
             "seller_id": 100
         }
 
@@ -52,7 +52,7 @@ class TestSellers:
             db.select(SalesPlanSeller).where(SalesPlanSeller.seller_id == 100)
         ).scalar_one_or_none()
         assert seller is not None
-        assert seller.name == "Test Seller"
+        assert seller.nombre == "Test Seller"
         assert seller.sales_plan_id == plan_id
 
     def test_get_plan_sellers(self, auth_client, db_session):
@@ -62,11 +62,11 @@ class TestSellers:
         end_date = today + timedelta(days=30)
 
         sales_plan = SalesPlan(
-            name="Test Plan",
-            description="A test sales plan",
-            target_amount=1000.0,
-            start_date=today,
-            end_date=end_date
+            nombre="Test Plan",
+            descripcion="A test sales plan",
+            valor_objetivo=1000.0,
+            fecha_inicio=today,
+            fecha_fin=end_date
         )
         db_session.add(sales_plan)
         db_session.commit()
@@ -75,18 +75,18 @@ class TestSellers:
 
         # Create test sellers and associate them with the plan
         seller1 = SalesPlanSeller(
-            name="Seller 1",
+            nombre="Seller 1",
             seller_id=101,
             sales_plan_id=plan_id
         )
         seller2 = SalesPlanSeller(
-            name="Seller 2",
+            nombre="Seller 2",
             seller_id=102,
             sales_plan_id=plan_id
         )
         # Create a seller not in the plan
         seller3 = SalesPlanSeller(
-            name="Seller 3",
+            nombre="Seller 3",
             seller_id=103
         )
 
@@ -118,11 +118,11 @@ class TestSellers:
         end_date = today + timedelta(days=30)
 
         sales_plan = SalesPlan(
-            name="Test Plan",
-            description="A test sales plan",
-            target_amount=1000.0,
-            start_date=today,
-            end_date=end_date
+            nombre="Test Plan",
+            descripcion="A test sales plan",
+            valor_objetivo=1000.0,
+            fecha_inicio=today,
+            fecha_fin=end_date
         )
         db_session.add(sales_plan)
         db_session.commit()
@@ -131,7 +131,7 @@ class TestSellers:
 
         # Create a test seller associated with the plan
         seller = SalesPlanSeller(
-            name="Specific Seller",
+            nombre="Specific Seller",
             seller_id=200,
             sales_plan_id=plan_id
         )
@@ -151,7 +151,7 @@ class TestSellers:
         )
 
         assert response.status_code == 200
-        assert response.json['name'] == "Specific Seller"
+        assert response.json['nombre'] == "Specific Seller"
         assert response.json['seller_id'] == 200
 
         # For a non-existent plan, we expect a 404
@@ -174,11 +174,11 @@ class TestSellers:
         end_date = today + timedelta(days=30)
 
         sales_plan = SalesPlan(
-            name="Test Plan",
-            description="A test sales plan",
-            target_amount=1000.0,
-            start_date=today,
-            end_date=end_date
+            nombre="Test Plan",
+            descripcion="A test sales plan",
+            valor_objetivo=1000.0,
+            fecha_inicio=today,
+            fecha_fin=end_date
         )
         db_session.add(sales_plan)
         db_session.commit()
@@ -187,7 +187,7 @@ class TestSellers:
 
         # Create a test seller associated with the plan
         seller = SalesPlanSeller(
-            name="Original Name",
+            nombre="Original Name",
             seller_id=300,
             sales_plan_id=plan_id
         )
@@ -202,7 +202,7 @@ class TestSellers:
 
         # Update the seller within the plan
         data = {
-            "name": "Updated Name"
+            "nombre": "Updated Name"
         }
 
         response = auth_client.put(
@@ -217,7 +217,7 @@ class TestSellers:
         updated_seller = db_session.execute(
             db.select(SalesPlanSeller).where(SalesPlanSeller.id == seller_db_id)
         ).scalar_one_or_none()
-        assert updated_seller.name == "Updated Name"
+        assert updated_seller.nombre == "Updated Name"
 
         # For a non-existent plan, we expect a 404
         # Try with a plan ID that's guaranteed not to exist
@@ -240,11 +240,11 @@ class TestSellers:
         end_date = today + timedelta(days=30)
 
         sales_plan = SalesPlan(
-            name="Test Plan",
-            description="A test sales plan",
-            target_amount=1000.0,
-            start_date=today,
-            end_date=end_date
+            nombre="Test Plan",
+            descripcion="A test sales plan",
+            valor_objetivo=1000.0,
+            fecha_inicio=today,
+            fecha_fin=end_date
         )
         db_session.add(sales_plan)
         db_session.commit()
@@ -253,7 +253,7 @@ class TestSellers:
 
         # Create a test seller associated with the plan
         seller = SalesPlanSeller(
-            name="To Delete",
+            nombre="To Delete",
             seller_id=400,
             sales_plan_id=plan_id
         )
@@ -283,7 +283,7 @@ class TestSellers:
         # Try to delete a seller with a wrong plan ID
         # First recreate the seller
         new_seller = SalesPlanSeller(
-            name="To Delete Again",
+            nombre="To Delete Again",
             seller_id=401,
             sales_plan_id=plan_id
         )
