@@ -29,7 +29,7 @@ def create_app():
 
     # Set up security schemes
     security_schemes = {
-        "bearerAuth": {
+        "jwt": {
             "type": "http",
             "scheme": "bearer",
             "bearerFormat": "JWT",
@@ -108,16 +108,6 @@ def create_app():
 
     app.register_blueprint(command_bp)  # Register regular blueprint for commands
     app.register_blueprint(commands)  # Register commands blueprint
-
-    # Configure security schemes for OpenAPI
-    app.security_schemes = {
-        "bearerAuth": {
-            "type": "http",
-            "scheme": "bearer",
-            "bearerFormat": "JWT",
-            "description": "Enter JWT token obtained from authentication"
-        }
-    }
 
     # Add a documentation index page
     @app.route('/docs')

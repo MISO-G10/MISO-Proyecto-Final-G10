@@ -45,6 +45,7 @@ RUN apt-get update && \
 COPY --from=builder /app /app
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 
+EXPOSE 5000
 ENV FLASK_ENV=production
 ENV PYTHONPATH=/app
 
