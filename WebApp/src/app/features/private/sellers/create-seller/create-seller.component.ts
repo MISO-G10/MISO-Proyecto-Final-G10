@@ -6,11 +6,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import  {getErrorMessages} from '../../../../shared/validators/error-messages';
 import {validaciones} from '../../../../shared/validators/error_validators/seller-validator'
-import { last } from 'rxjs';
 import { passwordMatchValidator } from '../../../../shared/validators/custom_validators/password-match.validator';
 import {  MatIconModule } from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
 import { passwordPatternValidator } from '../../../../shared/validators/custom_validators/8char1may.validator';
+import { SellerService } from '../../../../core/services/seller.services';
+import  { User } from '../../../auth/login/models/user';
+import  { UserRole } from '../../../auth/login/models/roles';
+import { SnackbarService } from '../../../../shared/ui/snackbar.service';
 
 @Component({
   selector: 'app-create-seller',
@@ -29,6 +32,8 @@ import { passwordPatternValidator } from '../../../../shared/validators/custom_v
 })
 export class CreateSellerComponent {
   private readonly fb = inject(FormBuilder);
+  private readonly sellerService=inject(SellerService)
+  private readonly snackbarService = inject(SnackbarService);
   getErrorMessages = getErrorMessages;
   validaciones=validaciones;
   hide1=true;
@@ -43,14 +48,44 @@ export class CreateSellerComponent {
   { validators: passwordMatchValidator })
 
   onCreateSeller(){
-    
+
+    const seller:User = {
+      username: this.sellerForm.value.email!,  
+      nombre: this.sellerForm.value.name!,
+      apellido: this.sellerForm.value.lastName!,
+      password: this.sellerForm.value.password!,
+      rol: 'VENDEDOR' as UserRole  
+    };
+     // Definimos el rol como 'seller'
+    this.sellerService.createSeller(seller).subscribe({
+      next: (response) => {   
+        if(response){          
+          this.snackbarService.success('Vendedor creado exitosamente', {
+            duration: 3000,
+            position: { horizontal: 'end', vertical: 'top' }
+          });
+          this.onCancelCreate()
+        } 
+        
+      },
+      error: (error) => {
+        this.snackbarService.error('Error al crear vendedor', {
+          duration: 5000
+        });
+      }
+    })
   }
   onCancelCreate(){
-    this.sellerForm.reset();
-    this.sellerForm.markAsPristine();
-    this.sellerForm.markAsUntouched();
-    this.hide1 = true;
-    this.hide2=true;
+    this.sellerForm.reset({}, { emitEvent: false });
+  
+    // Resetear estados y errores
+    Object.keys(this.sellerForm.controls).forEach(controlName => {
+      const control = this.sellerForm.get(controlName);
+      control?.setErrors(null);
+      control?.markAsPristine();
+      control?.markAsUntouched();
+    });
   }
 
 }
+

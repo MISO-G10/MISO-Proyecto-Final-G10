@@ -1,3 +1,23 @@
 
+
 html, body { height: 100%; }
 body { margin: 0;}
+
+
+.success-snackbar {
+    --mdc-snackbar-container-color: #4CAF50;
+    --mdc-snackbar-supporting-text-color: white;
+    --mat-mdc-snack-bar-button-color: white;
+  }
+  
+  .error-snackbar {
+    --mdc-snackbar-container-color: #F44336;
+    --mdc-snackbar-supporting-text-color: white;
+    --mat-mdc-snack-bar-button-color: white;
+  }
+  
+  .warning-snackbar {
+    --mdc-snackbar-container-color: #FFC107;
+    --mdc-snackbar-supporting-text-color: rgba(0, 0, 0, 0.87);
+    --mat-mdc-snack-bar-button-color: rgba(0, 0, 0, 0.6);
+  }
