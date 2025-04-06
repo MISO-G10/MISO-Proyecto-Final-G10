@@ -35,7 +35,7 @@
         <!-- Teléfono -->
         <mat-form-field appearance="outline" floatLabel="always">
           <mat-label>Teléfono</mat-label>
-          <input matInput formControlName="phone" placeholder="Ej: 0991234567">
+          <input matInput formControlName="phone" placeholder="Ej: +(57) 311 205-4567" appPhoneFormat>
           <mat-icon matPrefix>phone</mat-icon>
           <button *ngIf="fabricanteForm.get('phone')?.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearField('phone')">
             <mat-icon>close</mat-icon>

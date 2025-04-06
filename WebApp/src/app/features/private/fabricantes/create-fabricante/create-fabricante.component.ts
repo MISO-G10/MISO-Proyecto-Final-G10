@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { SnackbarService } from '../../../../shared/ui/snackbar.service';
 import { getErrorMessages } from '../../../../shared/validators/error-messages';
 import { Fabricante } from '../models/fabricante';
+import { PhoneFormatDirective } from '../../../../shared/directives/phone-format.directive';
 
 // Interfaces para tipar correctamente las validaciones
 interface ValidationMessage {
@@ -31,10 +32,11 @@ interface ValidationMessages {
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    PhoneFormatDirective
   ],
   templateUrl: './create-fabricante.component.html',
-  styleUrl: './create-fabricante.component.scss'
+  styleUrls: ['./create-fabricante.component.scss']
 })
 export class CreateFabricanteComponent {
   private readonly fb = inject(FormBuilder);
@@ -53,7 +55,8 @@ export class CreateFabricanteComponent {
       maxlength: 'El nombre no puede exceder 50 caracteres'
     },
     phone: {
-      maxlength: 'El número de teléfono no puede exceder 15 caracteres'
+      required: 'El número de teléfono es requerido',
+      pattern: 'El formato debe ser +(xx) xxx xxx-xxxx'
     }
   };
 
@@ -78,7 +81,10 @@ export class CreateFabricanteComponent {
   fabricanteForm = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(50)]],
     legalRepresentative: ['', [Validators.required, Validators.maxLength(50)]],
-    phone: ['', Validators.maxLength(15)]
+    phone: ['', [
+      Validators.required,
+      Validators.pattern(/^\+\(\d{2}\) \d{3} \d{3}-\d{4}$/), // Validar el formato +(xx) xxx xxx-xxxx con exactamente 2 dígitos para el indicativo
+    ]]
   });
 
   // Función para limpiar campos del formulario
