@@ -28,7 +28,7 @@ export class FabricantesTempComponent {
     private dialog = inject(MatDialog);
     private router = inject(Router);
 
-    displayedColumns: string[] = ['name', 'email', 'phone', 'address', 'products', 'actions'];
+    displayedColumns: string[] = ['name', 'email', 'phone', 'address', 'productos', 'actions'];
     fabricantes = signal<Fabricante[]>([
         { id: '1', name: 'Industrias XYZ', email: 'contacto@xyz.com', phone: '0991234567', address: 'Calle Principal 123' },
         { id: '2', name: 'Fabricantes ABC', email: 'info@abc.com', phone: '0987654321', address: 'Avenida Central 456' },
@@ -60,6 +60,6 @@ export class FabricantesTempComponent {
     }
 
     navigateToAddProduct(fabricanteId: string) {
-        this.router.navigate(['/private/add-product', fabricanteId]);
+        this.router.navigate(['/private/crear-producto', fabricanteId]);
     }
 }

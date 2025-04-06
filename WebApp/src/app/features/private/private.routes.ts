@@ -17,11 +17,11 @@ export const PRIVATE_ROUTES: Routes = [
         { path: 'fabricantes-temp', loadComponent: () => import('./fabricantes-temp/fabricantes-temp.component').then(m => m.FabricantesTempComponent),
           canActivate: [RoleGuard],
           data: { roles: ['ADMINISTRADOR'] }
-        },/*
-        { path: 'add-product/:manufacturerId', loadComponent: () => import('./products/add-product/add-product.component').then(m => m.AddProductComponent),
+        },
+        { path: 'crear-producto/:manufacturerId', loadComponent: () => import('./productos/crear-producto/crear-producto.component').then(m => m.CrearProductoComponent),
           canActivate: [RoleGuard],
           data: { roles: ['ADMINISTRADOR'] }
-        },*/
+        },
         { path: '', redirectTo: 'home', pathMatch: 'full' },
          
       ]

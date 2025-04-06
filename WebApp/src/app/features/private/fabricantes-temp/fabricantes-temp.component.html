@@ -45,8 +45,8 @@
           <td mat-cell *matCellDef="let fabricante">{{ fabricante.address }}</td>
         </ng-container>
   
-        <!-- Products Column -->
-        <ng-container matColumnDef="products">
+        <!-- Productos Column -->
+        <ng-container matColumnDef="productos">
           <th mat-header-cell *matHeaderCellDef>Productos</th>
           <td mat-cell *matCellDef="let fabricante">
             <button mat-raised-button color="accent" (click)="navigateToAddProduct(fabricante.id)">
