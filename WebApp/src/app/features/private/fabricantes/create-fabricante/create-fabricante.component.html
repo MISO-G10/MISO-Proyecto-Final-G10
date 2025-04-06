@@ -1,0 +1,49 @@
+<div class="fabricante-container">
+  <mat-card class="fabricante-card">
+    <mat-card-header>
+      <mat-card-title class="fabricante-title">Registro de Fabricante</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="fabricanteForm" (ngSubmit)="onCreateFabricante()" class="fabricante-form">
+        <!-- Nombre -->
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" placeholder="Ej: Industrias XYZ">
+          <mat-icon matPrefix>business</mat-icon>
+          <mat-error class="error-message" *ngFor="let message of getErrorMessages(fabricanteForm.get('name'), validaciones['name'])">
+            {{ message }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Representante Legal -->
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Representante Legal</mat-label>
+          <input matInput formControlName="legalRepresentative" placeholder="Ej: Juan Pérez">
+          <mat-icon matPrefix>person</mat-icon>
+          <mat-error class="error-message" *ngFor="let message of getErrorMessages(fabricanteForm.get('legalRepresentative'), validaciones['legalRepresentative'])">
+            {{ message }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Teléfono -->
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="phone" placeholder="Ej: 0991234567">
+          <mat-icon matPrefix>phone</mat-icon>
+          <mat-error class="error-message" *ngFor="let message of getErrorMessages(fabricanteForm.get('phone'), validaciones['phone'])">
+            {{ message }}
+          </mat-error>
+        </mat-form-field>
+
+
+          <button mat-stroked-button type="button" (click)="onCancelCreate()" class="cancel-button">
+            Cancelar
+          </button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="fabricanteForm.invalid" class="submit-button">
+            Registrar Fabricante
+          </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

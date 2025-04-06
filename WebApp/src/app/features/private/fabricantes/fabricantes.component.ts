@@ -11,7 +11,7 @@ import { Fabricante } from './models/fabricante';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-fabricantes-temp',
+    selector: 'app-fabricantes',
     imports: [
         CommonModule,
         MatTableModule,
@@ -21,18 +21,18 @@ import { Router } from '@angular/router';
         MatTooltipModule,
         FormsModule
     ],
-    templateUrl: './fabricantes-temp.component.html',
-    styleUrl: './fabricantes-temp.component.scss'
+    templateUrl: './fabricantes.component.html',
+    styleUrl: './fabricantes.component.scss'
 })
-export class FabricantesTempComponent {
+export class FabricantesComponent {
     private dialog = inject(MatDialog);
     private router = inject(Router);
 
-    displayedColumns: string[] = ['name', 'email', 'phone', 'address', 'products', 'actions'];
+    displayedColumns: string[] = ['name', 'phone', 'legalRepresentative', 'products', 'actions'];
     fabricantes = signal<Fabricante[]>([
-        { id: '1', name: 'Industrias XYZ', email: 'contacto@xyz.com', phone: '0991234567', address: 'Calle Principal 123' },
-        { id: '2', name: 'Fabricantes ABC', email: 'info@abc.com', phone: '0987654321', address: 'Avenida Central 456' },
-        { id: '3', name: 'Manufacturas DEF', email: 'ventas@def.com', phone: '0976543210', address: 'Boulevard Norte 789' },
+        { id: '1', name: 'Industrias XYZ', phone: '0991234567', legalRepresentative: 'Juan Perez' },
+        { id: '2', name: 'Fabricantes ABC', phone: '0987654321', legalRepresentative: 'Andres Garcia' },
+        { id: '3', name: 'Manufacturas DEF', phone: '0976543210', legalRepresentative: 'Pedro Ramirez' },
     ]);
 
     searchTerm = '';
@@ -48,18 +48,21 @@ export class FabricantesTempComponent {
             this.filteredFabricantes.set(this.fabricantes());
             return;
         }
-        
+
         this.filteredFabricantes.set(
-            this.fabricantes().filter(fabricante => 
+            this.fabricantes().filter(fabricante =>
                 fabricante.name.toLowerCase().includes(term) ||
-                fabricante.email.toLowerCase().includes(term) ||
                 fabricante.phone.includes(term) ||
-                fabricante.address.toLowerCase().includes(term)
+                fabricante.legalRepresentative.toLowerCase().includes(term)
             )
         );
     }
 
     navigateToAddProduct(fabricanteId: string) {
         this.router.navigate(['/private/add-product', fabricanteId]);
+    }
+
+    navigateToCreateFabricante() {
+        this.router.navigate(['/private/fabricantes/create']);
     }
 }
