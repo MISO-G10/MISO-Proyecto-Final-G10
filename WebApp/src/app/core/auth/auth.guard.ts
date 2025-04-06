@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
       this.snackBar.open('Debes iniciar sesión para acceder a esta página', 'Cerrar', { duration: 3000 });
       return this.router.createUrlTree(['/login']);
     }
-    
+
     return true;
   }
 }

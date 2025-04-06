@@ -1,0 +1,93 @@
+/* Component Styles */
+.create-sales-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.create-sales-container h1 {
+  text-align: center;
+}
+
+.create-sales-form {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+//button[mat-raised-button] {
+//  margin-top: 8px;
+//  padding: 8px;
+//  font-size: 16px;
+//  background-color: #4B5FA3;
+//}
+//
+//.cancel-button {
+//  width: 100%;
+//  text-align: center;
+//  margin-top: 16px;
+//  color: rgba(0, 0, 0, 0.87);
+//}
+//
+//.error-message {
+//  font-size: 12px;
+//}
+//
+///* Fix for clear button overlapping with datepicker toggle */
+//.clear-date-button {
+//  margin-right: 40px !important;
+//}
+//
+///* Sellers container styling */
+//.sellers-container {
+//  display: flex;
+//  flex-wrap: wrap;
+//  gap: 8px;
+//  margin-top: 8px;
+//  margin-bottom: 8px;
+//}
+//
+//.seller-chip {
+//  display: flex;
+//  align-items: center;
+//  background-color: #e0e0e0;
+//  padding: 4px 8px;
+//  border-radius: 16px;
+//  font-size: 14px;
+//}
+//
+//.seller-chip button {
+//  height: 20px;
+//  width: 20px;
+//  line-height: 20px;
+//  margin-left: 4px;
+//}
+//
+//.seller-chip mat-icon {
+//  font-size: 16px;
+//  height: 16px;
+//  width: 16px;
+//  line-height: 16px;
+//}
+//
+///* Override Material styles to match the design */
+//::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+//  color: #4B5FA3 !important;
+//}
+//
+//::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+//  color: #4B5FA3 !important;
+//}
+//
+//::ng-deep .mat-form-field-appearance-outline .mat-form-field-label {
+//  color: #4B5FA3 !important;
+//  margin-top: -7px;
+//}
+//
+//::ng-deep .mat-form-field-label {
+//  font-size: 14px !important;
+//}

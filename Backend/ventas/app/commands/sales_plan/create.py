@@ -27,19 +27,15 @@ class CreateSalesPlanCommand(BaseCommand):
         seller_ids = self.data.get('seller_ids', [])
 
         for seller_id in seller_ids:
-            seller = db.session.execute(
-                db.select(SalesPlanSeller).where(SalesPlanSeller.seller_id == seller_id)
-            ).scalar_one_or_none()
+            # TODO: retrieve users
+            # In a real implementation, make an authenticated API call to users microservice
+            seller = SalesPlanSeller(
+                nombre=f"Vendedor {seller_id}",  # This would come from the users microservice
+                seller_id=seller_id
+            )
+            db.session.add(seller)
 
-            if not seller:
-                # In a real implementation, make an authenticated API call to users microservice
-                seller = SalesPlanSeller(
-                    nombre=f"Seller {seller_id}",  # This would come from the users microservice
-                    seller_id=seller_id
-                )
-                db.session.add(seller)
-
-            sales_plan.sellers.append(seller)
+        sales_plan.sellers.append(seller)
 
         db.session.add(sales_plan)
         db.session.commit()
