@@ -9,8 +9,8 @@ import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../../../../shared/ui/snackbar.service';
 import { getErrorMessages } from '../../../../shared/validators/error-messages';
-import { Fabricante } from '../models/fabricante';
 import { PhoneFormatDirective } from '../../../../shared/directives/phone-format.directive';
+import { FabricantesService } from '../fabricantes.service';
 
 // Interfaces para tipar correctamente las validaciones
 interface ValidationMessage {
@@ -42,6 +42,7 @@ export class CreateFabricanteComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly snackbarService = inject(SnackbarService);
+  private readonly fabricantesService = inject(FabricantesService);
   getErrorMessages = getErrorMessages;
 
   // Validaciones para los mensajes de error
@@ -97,21 +98,21 @@ export class CreateFabricanteComponent {
       return;
     }
 
-    const fabricante: Fabricante = {
-      id: '', // ID será generado por el backend
-      name: this.fabricanteForm.value.name!,
-      phone: this.fabricanteForm.value.phone || '',
-      legalRepresentative: this.fabricanteForm.value.legalRepresentative!
+    // Extraer solo los dígitos del número de teléfono
+    const phoneDigits = this.fabricanteForm.value.phone?.replace(/\D/g, '') || '';
+
+    // Crear el objeto fabricante con el formato esperado por el servicio
+    const fabricanteData = {
+      nombre: this.fabricanteForm.value.name!,
+      numeroTel: phoneDigits,
+      representante: this.fabricanteForm.value.legalRepresentative!
     };
 
-    // Aquí se implementaría la llamada al servicio para crear el fabricante
-    setTimeout(() => {
-      this.snackbarService.success('Fabricante creado exitosamente', {
-        duration: 3000,
-        position: { horizontal: 'end', vertical: 'top' }
-      });
-      this.router.navigate(['/private/fabricantes']);
-    }, 1000);
+    // Llamar al servicio para crear el fabricante
+    this.fabricantesService.createFabricante(fabricanteData);
+
+    // Navegar de vuelta a la lista de fabricantes
+    this.router.navigate(['/private/fabricantes']);
   }
 
   onCancelCreate() {

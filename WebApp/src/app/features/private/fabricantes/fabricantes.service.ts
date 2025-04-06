@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { Fabricante } from './models/fabricante';
 import { SnackbarService } from '../../../shared/ui/snackbar.service';
 
