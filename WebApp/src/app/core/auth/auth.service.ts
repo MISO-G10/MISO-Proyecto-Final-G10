@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { User } from '../../features/auth/login/models/user';
-
+import { environment } from '../../../environment/environment';
+import { SnackbarService } from '../../shared/ui/snackbar.service';
 interface AuthResponse {
   expireAt: string;
   id: string;
@@ -16,7 +17,8 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
-  private readonly apiUrl = 'http://localhost:3000/usuarios';
+  private readonly apiUrl = environment.apiUrl+'/usuarios';
+  private readonly snackbarService = inject(SnackbarService);
 
   login(username: string, password: string) {
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth`, { username, password })
@@ -35,12 +37,19 @@ export class AuthService {
       next: (response) => {
         if (response) {
           localStorage.setItem('user', JSON.stringify(response));
-          this.snackBar.open('Bienvenido', 'Cerrar', { duration: 3000 });
+          this.snackbarService.success('Bienvenido', {
+            duration: 5000,
+            position: { horizontal: 'center', vertical: 'bottom' }
+          });
+          
           this.router.navigate(['private/home']);
         }
       },
-      error: (error) => {
-        this.snackBar.open(error, 'Cerrar', { duration: 3000 });
+      error: (error) => {        
+        this.snackbarService.error(error, {
+          duration: 5000,
+          position: { horizontal: 'center', vertical: 'bottom' }
+        });
       }
     })
   }
@@ -51,8 +60,12 @@ export class AuthService {
 
   logout(): void {
     localStorage.clear();
-    this.router.navigate(['/login']);
-    this.snackBar.open('Sesión cerrada', 'Cerrar', { duration: 3000 });
+    this.router.navigate(['/login']);   
+
+    this.snackbarService.warning('Sesión cerrada', {
+      duration: 5000,
+      position: { horizontal: 'center', vertical: 'bottom' }
+    });
   }
 
   getToken(): string | null {

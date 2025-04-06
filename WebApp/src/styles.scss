@@ -1,3 +1,37 @@
 
-html, body { height: 100%; }
-body { margin: 0;}
+@use '@angular/material';
+@use './theming/_theme-colors' as my-theme;
+
+html {
+  // Apply the dark theme by default
+  color-scheme: light dark;
+  @include material.theme((
+    color: (
+      primary: my-theme.$primary-palette,
+      tertiary: my-theme.$tertiary-palette,
+      
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+
+  // Use high contrast dark theme colors when users prefer contrast
+  @media (prefers-contrast: more) {
+    @include my-theme.high-contrast-overrides(color-scheme);
+  }
+}
+
+.success-snackbar {
+  --mdc-snackbar-container-color: var(--mat-sys-primary);  
+  --mat-mdc-snack-bar-button-color: var(--mat-sys-on-primary);
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: var(--mat-sys-error);  
+  --mat-mdc-snack-bar-button-color: var(--mat-sys-on-error);
+}
+
+.warning-snackbar {
+  --mdc-snackbar-container-color: var(--mat-sys-warning);  
+  --mat-mdc-snack-bar-button-color: var(--mat-sys-on-warning);
+}
