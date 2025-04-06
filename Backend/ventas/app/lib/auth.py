@@ -53,10 +53,11 @@ def director_required(f):
 
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        allowed_roles = ['ADMINISTRADOR', 'DIRECTOR_VENTAS']
         if not hasattr(request, 'user'):
             return jsonify({'message': 'Authentication required'}), 401
 
-        if request.user.get('rol') != 'DIRECTOR_VENTAS':
+        if request.user.get('rol') not in allowed_roles:
             return jsonify({'message': 'Permission denied. Director role required'}), 403
 
         return f(*args, **kwargs)
