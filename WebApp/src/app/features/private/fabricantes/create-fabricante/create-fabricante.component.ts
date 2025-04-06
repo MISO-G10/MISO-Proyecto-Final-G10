@@ -99,7 +99,6 @@ export class CreateFabricanteComponent {
     };
 
     // Aquí se implementaría la llamada al servicio para crear el fabricante
-    // Por ahora simularemos una respuesta exitosa
     setTimeout(() => {
       this.snackbarService.success('Fabricante creado exitosamente', {
         duration: 3000,

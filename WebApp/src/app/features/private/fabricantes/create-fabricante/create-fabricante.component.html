@@ -11,6 +11,9 @@
           <mat-label>Nombre</mat-label>
           <input matInput formControlName="name" placeholder="Ej: Industrias XYZ">
           <mat-icon matPrefix>business</mat-icon>
+          <button *ngIf="fabricanteForm.get('name')?.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearField('name')">
+            <mat-icon>close</mat-icon>
+          </button>
           <mat-error class="error-message" *ngFor="let message of getErrorMessages(fabricanteForm.get('name'), getValidationErrors(fabricanteForm.get('name'), 'name'))">
             {{ message }}
           </mat-error>
@@ -21,6 +24,9 @@
           <mat-label>Representante Legal</mat-label>
           <input matInput formControlName="legalRepresentative" placeholder="Ej: Juan Pérez">
           <mat-icon matPrefix>person</mat-icon>
+          <button *ngIf="fabricanteForm.get('legalRepresentative')?.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearField('legalRepresentative')">
+            <mat-icon>clear</mat-icon>
+          </button>
           <mat-error class="error-message" *ngFor="let message of getErrorMessages(fabricanteForm.get('legalRepresentative'), getValidationErrors(fabricanteForm.get('legalRepresentative'), 'legalRepresentative'))">
             {{ message }}
           </mat-error>
@@ -31,6 +37,9 @@
           <mat-label>Teléfono</mat-label>
           <input matInput formControlName="phone" placeholder="Ej: 0991234567">
           <mat-icon matPrefix>phone</mat-icon>
+          <button *ngIf="fabricanteForm.get('phone')?.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearField('phone')">
+            <mat-icon>close</mat-icon>
+          </button>
           <mat-error class="error-message" *ngFor="let message of getErrorMessages(fabricanteForm.get('phone'), getValidationErrors(fabricanteForm.get('phone'), 'phone'))">
             {{ message }}
           </mat-error>

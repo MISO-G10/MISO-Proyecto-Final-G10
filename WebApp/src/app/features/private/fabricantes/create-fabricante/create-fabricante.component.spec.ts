@@ -46,38 +46,33 @@ describe('CreateFabricanteComponent', () => {
 
   it('should initialize the form with empty fields', () => {
     expect(component.fabricanteForm.get('name')?.value).toBe('');
-    expect(component.fabricanteForm.get('email')?.value).toBe('');
     expect(component.fabricanteForm.get('legalRepresentative')?.value).toBe('');
-    expect(component.fabricanteForm.get('address')?.value).toBe('');
     expect(component.fabricanteForm.get('phone')?.value).toBe('');
   });
 
   it('should validate required fields', () => {
     const nameControl = component.fabricanteForm.get('name');
-    const emailControl = component.fabricanteForm.get('email');
     const legalRepControl = component.fabricanteForm.get('legalRepresentative');
-    const addressControl = component.fabricanteForm.get('address');
-    
+    const phoneControl = component.fabricanteForm.get('phone');
+
     nameControl?.setValue('');
-    emailControl?.setValue('');
     legalRepControl?.setValue('');
-    addressControl?.setValue('');
-    
+    phoneControl?.setValue('');
+
     expect(nameControl?.valid).toBeFalsy();
-    expect(emailControl?.valid).toBeFalsy();
     expect(legalRepControl?.valid).toBeFalsy();
-    expect(addressControl?.valid).toBeFalsy();
+    expect(phoneControl?.valid).toBeFalsy();
     expect(component.fabricanteForm.valid).toBeFalsy();
   });
 
-  it('should validate email format', () => {
-    const emailControl = component.fabricanteForm.get('email');
-    
-    emailControl?.setValue('invalid-email');
-    expect(emailControl?.valid).toBeFalsy();
-    
-    emailControl?.setValue('valid@email.com');
-    expect(emailControl?.valid).toBeTruthy();
+  it('should validate phone format', () => {
+    const phoneControl = component.fabricanteForm.get('phone');
+
+    phoneControl?.setValue('invalid-phone');
+    expect(phoneControl?.valid).toBeFalsy();
+
+    phoneControl?.setValue('valid-phone');
+    expect(phoneControl?.valid).toBeTruthy();
   });
 
   it('should navigate to fabricantes page on cancel', () => {
