@@ -42,7 +42,7 @@ export class LoginComponent {
                 ],
         password: ['', [Validators.required]]
     });
-      
+
 
       onLogin() {
         if (this.loginForm.valid) {
@@ -50,6 +50,6 @@ export class LoginComponent {
             this.authService.login(email!, password!);
           }
       }
-    
+
 
 }

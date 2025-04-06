@@ -1,0 +1,136 @@
+<div class="create-sales-container">
+  <h1>Crear Plan</h1>
+
+  <div class="content">
+    <form class="create-sales-form" [formGroup]="createForm" (ngSubmit)="onCreate()">
+      <!-- Nombre plan -->
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre plan</mat-label>
+        <input matInput formControlName="nombre" required>
+        <button mat-icon-button matSuffix type="button"
+                *ngIf="createForm.get('nombre')?.value"
+                (click)="createForm.get('nombre')?.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error class="error-message"
+                   *ngFor="let message of getErrorMessages(createForm.get('nombre'), validaciones['nombre'])">
+          {{ message }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Buscar vendedor</mat-label>
+        <input type="text" matInput formControlName="vendorSearch"
+               [matAutocomplete]="auto" placeholder="Buscar vendedor">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let vendor of filteredVendors | async"
+                      [value]="vendor.nombre"
+                      (onSelectionChange)="addSeller(vendor)"
+                      [disabled]="isVendorSelected(vendor.id)">
+            {{ vendor.nombre }}
+          </mat-option>
+        </mat-autocomplete>
+        <button mat-icon-button matSuffix type="button"
+                *ngIf="createForm.get('vendorSearch')?.value"
+                (click)="createForm.get('vendorSearch')?.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+
+        <!-- List of selected sellers -->
+        <div *ngIf="sellerIds.length > 0" class="sellers-container">
+          <div *ngFor="let sellerId of sellerIds.controls; let i = index" class="seller-chip">
+            {{ getVendorName(sellerId.value) }}
+            <button mat-icon-button type="button" (click)="removeSeller(i)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <mat-error class="error-message"
+                   *ngFor="let message of getErrorMessages(createForm.get('seller_ids'), validaciones['seller_ids'])">
+          {{ message }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Fecha inicio -->
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha inicio</mat-label>
+        <input matInput [matDatepicker]="startPicker" formControlName="fecha_inicio" required
+               (dateChange)="onDateChange($event, 'fecha_inicio')">
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+        <button mat-icon-button matSuffix type="button"
+                *ngIf="createForm.get('fecha_inicio')?.value"
+                (click)="createForm.get('fecha_inicio')?.setValue('')"
+                class="clear-date-button">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error class="error-message"
+                   *ngFor="let message of getErrorMessages(createForm.get('fecha_inicio'), validaciones['fecha_inicio'])">
+          {{ message }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Fecha final -->
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha final</mat-label>
+        <input matInput [matDatepicker]="endPicker" formControlName="fecha_fin" required
+               (dateChange)="onDateChange($event, 'fecha_fin')">
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+        <button mat-icon-button matSuffix type="button"
+                *ngIf="createForm.get('fecha_fin')?.value"
+                (click)="createForm.get('fecha_fin')?.setValue('')"
+                class="clear-date-button">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error class="error-message"
+                   *ngFor="let message of getErrorMessages(createForm.get('fecha_fin'), validaciones['fecha_fin'])">
+          {{ message }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Descripcion -->
+      <mat-form-field appearance="outline">
+        <mat-label>Descripcion</mat-label>
+        <input matInput formControlName="descripcion" required>
+        <button mat-icon-button matSuffix type="button"
+                *ngIf="createForm.get('descripcion')?.value"
+                (click)="createForm.get('descripcion')?.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error class="error-message"
+                   *ngFor="let message of getErrorMessages(createForm.get('descripcion'), validaciones['descripcion'])">
+          {{ message }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Valor Objetivo -->
+      <mat-form-field appearance="outline">
+        <mat-label>Objetivo</mat-label>
+        <input matInput formControlName="valor_objetivo" required>
+        <button mat-icon-button matSuffix type="button"
+                *ngIf="createForm.get('valor_objetivo')?.value"
+                (click)="createForm.get('valor_objetivo')?.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error class="error-message"
+                   *ngFor="let message of getErrorMessages(createForm.get('valor_objetivo'), validaciones['valor_objetivo'])">
+          {{ message }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Botón Submit -->
+      <button mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="!createForm.valid">
+        Registrar plan
+      </button>
+
+      <a mat-button class="cancel-button" (click)="onCancel()">
+        Cancelar
+      </a>
+    </form>
+  </div>
+</div>
