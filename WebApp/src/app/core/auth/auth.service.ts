@@ -9,7 +9,7 @@ interface AuthResponse {
   expireAt: string;
   id: string;
   token: string;
-  message:string;
+  message: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -23,16 +23,16 @@ export class AuthService {
   login(username: string, password: string) {
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth`, { username, password })
       .subscribe({
-        next: (response) => {        
+        next: (response) => {
           if (response.token) {
             localStorage.setItem('auth', response.token);
             this.getUser();
           }
         }
-        
       });
   }
-  getUser(){
+
+  getUser() {
     return this.http.get<User>(`${this.apiUrl}/me`).subscribe({
       next: (response) => {
         if (response) {
@@ -41,18 +41,19 @@ export class AuthService {
             duration: 5000,
             position: { horizontal: 'center', vertical: 'bottom' }
           });
-          
+
           this.router.navigate(['private/home']);
         }
       },
-      error: (error) => {        
+      error: (error) => {
         this.snackbarService.error(error, {
           duration: 5000,
           position: { horizontal: 'center', vertical: 'bottom' }
         });
       }
-    })
+    });
   }
+
   //Hay que mejorar esta funcion, ya que yo podria sencillamente cambiar el token en el localstorage y acceder a la aplicacion sin tener que logearme, se debe llamar al servicio /me
   isAuthenticated(): boolean {
     return !!localStorage.getItem('auth');
@@ -60,7 +61,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.clear();
-    this.router.navigate(['/login']);   
+    this.router.navigate(['/login']);
 
     this.snackbarService.warning('Sesión cerrada', {
       duration: 5000,
