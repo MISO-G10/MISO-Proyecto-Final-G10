@@ -59,7 +59,7 @@ def seed_all_users():
     
     # Create admin user
     admin_id = create_test_user(
-        "admin", 
+        "admin@gmail.com", 
         "admin123", 
         "Administrador", 
         "Sistema", 
@@ -68,7 +68,7 @@ def seed_all_users():
     
     # Create tendero user
     tendero_id = create_test_user(
-        "tendero", 
+        "tendero@gmail.com", 
         "tendero123", 
         "Tendero", 
         "Prueba", 
@@ -77,7 +77,7 @@ def seed_all_users():
     
     # Create vendedor user
     vendedor_id = create_test_user(
-        "vendedor", 
+        "vendedor@gmail.com", 
         "vendedor123", 
         "Vendedor", 
         "Prueba", 
@@ -86,7 +86,7 @@ def seed_all_users():
     
     # Create logistica user
     logistica_id = create_test_user(
-        "logistica", 
+        "logistica@gmail.com", 
         "logistica123", 
         "Logistica", 
         "Prueba", 
@@ -95,7 +95,7 @@ def seed_all_users():
     
     # Create director ventas user
     director_ventas_id = create_test_user(
-        "directorventas", 
+        "directorventas@gmail.com", 
         "directorventas123", 
         "Director", 
         "Ventas", 
