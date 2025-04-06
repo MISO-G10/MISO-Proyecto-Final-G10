@@ -9,7 +9,6 @@ import { SnackbarService } from '../../../shared/ui/snackbar.service';
 })
 export class SalesService {
   private readonly http = inject(HttpClient);
-  private readonly router = inject(Router);
   private readonly snackbarService = inject(SnackbarService);
   private readonly apiUrl = 'http://localhost:3002';
 
@@ -30,20 +29,22 @@ export class SalesService {
       }
     }).subscribe({
       next: (response) => {
-        console.log({ response });
         this.snackbarService.success('Plan de ventas creado', {
           duration: 5000,
           position: { horizontal: 'center', vertical: 'bottom' }
         });
-
-        this.router.navigate(['private/sales']);
       },
       error: (error) => {
-        console.log({ error });
-        this.snackbarService.error('Error al crear el plan de ventas', {
-          duration: 5000,
-          position: { horizontal: 'center', vertical: 'bottom' }
-        });
+        const err = error.error;
+
+        for (const key in err) {
+          const errCtx = err[key];
+
+          this.snackbarService.error(errCtx.ctx.error, {
+            duration: 5000,
+            position: { horizontal: 'center', vertical: 'bottom' }
+          });
+        }
       }
     });
   }

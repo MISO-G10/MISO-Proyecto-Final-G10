@@ -185,6 +185,8 @@ export class CreateComponent {
         fecha_fin: formattedFechaFin!,
         seller_ids: this.createForm.value.seller_ids as string[]
       });
+
+      this.router.navigate(['private/sales']);
     } else {
       Object.keys(this.createForm.controls).forEach(key => {
         const control = this.createForm.get(key);
