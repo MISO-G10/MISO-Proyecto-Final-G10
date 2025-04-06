@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +10,17 @@ import { Router } from '@angular/router';
 import { SnackbarService } from '../../../../shared/ui/snackbar.service';
 import { getErrorMessages } from '../../../../shared/validators/error-messages';
 import { Fabricante } from '../models/fabricante';
+
+// Interfaces para tipar correctamente las validaciones
+interface ValidationMessage {
+  [key: string]: string;
+}
+
+interface ValidationMessages {
+  name: ValidationMessage;
+  legalRepresentative: ValidationMessage;
+  phone: ValidationMessage;
+}
 
 @Component({
   selector: 'app-create-fabricante',
@@ -32,7 +43,7 @@ export class CreateFabricanteComponent {
   getErrorMessages = getErrorMessages;
 
   // Validaciones para los mensajes de error
-  validaciones = {
+  validaciones: ValidationMessages = {
     name: {
       required: 'El nombre es requerido',
       maxlength: 'El nombre no puede exceder 50 caracteres'
@@ -45,6 +56,24 @@ export class CreateFabricanteComponent {
       maxlength: 'El número de teléfono no puede exceder 15 caracteres'
     }
   };
+
+  // Convertir las validaciones a formato compatible con getErrorMessages
+  getValidationErrors(control: AbstractControl | null, fieldName: 'name' | 'legalRepresentative' | 'phone'): { type: string, message: string }[] {
+    if (!control || !this.validaciones[fieldName]) return [];
+
+    const fieldValidations = this.validaciones[fieldName];
+    const validationArray: { type: string, message: string }[] = [];
+
+    // Convertir objeto de validaciones a array de objetos {type, message}
+    for (const errorType in fieldValidations) {
+      validationArray.push({
+        type: errorType,
+        message: fieldValidations[errorType]
+      });
+    }
+
+    return validationArray;
+  }
 
   fabricanteForm = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(50)]],

@@ -11,7 +11,7 @@
           <mat-label>Nombre</mat-label>
           <input matInput formControlName="name" placeholder="Ej: Industrias XYZ">
           <mat-icon matPrefix>business</mat-icon>
-          <mat-error class="error-message" *ngFor="let message of getErrorMessages(fabricanteForm.get('name'), validaciones['name'])">
+          <mat-error class="error-message" *ngFor="let message of getErrorMessages(fabricanteForm.get('name'), getValidationErrors(fabricanteForm.get('name'), 'name'))">
             {{ message }}
           </mat-error>
         </mat-form-field>
@@ -21,7 +21,7 @@
           <mat-label>Representante Legal</mat-label>
           <input matInput formControlName="legalRepresentative" placeholder="Ej: Juan Pérez">
           <mat-icon matPrefix>person</mat-icon>
-          <mat-error class="error-message" *ngFor="let message of getErrorMessages(fabricanteForm.get('legalRepresentative'), validaciones['legalRepresentative'])">
+          <mat-error class="error-message" *ngFor="let message of getErrorMessages(fabricanteForm.get('legalRepresentative'), getValidationErrors(fabricanteForm.get('legalRepresentative'), 'legalRepresentative'))">
             {{ message }}
           </mat-error>
         </mat-form-field>
@@ -31,17 +31,17 @@
           <mat-label>Teléfono</mat-label>
           <input matInput formControlName="phone" placeholder="Ej: 0991234567">
           <mat-icon matPrefix>phone</mat-icon>
-          <mat-error class="error-message" *ngFor="let message of getErrorMessages(fabricanteForm.get('phone'), validaciones['phone'])">
+          <mat-error class="error-message" *ngFor="let message of getErrorMessages(fabricanteForm.get('phone'), getValidationErrors(fabricanteForm.get('phone'), 'phone'))">
             {{ message }}
           </mat-error>
         </mat-form-field>
 
+          <button mat-flat-button color="primary" type="submit" [disabled]="fabricanteForm.invalid" class="submit-button">
+            Registrar Fabricante
+          </button>
 
           <button mat-stroked-button type="button" (click)="onCancelCreate()" class="cancel-button">
             Cancelar
-          </button>
-          <button mat-flat-button color="primary" type="submit" [disabled]="fabricanteForm.invalid" class="submit-button">
-            Registrar Fabricante
           </button>
       </form>
     </mat-card-content>
