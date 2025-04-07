@@ -96,11 +96,7 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <div class="form-row two-columns">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Imagen</mat-label>
-            <input matInput formControlName="imagen" placeholder="Ingrese la imagen del producto">
-          </mat-form-field>          
+        <div class="form-row two-columns">        
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Reglas tributarias</mat-label>
             <textarea matInput formControlName="reglasTributarias" placeholder="Ingrese las reglas tributarias del producto" rows="4"></textarea>
@@ -111,11 +107,11 @@
         </div>     
         <div class="form-actions">
           <button type="button" mat-stroked-button color="warn" (click)="goBack()">
-            <mat-icon>arrow_back</mat-icon>
+
             Cancelar
           </button>
           <button type="submit" mat-raised-button color="primary" [disabled]="productoForm.invalid">
-            <mat-icon>save</mat-icon>
+            
             Guardar producto
           </button>
         </div>

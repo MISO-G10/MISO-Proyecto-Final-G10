@@ -1,11 +1,13 @@
 export const  validaciones = {
     nombre: [
       { type: 'required', message: 'El nombre es requerido' },
-      { type: 'maxlength', message: 'Máximo 50 caracteres' }
+      { type: 'maxlength', message: 'Máximo 50 caracteres' },
+      { type: 'minlength', message: 'Mínimo 3 caracteres' }
     ],
     descripcion: [
       { type: 'required', message: 'La descripción es requerida' },
-      { type: 'maxlength', message: 'Máximo 50 caracteres' }
+      { type: 'maxlength', message: 'Máximo 50 caracteres' },
+      { type: 'minlength', message: 'Mínimo 5 caracteres' }
     ],
     perecedero: [
       { type: 'required', message: 'Indique si el producto es perecedero' }
@@ -15,7 +17,8 @@ export const  validaciones = {
       { type: 'fechaInvalida', message: 'La fecha debe ser posterior a hoy' }
     ],
     valorUnidad: [
-      { type: 'required', message: 'El valor unitario es requerido' }
+      { type: 'required', message: 'El valor unitario es requerido' },
+      { type: 'min', message: 'El valor debe ser mayor a 0' }
     ],
     tiempoEntrega: [
       { type: 'required', message: 'El tiempo de entrega es requerido' }

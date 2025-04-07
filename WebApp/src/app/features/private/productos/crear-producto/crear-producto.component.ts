@@ -16,6 +16,7 @@ import { Producto, Categoria } from '../models/producto';
 import { getErrorMessages } from '../../../../shared/validators/error-messages';
 import { validaciones } from '../../../../shared/validators/error_validators/producto-validator';
 import localeEs from '@angular/common/locales/es';
+import { ProductoService } from '../../../../core/services/productos.services';
 
 // Registrar el locale español
 registerLocaleData(localeEs);
@@ -62,10 +63,11 @@ export class CrearProductoComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private productoService = inject(ProductoService);
   getErrorMessages = getErrorMessages;
   validaciones=validaciones;
   productoForm!: FormGroup;
-  fabricanteId: string = '';
+  fabricanteId!: string;
   
   // Exponer el enum Categoria para usar en la plantilla
   Categoria = Categoria;
@@ -90,10 +92,11 @@ export class CrearProductoComponent implements OnInit {
 
   ngOnInit(): void {
     this.fabricanteId = this.route.snapshot.paramMap.get('fabricanteId') || '';
+    console.log('Fabricante ID recibido:', this.fabricanteId);
     
     if (!this.fabricanteId) {
       this.showError('ID de fabricante no válido');
-      this.router.navigate(['/private/fabricantes-temp']);
+      this.router.navigate(['/private/fabricantes']);
       return;
     }
 
@@ -104,7 +107,7 @@ export class CrearProductoComponent implements OnInit {
   private initForm(): void {
     this.productoForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
-      descripcion: ['', [Validators.required, Validators.minLength(10)]],
+      descripcion: ['', [Validators.required, Validators.minLength(5)]],
       valorUnidad: [0, [Validators.required, Validators.min(0.01)]],
       perecedero: [false, [Validators.required]],
       fechaVencimiento: [{value: new Date(), disabled: true}, [Validators.required, this.fechaPosteriorValidator()]],
@@ -113,8 +116,7 @@ export class CrearProductoComponent implements OnInit {
       condicionAlmacenamiento: ['', [Validators.required]],
       categoria: ['', [Validators.required]],
       reglasComerciales: ['', [Validators.required]],
-      reglasTributarias: ['', [Validators.required]],
-      imagen: ['', [Validators.required]]
+      reglasTributarias: ['', [Validators.required]]
     });
   }
 
@@ -146,15 +148,24 @@ export class CrearProductoComponent implements OnInit {
       fabricanteId: this.fabricanteId
     };
 
-    // Aquí iría la lógica para guardar el producto
-    console.log('Producto a guardar:', producto);
-    
-    this.showSuccess('Producto registrado con éxito');
-    this.router.navigate(['/private/fabricantes-temp']);
+    console.log('Enviando producto con fabricanteId:', this.fabricanteId);
+    console.log('Datos del producto a enviar:', producto);
+
+    this.productoService.crearProducto(producto).subscribe({
+      next: (response) => {
+        console.log('Producto creado:', response);
+        this.showSuccess('Producto registrado con éxito');
+        this.router.navigate(['/private/fabricantes']);
+      },
+      error: (error) => {
+        console.error('Error al crear producto:', error);
+        this.showError('Error al crear el producto: ' + (error.error?.message || error.message || 'Error desconocido'));
+      }
+    });
   }
 
   goBack(): void {
-    this.router.navigate(['/private/fabricantes-temp']);
+    this.router.navigate(['/private/fabricantes']);
   }
 
   private showSuccess(message: string): void {

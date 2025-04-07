@@ -5,7 +5,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y gcc libpq-dev python3-dev libssl-dev && apt-get clean
 
 
-RUN pip install --upgrade pip && pip install pipenv psycopg2
+RUN pip install --upgrade pip && pip install pipenv psycopg2 flask flask-cors
 
 
 COPY Pipfile /app
