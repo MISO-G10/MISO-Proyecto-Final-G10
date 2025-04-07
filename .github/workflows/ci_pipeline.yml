@@ -1,0 +1,204 @@
+name: Ejecutar Tests Develop
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  check-branch-name:
+    runs-on: ubuntu-latest
+    outputs:
+      rama_web: ${{ startsWith(github.head_ref, 'feature/huw') || startsWith(github.head_ref, 'feature/HUW') }}
+      rama_mobile: ${{ startsWith(github.head_ref, 'feature/hum') || startsWith(github.head_ref, 'feature/HUM') }}
+    steps:
+      - name: Check branch name
+        run: echo "Pull request desde ${{ github.head_ref }}"
+
+  web-tests:
+    needs: check-branch-name
+    if: needs.check-branch-name.outputs.rama_web == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./WebApp
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: './WebApp/package-lock.json'
+
+      - name: Install global dependencies
+        run: |
+          npm i -g @angular/cli
+
+      - name: Install project dependencies
+        id: install_dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        id: run_tests
+        run: npm run test:coverage -- --browsers=ChromeHeadless --watch=false --no-progress
+
+      - name: Validate if test failed
+        id: result_with_error
+        if: steps.run_tests.outcome == 'failure'
+        env:
+          MENSAJE_ERROR: Una o varias pruebas fallaron
+        run: |
+          echo "${MENSAJE_ERROR}"
+          exit 1
+
+      - name: Validate if test passed
+        id: result_with_success
+        if: steps.run_tests.outcome == 'success'
+        env:
+          MENSAJE_EXITO: Todas las pruebas fueron exitosas
+        run: echo "${MENSAJE_EXITO}"
+
+  backend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Backend
+    env:
+      FLASK_ENV: test  
+      DB_NAME: usuarios
+      DB_HOST: usuarios_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies usuarios
+        working-directory: ./Backend/usuarios
+        run: |
+          echo "Installing dependencies usuarios..."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Install dependencies fabricantes
+        working-directory: ./Backend/fabricantes
+        run: |
+          echo "Installing dependencies fabricantes..."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Install dependencies inventario
+        working-directory: ./Backend/inventario
+        run: |
+          echo "Installing dependencies inventario..."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Run usuarios tests
+        id: usuarios_tests
+        working-directory: ./Backend/usuarios
+        run: pytest tests/ --cov=. --cov-report=term-missing
+
+      - name: Run fabricantes tests
+        id: fabricantes_tests
+        working-directory: ./Backend/fabricantes
+        run: pytest tests/ --cov=. --cov-report=term-missing
+
+      - name: Run inventario tests
+        id: inventario_tests
+        working-directory: ./Backend/inventario
+        run: pytest tests/ --cov=. --cov-report=term-missing
+
+      - name: Validate if test failed
+        id: result_with_error
+        if: steps.usuarios_tests.outcome == 'failure' || steps.fabricantes_tests.outcome == 'failure' || steps.inventario_tests.outcome == 'failure'
+        env:
+          MENSAJE_ERROR: Una o varias pruebas del backend fallaron
+        run: |
+          echo "${MENSAJE_ERROR}"
+          exit 1
+
+      - name: Validate if test passed
+        id: result_with_success
+        if: steps.usuarios_tests.outcome == 'success' && steps.fabricantes_tests.outcome == 'success' && (steps.inventario_tests.outcome == 'success' || steps.inventario_tests.outcome == 'skipped')
+        env:
+          MENSAJE_EXITO: Todas las pruebas del backend fueron exitosas
+        run: echo "${MENSAJE_EXITO}"
+
+  mobile-tests:
+    needs: check-branch-name
+    if: needs.check-branch-name.outputs.rama_mobile == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./MobileApp
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run tests
+        id: run_tests
+        run: ./gradlew testDebugUnitTest
+
+      - name: Validate if test failed
+        id: result_with_error
+        if: steps.run_tests.outcome == 'failure'
+        env:
+          MENSAJE_ERROR: Una o varias pruebas fallaron
+        run: |
+          echo "${MENSAJE_ERROR}"
+          exit 1
+
+      - name: Validate if test passed
+        id: result_with_success
+        if: steps.run_tests.outcome == 'success'
+        env:
+          MENSAJE_EXITO: Todas las pruebas fueron exitosas
+        run: echo "${MENSAJE_EXITO}"
+
+  approve-pr:
+    needs: [check-branch-name, backend-tests, web-tests, mobile-tests]
+    if: always() && ((needs.check-branch-name.outputs.rama_web == 'true' && (needs.web-tests.result == 'success' || needs.web-tests.result == 'skipped')) || (needs.check-branch-name.outputs.rama_mobile == 'true' && (needs.mobile-tests.result == 'success' || needs.mobile-tests.result == 'skipped')) || (needs.check-branch-name.outputs.rama_web == 'false' && needs.check-branch-name.outputs.rama_mobile == 'false')) && needs.backend-tests.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Approve PR
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const result = await github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              event: "APPROVE"
+            });
+            console.log('Estado de revision del PR:', result.status);

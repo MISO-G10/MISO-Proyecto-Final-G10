@@ -1,18 +1,18 @@
 <div class="login-container">
     <div class="logo">
-      <img src="assets/logo.png" alt="Logo" class="logo-image">
+      <img width="300" src="logo.png" alt="CCP Logo" class="logo-image">
     </div>
-  
+
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <!-- Usuario -->
       <mat-form-field appearance="outline">
-        <mat-label>Correo electronico</mat-label>
+        <mat-label>Usuario</mat-label>
         <input matInput formControlName="email" required>
         <mat-error class="error-message" *ngFor="let message of getErrorMessages(loginForm.get('email'), validaciones['email'])">
             {{ message }}
         </mat-error>
       </mat-form-field>
-  
+
       <!-- Contraseña -->
       <mat-form-field appearance="outline">
         <mat-label>Contraseña</mat-label>
@@ -27,17 +27,17 @@
             {{ message }}
         </mat-error>
       </mat-form-field>
-  
+
       <!-- Botón Submit -->
-      <button mat-raised-button 
-              color="primary" 
+      <button mat-raised-button
+              color="primary"
               type="submit"
               [disabled]="!loginForm.valid">
               Ingresar
       </button>
-  
-      <!-- Mensaje de Error -->      
-  
+
+      <!-- Mensaje de Error -->
+
       <a mat-button routerLink="/forgot-password" class="forgot-password">
         ¿Olvidó su contraseña?
       </a>
