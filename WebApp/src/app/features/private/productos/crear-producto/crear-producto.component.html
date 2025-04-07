@@ -1,0 +1,121 @@
+<div class="crear-producto-container">
+  <mat-card class="producto-card">
+    <mat-card-header>
+      <mat-card-title>Crear Producto</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+        <div class="form-row two-columns">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" placeholder="Ingrese el nombre del producto">
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(productoForm.get('nombre'), validaciones['nombre'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descripción</mat-label>
+            <input matInput formControlName="descripcion" placeholder="Ingrese la descripción del producto">
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(productoForm.get('descripcion'), validaciones['descripcion'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-row two-columns">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Precio unidad</mat-label>
+            <input matInput type="number" formControlName="valorUnidad" placeholder="Ingrese el precio del producto">
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(productoForm.get('valorUnidad'), validaciones['valorUnidad'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field>
+          <div class="checkbox-container">
+            <mat-checkbox formControlName="perecedero">Perecedero</mat-checkbox>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(productoForm.get('perecedero'), validaciones['perecedero'])">
+              {{ message }}
+            </mat-error>
+          </div>
+        </div>
+        <div class="form-row two-columns">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Fecha de vencimiento</mat-label>
+            <input matInput [matDatepicker]="pickerVencimiento" formControlName="fechaVencimiento" placeholder="Seleccione una fecha">
+            <mat-datepicker-toggle matSuffix [for]="pickerVencimiento"></mat-datepicker-toggle>
+            <mat-hint>DDMMAAAA</mat-hint>
+            <mat-datepicker #pickerVencimiento></mat-datepicker>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(productoForm.get('fechaVencimiento'), validaciones['fechaVencimiento'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Tiempo de entrega</mat-label>
+            <input matInput [matDatepicker]="pickerEntrega" formControlName="tiempoEntrega" placeholder="Seleccione una fecha">
+            <mat-datepicker-toggle matSuffix [for]="pickerEntrega"></mat-datepicker-toggle>
+            <mat-hint>DDMMAAAA</mat-hint>
+            <mat-datepicker #pickerEntrega></mat-datepicker>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(productoForm.get('tiempoEntrega'), validaciones['tiempoEntrega'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field> 
+        </div>
+        <div class="form-row two-columns">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Categoría</mat-label>
+            <mat-select formControlName="categoria">
+              <mat-option *ngFor="let categoria of categorias" [value]="categoria">
+                {{ categoria }}
+              </mat-option>
+            </mat-select>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(productoForm.get('categoria'), validaciones['categoria'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field> 
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Condición de almacenamiento</mat-label>
+            <textarea matInput formControlName="condicionAlmacenamiento" placeholder="Ingrese la condición de almacenamiento del producto" rows="2"></textarea>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(productoForm.get('condicionAlmacenamiento'), validaciones['condicionAlmacenamiento'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field>
+          
+        </div>
+        <div class="form-row two-columns">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Reglas legales</mat-label>
+            <textarea matInput formControlName="reglasLegales" placeholder="Ingrese las reglas legales del producto" rows="2"></textarea>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(productoForm.get('reglasLegales'), validaciones['reglasLegales'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field>         
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Reglas comerciales</mat-label>
+            <textarea matInput formControlName="reglasComerciales" placeholder="Ingrese las reglas comerciales del producto" rows="4"></textarea>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(productoForm.get('reglasComerciales'), validaciones['reglasComerciales'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-row two-columns">        
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Reglas tributarias</mat-label>
+            <textarea matInput formControlName="reglasTributarias" placeholder="Ingrese las reglas tributarias del producto" rows="4"></textarea>
+            <mat-error class="error-message" *ngFor="let message of getErrorMessages(productoForm.get('reglasTributarias'), validaciones['reglasTributarias'])">
+              {{ message }}
+            </mat-error>
+          </mat-form-field>
+        </div>     
+        <div class="form-actions">
+          <button type="button" mat-stroked-button color="warn" (click)="goBack()">
+
+            Cancelar
+          </button>
+          <button type="submit" mat-raised-button color="primary" [disabled]="productoForm.invalid">
+            
+            Guardar producto
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
