@@ -30,9 +30,9 @@ export class FabricantesComponent {
 
     displayedColumns: string[] = ['name', 'phone', 'legalRepresentative', 'products', 'actions'];
     fabricantes = signal<Fabricante[]>([
-        { id: '1', name: 'Industrias XYZ', phone: '0991234567', legalRepresentative: 'Juan Perez' },
-        { id: '2', name: 'Fabricantes ABC', phone: '0987654321', legalRepresentative: 'Andres Garcia' },
-        { id: '3', name: 'Manufacturas DEF', phone: '0976543210', legalRepresentative: 'Pedro Ramirez' },
+        { id: 'fab-001', name: 'Industrias XYZ', phone: '0991234567', legalRepresentative: 'Juan Perez' },
+        { id: 'fab-002', name: 'Fabricantes ABC', phone: '0987654321', legalRepresentative: 'Andres Garcia' },
+        { id: 'fab-003', name: 'Manufacturas DEF', phone: '0976543210', legalRepresentative: 'Pedro Ramirez' },
     ]);
 
     searchTerm = '';
@@ -59,7 +59,8 @@ export class FabricantesComponent {
     }
 
     navigateToAddProduct(fabricanteId: string) {
-        this.router.navigate(['/private/add-product', fabricanteId]);
+        console.log('Navegando a crear producto con fabricanteId:', fabricanteId);
+        this.router.navigate(['/private/crear-producto', fabricanteId]);
     }
 
     navigateToCreateFabricante() {

@@ -146,7 +146,7 @@ export class CreateComponent {
   getVendorName(id: number) {
     const vendor = this.vendors.find(v => v.id === id);
 
-    return vendor ? vendor.nombre : id;
+return vendor ? vendor.nombre : id;
   }
 
   // Format date to YYYY-MM-DD string when date is changed

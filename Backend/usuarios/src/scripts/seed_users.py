@@ -101,6 +101,15 @@ def seed_all_users():
         "Ventas", 
         UsuarioRol.DIRECTOR_VENTAS
     )
+
+    # Create comprasproveedores user
+    director_ventas_id = create_test_user(
+        "encargadoproveedores@gmail.com", 
+        "encargadoproveedores123", 
+        "Encargado", 
+        "ComprasProveedores", 
+        UsuarioRol.ENCARGADO_COMPRAS_PROVEEDORES
+    )
     
     print("Proceso de creación de usuarios de prueba completado.")
 

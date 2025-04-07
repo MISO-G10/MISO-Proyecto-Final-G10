@@ -35,7 +35,7 @@
         <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Ventas</span>
       </a>
 
-      <a mat-list-item routerLink="fabricantes" *ngIf="canRenderRole(['ADMINISTRADOR'])">
+      <a mat-list-item routerLink="fabricantes" *ngIf="canRenderRole(['ADMINISTRADOR','ENCARGADO_COMPRAS_PROVEEDORES'])">
         <mat-icon mat-list-icon>business</mat-icon>
         <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Fabricantes</span>
       </a>
