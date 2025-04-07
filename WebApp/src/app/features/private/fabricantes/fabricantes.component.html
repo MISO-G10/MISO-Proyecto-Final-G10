@@ -1,0 +1,71 @@
+<div class="fabricante-container">
+    <div class="fabricante-header">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Buscar fabricantes</mat-label>
+        <input
+          matInput
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filterFabricantes()"
+          placeholder="Nombre, teléfono o representante legal">
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="add-button"
+        (click)="navigateToCreateFabricante()">
+        <mat-icon>business</mat-icon>
+        Nuevo fabricante
+      </button>
+    </div>
+
+    <div class="table-container">
+      <table mat-table [dataSource]="filteredFabricantes()" class="fabricante-table">
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <td mat-cell *matCellDef="let fabricante">{{ fabricante.name }}</td>
+        </ng-container>
+
+        <!-- Phone Column -->
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+          <td mat-cell *matCellDef="let fabricante">{{ fabricante.phone }}</td>
+        </ng-container>
+
+        <!-- Products Column -->
+        <ng-container matColumnDef="products">
+          <th mat-header-cell *matHeaderCellDef>Productos</th>
+          <td mat-cell *matCellDef="let fabricante">
+            <button mat-raised-button color="accent" (click)="navigateToAddProduct(fabricante.id)">
+              <mat-icon>add_shopping_cart</mat-icon>
+              Agregar producto
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Legal Representative Column -->
+        <ng-container matColumnDef="legalRepresentative">
+          <th mat-header-cell *matHeaderCellDef>Representante Legal</th>
+          <td mat-cell *matCellDef="let fabricante">{{ fabricante.legalRepresentative }}</td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let fabricante">
+            <button mat-icon-button color="primary" matTooltip="Editar">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" matTooltip="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
