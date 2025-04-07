@@ -135,4 +135,6 @@ def create_app():
     with app.app_context():
         from app.models import sales_plan_seller, sales_plan
 
+        db.create_all()
+
     return app
