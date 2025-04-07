@@ -26,9 +26,31 @@
   }
 }
 
+.checkbox-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  padding: 0 12px;
+  margin-top: 4px;
+  
+  mat-checkbox {
+    margin-bottom: 8px;
+  }
+  
+  mat-error {
+    font-size: 12px;
+    color: #f44336;
+  }
+}
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 16px;
   margin-top: 24px;
+}
+
+.error-message {
+  display: block;
 }

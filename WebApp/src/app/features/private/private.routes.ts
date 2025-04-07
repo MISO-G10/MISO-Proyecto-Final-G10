@@ -25,7 +25,7 @@ export const PRIVATE_ROUTES: Routes = [
           canActivate: [RoleGuard],
           data: { roles: ['ADMINISTRADOR'] }
         },
-        { path: 'crear-producto/:manufacturerId', loadComponent: () => import('./productos/crear-producto/crear-producto.component').then(m => m.CrearProductoComponent),
+        { path: 'crear-producto/:fabricanteId', loadComponent: () => import('./productos/crear-producto/crear-producto.component').then(m => m.CrearProductoComponent),
           canActivate: [RoleGuard],
           data: { roles: ['ADMINISTRADOR'] }
         },
