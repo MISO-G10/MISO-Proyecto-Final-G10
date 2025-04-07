@@ -9,7 +9,7 @@ interface ProductoResponse {
 @Injectable({ providedIn: 'root' })
 export class ProductoService{
     private readonly http = inject(HttpClient);
-    private readonly apiProductosUrl = environment.apiProductosUrl+'/createproduct';
+    private readonly apiProductosUrl = environment.inventarioUrl+'/createproduct';
 
     crearProducto(producto: Producto) {
         return this.http.post<ProductoResponse>(`${this.apiProductosUrl}`, producto)
