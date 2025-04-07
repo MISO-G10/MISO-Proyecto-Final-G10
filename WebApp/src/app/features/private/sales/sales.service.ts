@@ -35,15 +35,17 @@ export class SalesService {
         });
       },
       error: (error) => {
-        const err = error.error;
+        if (error.error) {
+          const err = error.error;
 
-        for (const key in err) {
-          const errCtx = err[key];
+          for (const key in err) {
+            const errCtx = err[key];
 
-          this.snackbarService.error(errCtx.ctx.error, {
-            duration: 5000,
-            position: { horizontal: 'center', vertical: 'bottom' }
-          });
+            this.snackbarService.error(errCtx.ctx.error, {
+              duration: 5000,
+              position: { horizontal: 'center', vertical: 'bottom' }
+            });
+          }
         }
       }
     });
