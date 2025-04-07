@@ -8,7 +8,7 @@
   <button mat-icon-button matTooltip="Ver usuario">
     <mat-icon>account_circle</mat-icon>
   </button>
-  <button mat-icon-button matTooltip="Salir"(click)="logOut()">
+  <button mat-icon-button matTooltip="Salir" (click)="logOut()">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
@@ -18,28 +18,33 @@
                (mouseenter)="expandByHover()" (mouseleave)="collapseByHover()"
                [style.width.px]="getSidenavWidth()">
     <mat-nav-list>
-      
-        <a mat-list-item routerLink="home">
-          <mat-icon mat-list-icon>home</mat-icon>
-          <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Inicio</span>
-        </a>
-      
-      
+
+      <a mat-list-item routerLink="home">
+        <mat-icon mat-list-icon>home</mat-icon>
+        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Inicio</span>
+      </a>
+
+
       <a mat-list-item routerLink="sellers" *ngIf="canRenderRole(['ADMINISTRADOR','DIRECTOR_VENTAS'])">
         <mat-icon mat-list-icon>supervisor_account</mat-icon>
         <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Vendedores</span>
       </a>
-      
-      <a mat-list-item routerLink="fabricantes-temp" *ngIf="canRenderRole(['ADMINISTRADOR'])">
+
+      <a mat-list-item routerLink="sales" *ngIf="canRenderRole(['ADMINISTRADOR','DIRECTOR_VENTAS'])">
+        <mat-icon mat-list-icon>attach_money</mat-icon>
+        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Ventas</span>
+      </a>
+
+      <a mat-list-item routerLink="fabricantes" *ngIf="canRenderRole(['ADMINISTRADOR'])">
         <mat-icon mat-list-icon>business</mat-icon>
-        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Temp - Crear fabricantes</span>
+        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Fabricantes</span>
       </a>
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content class="main-content" [style.margin-left.px]="isClickExpanded ? expandedWidth : collapsedWidth">
     <div class="content-wrapper">
-      <router-outlet></router-outlet>      
+      <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
