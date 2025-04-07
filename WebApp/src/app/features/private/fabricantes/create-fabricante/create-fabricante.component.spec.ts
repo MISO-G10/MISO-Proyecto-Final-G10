@@ -109,6 +109,15 @@ describe('CreateFabricanteComponent', () => {
     component.fabricanteForm.get('name')?.setValue('');
     component.fabricanteForm.get('legalRepresentative')?.setValue('John Doe');
     component.fabricanteForm.get('phone')?.setValue('+(57) 311 205-4567');
+    
+    // Forzar la invalidación del formulario y verificar que realmente sea inválido
+    component.fabricanteForm.get('name')?.markAsTouched();
+    component.fabricanteForm.updateValueAndValidity();
+    expect(component.fabricanteForm.valid).toBeFalsy();
+    
+    // Espiar el método del servicio antes de llamar a onCreateFabricante
+    fabricantesServiceSpy.createFabricante.calls.reset();
+    routerSpy.navigate.calls.reset();
 
     component.onCreateFabricante();
 
