@@ -2,14 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Fabricante } from './models/fabricante';
 import { SnackbarService } from '../../../shared/ui/snackbar.service';
-
+import { environment } from '../../../../environment/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class FabricantesService {
   private readonly http = inject(HttpClient);
   private readonly snackbarService = inject(SnackbarService);
-  private readonly apiUrl = 'http://localhost:3001';
+  private readonly apiUrl = environment.fabricantesUrl
 
   constructor() {
   }
