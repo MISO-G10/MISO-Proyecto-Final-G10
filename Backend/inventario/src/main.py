@@ -20,7 +20,7 @@ def create_app(env_name='development'):
     CORS(
         app,
         resources={
-            r"/*": {
+            r"*": {
                 "origins": [
                     os.environ.get("FRONTEND_URL")
                 ],  # Solo permite el frontend Angular
