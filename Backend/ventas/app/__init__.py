@@ -60,7 +60,7 @@ def create_app():
     CORS(
         app,
         resources={
-            r"/*": {
+            r"*": {
                 "origins": [
                     os.environ.get("FRONTEND_URL")
                 ],
