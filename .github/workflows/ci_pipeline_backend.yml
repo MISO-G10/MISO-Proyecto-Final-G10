@@ -28,6 +28,6 @@ jobs:
             cd ~/MISO-Proyecto-Final-G10
             git pull origin master
             cd Backend
-            docker compose down
-            docker compose up -d --build
+            docker-compose down
+            docker-compose up -d --build
           EOF
