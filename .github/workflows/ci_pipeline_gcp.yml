@@ -1,0 +1,318 @@
+name: Despliegue automático a GCP
+
+on:
+  push:
+    branches:
+      - master
+      - 'release*'
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCE_INSTANCE_WEBAPP: webapp-instance
+  GCE_INSTANCE_ZONE_WEBAPP: us-central1-a
+  GCE_INSTANCE_BACKEND: backend-instance
+  GCE_INSTANCE_ZONE_BACKEND: us-central1-a
+  FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+  build-and-deploy-webapp:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: './WebApp/package-lock.json'
+
+      - name: Install global dependencies
+        run: |
+          npm i -g @angular/cli
+
+      - name: Install project dependencies
+        working-directory: ./WebApp
+        run: npm ci
+
+      - name: Build Angular app
+        working-directory: ./WebApp
+        run: ng build --configuration production
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Configure Docker for GCP
+        run: gcloud auth configure-docker
+
+      - name: Create webapp Dockerfile
+        working-directory: ./WebApp
+        run: |
+          cat > Dockerfile << 'EOF'
+          FROM nginx:alpine
+          COPY dist/web-app/* /usr/share/nginx/html/
+          COPY nginx.conf /etc/nginx/conf.d/default.conf
+          EXPOSE 80
+          CMD ["nginx", "-g", "daemon off;"]
+          EOF
+
+      - name: Create nginx config
+        working-directory: ./WebApp
+        run: |
+          cat > nginx.conf << 'EOF'
+          server {
+            listen 80;
+            server_name _;
+            root /usr/share/nginx/html;
+            index index.html;
+            
+            location / {
+              try_files $uri $uri/ /index.html;
+            }
+            
+            location /api/ {
+              proxy_pass http://${{ env.GCE_INSTANCE_BACKEND }}:80/;
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection 'upgrade';
+              proxy_set_header Host $host;
+              proxy_cache_bypass $http_upgrade;
+            }
+          }
+          EOF
+
+      - name: Build and push webapp Docker image
+        working-directory: ./WebApp
+        run: |
+          docker build -t gcr.io/${{ env.PROJECT_ID }}/webapp:${{ github.sha }} .
+          docker push gcr.io/${{ env.PROJECT_ID }}/webapp:${{ github.sha }}
+
+      - name: Deploy webapp to GCE
+        run: |
+          gcloud compute instances update-container ${{ env.GCE_INSTANCE_WEBAPP }} \
+            --zone ${{ env.GCE_INSTANCE_ZONE_WEBAPP }} \
+            --container-image gcr.io/${{ env.PROJECT_ID }}/webapp:${{ github.sha }}
+
+  build-and-deploy-backend:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Configure Docker for GCP
+        run: gcloud auth configure-docker
+
+      - name: Create backend docker-compose.yml
+        working-directory: ./Backend
+        run: |
+          cat > docker-compose.prod.yml << 'EOF'
+          version: "3.8"
+          services:
+            ccp_gestion_db:
+              image: postgres:latest
+              environment:
+                POSTGRES_USER: ${DB_USER}
+                POSTGRES_PASSWORD: ${DB_PASSWORD}
+                POSTGRES_DB: postgres
+              volumes:
+                - postgres_data:/var/lib/postgresql/data
+                - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+              restart: always
+              networks:
+                - ccp_gestion_net
+              healthcheck:
+                test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+                interval: 10s
+                retries: 5
+                start_period: 30s
+
+            usuarios:
+              build:
+                context: ./usuarios
+                dockerfile: Dockerfile
+              restart: always
+              environment:
+                DB_NAME: usuarios
+                DB_HOST: ccp_gestion_db
+                DB_PORT: 5432
+                DB_USER: ${DB_USER}
+                DB_PASSWORD: ${DB_PASSWORD}
+                FRONTEND_URL: ${FRONTEND_URL}
+              networks:
+                - ccp_gestion_net
+              depends_on:
+                ccp_gestion_db:
+                  condition: service_healthy
+
+            fabricantes:
+              build:
+                context: ./fabricantes
+                dockerfile: Dockerfile
+              restart: always
+              environment:
+                DB_NAME: fabricantes
+                DB_HOST: ccp_gestion_db
+                DB_PORT: 5432
+                DB_USER: ${DB_USER}
+                DB_PASSWORD: ${DB_PASSWORD}
+                USUARIOS_PATH: http://usuarios:3000
+                FRONTEND_URL: ${FRONTEND_URL}
+              networks:
+                - ccp_gestion_net
+              depends_on:
+                ccp_gestion_db:
+                  condition: service_healthy
+
+            ventas:
+              build:
+                context: ./ventas
+                dockerfile: Dockerfile
+              restart: always
+              environment:
+                DB_NAME: ventas
+                DB_HOST: ccp_gestion_db
+                DB_PORT: 5432
+                DB_USER: ${DB_USER}
+                DB_PASSWORD: ${DB_PASSWORD}
+                USERS_SERVICE_URL: http://usuarios:3000/usuarios
+                FRONTEND_URL: ${FRONTEND_URL}
+              networks:
+                - ccp_gestion_net
+              depends_on:
+                ccp_gestion_db:
+                  condition: service_healthy
+
+            inventarios:
+              build:
+                context: ./inventario
+                dockerfile: Dockerfile
+              restart: always
+              environment:
+                DB_NAME: inventarios
+                DB_HOST: ccp_gestion_db
+                DB_PORT: 5432
+                DB_USER: ${DB_USER}
+                DB_PASSWORD: ${DB_PASSWORD}
+                USUARIOS_PATH: http://usuarios:3000
+                FRONTEND_URL: ${FRONTEND_URL}
+              networks:
+                - ccp_gestion_net
+              depends_on:
+                ccp_gestion_db:
+                  condition: service_healthy
+
+            nginx:
+              image: nginx:alpine
+              ports:
+                - "80:80"
+              volumes:
+                - ./nginx.conf:/etc/nginx/conf.d/default.conf
+              restart: always
+              networks:
+                - ccp_gestion_net
+              depends_on:
+                - usuarios
+                - fabricantes
+                - ventas
+                - inventarios
+
+          volumes:
+            postgres_data:
+
+          networks:
+            ccp_gestion_net:
+              driver: bridge
+          EOF
+
+      - name: Create nginx config for backend
+        working-directory: ./Backend
+        run: |
+          cat > nginx.conf << 'EOF'
+          server {
+            listen 80;
+            server_name _;
+
+            location /usuarios/ {
+              proxy_pass http://usuarios:3000/;
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection 'upgrade';
+              proxy_set_header Host $host;
+              proxy_cache_bypass $http_upgrade;
+            }
+
+            location /fabricantes/ {
+              proxy_pass http://fabricantes:3001/;
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection 'upgrade';
+              proxy_set_header Host $host;
+              proxy_cache_bypass $http_upgrade;
+            }
+
+            location /ventas/ {
+              proxy_pass http://ventas:5000/;
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection 'upgrade';
+              proxy_set_header Host $host;
+              proxy_cache_bypass $http_upgrade;
+            }
+
+            location /inventarios/ {
+              proxy_pass http://inventarios:3003/;
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection 'upgrade';
+              proxy_set_header Host $host;
+              proxy_cache_bypass $http_upgrade;
+            }
+          }
+          EOF
+
+      - name: Create backend Dockerfile
+        working-directory: ./Backend
+        run: |
+          cat > Dockerfile << 'EOF'
+          FROM docker/compose:latest
+
+          WORKDIR /app
+
+          COPY . .
+
+          CMD ["docker-compose", "-f", "docker-compose.prod.yml", "up", "-d"]
+          EOF
+
+      - name: Build and push backend Docker image
+        working-directory: ./Backend
+        run: |
+          docker build -t gcr.io/${{ env.PROJECT_ID }}/backend:${{ github.sha }} .
+          docker push gcr.io/${{ env.PROJECT_ID }}/backend:${{ github.sha }}
+
+      - name: Deploy backend to GCE
+        run: |
+          gcloud compute instances update-container ${{ env.GCE_INSTANCE_BACKEND }} \
+            --zone ${{ env.GCE_INSTANCE_ZONE_BACKEND }} \
+            --container-image gcr.io/${{ env.PROJECT_ID }}/backend:${{ github.sha }} \
+            --container-env DB_USER=${{ secrets.DB_USER }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},FRONTEND_URL=${{ env.FRONTEND_URL }}
