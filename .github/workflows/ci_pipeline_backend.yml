@@ -21,11 +21,11 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.GCE_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy via SSH to GCE
+      - name: Despliegue a GCP
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} << 'EOF'
             set -e
-            cd ~/MISO-Proyecto-Final-G10 || git clone https://github.com/MISO-G10/MISO-Proyecto-Final-G10.git && cd MISO-Proyecto-Final-G10
+            cd ~/MISO-Proyecto-Final-G10
             git pull origin master
             cd Backend
             docker compose down
