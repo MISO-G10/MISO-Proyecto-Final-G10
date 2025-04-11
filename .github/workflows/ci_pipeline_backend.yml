@@ -1,0 +1,33 @@
+name: Despliegue Backend
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code (opcional para logs)
+        uses: actions/checkout@v3
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GCE_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.GCE_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy via SSH to GCE
+        run: |
+          ssh ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} << 'EOF'
+            set -e
+            cd ~/MISO-Proyecto-Final-G10 || git clone https://github.com/MISO-G10/MISO-Proyecto-Final-G10.git && cd MISO-Proyecto-Final-G10
+            git pull origin master
+            cd Backend
+            docker compose down
+            docker compose up -d --build
+          EOF
+          

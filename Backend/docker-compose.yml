@@ -6,10 +6,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - ccp_gestion_net
     healthcheck:
@@ -96,3 +97,6 @@ services:
 networks:
   ccp_gestion_net:
     driver: bridge
+
+volumes:
+  pgdata:
