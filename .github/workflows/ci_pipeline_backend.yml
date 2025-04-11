@@ -23,7 +23,7 @@ jobs:
 
       - name: Deploy via SSH to GCE
         run: |
-          ssh ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} << 'EOF'
             set -e
             cd ~/MISO-Proyecto-Final-G10 || git clone https://github.com/MISO-G10/MISO-Proyecto-Final-G10.git && cd MISO-Proyecto-Final-G10
             git pull origin master
