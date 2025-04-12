@@ -74,9 +74,9 @@ jobs:
           username: ${{ secrets.GCE_USER_FRONT_WEB }}
           key: ${{ secrets.GCE_SSH_KEY_FRONT }}
           port: 22
-          source: "WebApp/dist/web-app/"
+          source: "WebApp/dist/web-app/*"
           target: "/var/www/html/"
-          strip_components: 2
+          strip_components: 0
           debug: true
 
       - name: Restart Nginx
