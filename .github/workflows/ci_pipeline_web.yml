@@ -80,12 +80,6 @@ jobs:
           debug: true
 
       - name: Restart Nginx
-        uses: appleboy/ssh-action@v0.1.3
-        with:
-          host: ${{ secrets.GCE_HOST_FRONT_WEB }}
-          username: ${{ secrets.GCE_USER_FRONT_WEB }}
-          key: ${{ secrets.GCE_SSH_KEY_FRONT }}
-          port: 22
-          script: |
-            sudo systemctl restart nginx
-            echo "Despliegue completado con éxito."
+        run: |
+          # Reiniciar nginx
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER_FRONT_WEB }}@${{ secrets.GCE_HOST_FRONT_WEB }} "sudo systemctl restart nginx && echo 'Despliegue completado con éxito.'"
