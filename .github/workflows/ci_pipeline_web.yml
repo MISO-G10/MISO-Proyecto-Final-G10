@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - chore/ci-cd-pipeline-webfront
   workflow_dispatch:
 
 jobs:
@@ -18,6 +19,19 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+
+      - name: Configure environment variables
+        run: |
+          # Se configuran las variables de entorno con base en las almacenadas en secrets
+          sed -i 's|__API_URL__|${{ secrets.API_URL }}|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__ENDPOINT_USERS__|${{ secrets.ENDPOINT_USERS }}|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__ENDPOINT_FABRICANTES__|${{ secrets.ENDPOINT_FABRICANTES }}|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__ENDPOINT_VENTAS__|${{ secrets.ENDPOINT_VENTAS }}|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__ENDPOINT_INVENTARIO__|${{ secrets.ENDPOINT_INVENTARIO }}|g' WebApp/src/environment/environment.prod.ts
+          
+          
+          echo "Preview environment.prod.ts:"
+          cat WebApp/src/environment/environment.prod.ts
 
       - name: Install dependencies
         working-directory: WebApp
