@@ -1,0 +1,50 @@
+name: Despliegue Aplicación Web
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        working-directory: WebApp
+        run: npm ci
+
+      - name: Build Angular app
+        working-directory: WebApp
+        run: npm run build -- --configuration production
+
+      - name: Deploy to production server
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.GCE_HOST_FRONT_WEB }}
+          username: ${{ secrets.GCE_USER_FRONT_WEB }}
+          key: ${{ secrets.GCE_SSH_KEY_FRONT }}
+          port: 22
+          source: "WebApp/dist/web-app/"
+          target: "/var/www/html/"
+          strip_components: 2
+
+      - name: Restart Nginx
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: ${{ secrets.GCE_HOST_FRONT_WEB }}
+          username: ${{ secrets.GCE_USER_FRONT_WEB }}
+          key: ${{ secrets.GCE_SSH_KEY_FRONT }}
+          port: 22
+          script: |
+            sudo systemctl restart nginx
+            echo "Despliegue completado con éxito."
