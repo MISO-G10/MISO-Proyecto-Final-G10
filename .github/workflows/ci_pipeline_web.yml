@@ -56,17 +56,17 @@ jobs:
           # Verificar conexión SSH
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER_FRONT_WEB }}@${{ secrets.GCE_HOST_FRONT_WEB }} "echo Conexión SSH exitosa"
 
-      - name: Deploy to production server
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.GCE_HOST_FRONT_WEB }}
-          username: ${{ secrets.GCE_USER_FRONT_WEB }}
-          key: ${{ secrets.GCE_SSH_KEY_FRONT }}
-          port: 22
-          source: "WebApp/dist/web-app/browser/*"
-          target: "/var/www/html/"
-          strip_components: 0
-          debug: true
+      - name: Deploy application
+        run: |
+          echo "Configurando proyecto copiando archivos al directorio..."
+          # Limpiar el directorio de destino
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER_FRONT_WEB }}@${{ secrets.GCE_HOST_FRONT_WEB }} "sudo rm -rf /var/www/html/*"
+          
+          # Copiar los archivos directamente al directorio raíz
+          scp -o StrictHostKeyChecking=no -r WebApp/dist/web-app/browser/* ${{ secrets.GCE_USER_FRONT_WEB }}@${{ secrets.GCE_HOST_FRONT_WEB }}:/var/www/html/
+          
+          # Verificar la estructura de archivos
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER_FRONT_WEB }}@${{ secrets.GCE_HOST_FRONT_WEB }} "ls -la /var/www/html/"
 
       - name: Configure Nginx for SPA
         run: |
@@ -75,4 +75,4 @@ jobs:
           
           # Copiar y aplicar la configuración
           scp -o StrictHostKeyChecking=no nginx.conf ${{ secrets.GCE_USER_FRONT_WEB }}@${{ secrets.GCE_HOST_FRONT_WEB }}:/tmp/
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER_FRONT_WEB }}@${{ secrets.GCE_HOST_FRONT_WEB }} "sudo cp /tmp/nginx.conf /etc/nginx/sites-available/default && sudo systemctl restart nginx && echo 'Configuración de Nginx actualizada'"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER_FRONT_WEB }}@${{ secrets.GCE_HOST_FRONT_WEB }} "sudo cp /tmp/nginx.conf /etc/nginx/sites-available/default && sudo systemctl restart nginx && echo 'Despliegue completado con éxito.'"
