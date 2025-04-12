@@ -1,0 +1,62 @@
+name: Deploy to GKE
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Build & Deploy to GKE
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+      CLUSTER_NAME: ${{ secrets.GKE_CLUSTER_NAME }}
+      CLUSTER_LOCATION: ${{ secrets.GKE_CLUSTER_LOCATION }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+
+      - name: Configure Docker to use gcloud
+        run: gcloud auth configure-docker --quiet
+
+      - name: Build and push usuarios
+        run: |
+          docker build -t gcr.io/$PROJECT_ID/usuarios ./Backend/usuarios
+          docker push gcr.io/$PROJECT_ID/usuarios
+
+      - name: Build and push fabricantes
+        run: |
+          docker build -t gcr.io/$PROJECT_ID/fabricantes ./Backend/fabricantes
+          docker push gcr.io/$PROJECT_ID/fabricantes
+
+      - name: Build and push ventas
+        run: |
+          docker build -t gcr.io/$PROJECT_ID/ventas ./Backend/ventas
+          docker push gcr.io/$PROJECT_ID/ventas
+
+      - name: Build and push inventarios
+        run: |
+          docker build -t gcr.io/$PROJECT_ID/inventarios ./Backend/inventario
+          docker push gcr.io/$PROJECT_ID/inventarios
+
+      - name: Get GKE credentials
+        run: |
+          gcloud container clusters get-credentials "$CLUSTER_NAME" --region "$CLUSTER_LOCATION" --project "$PROJECT_ID"
+
+      - name: Apply Kubernetes manifests
+        run: |
+          kubectl apply -f ./Backend/k8s/
