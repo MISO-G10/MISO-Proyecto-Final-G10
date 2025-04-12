@@ -13,6 +13,7 @@ class Config:
         self.DB_PORT = os.getenv("DB_PORT")
         self.DB_NAME = os.getenv("DB_NAME")
         self.USUARIOS_PATH = os.getenv("USUARIOS_PATH")
+        self.FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 class DevelopmentConfig(Config):
     """Configuración para el entorno de desarrollo"""
