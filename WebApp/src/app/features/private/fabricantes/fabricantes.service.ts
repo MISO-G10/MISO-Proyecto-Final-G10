@@ -3,13 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Fabricante } from './models/fabricante';
 import { SnackbarService } from '../../../shared/ui/snackbar.service';
 import { environment } from '../../../../environment/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class FabricantesService {
   private readonly http = inject(HttpClient);
   private readonly snackbarService = inject(SnackbarService);
+
   private readonly apiUrl = environment.apiUrl+':'+environment.endpointFabricantes;
+
 
   constructor() {
   }

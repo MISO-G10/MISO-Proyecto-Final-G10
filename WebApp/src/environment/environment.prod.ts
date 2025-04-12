@@ -5,3 +5,4 @@ export const environment = {
     endpointVentas: "__ENDPOINT_VENTAS__",
     endpointInventario: "__ENDPOINT_INVENTARIO__"
 }
+
