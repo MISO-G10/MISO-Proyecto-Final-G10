@@ -4,12 +4,18 @@ on:
   push:
     branches:
       - master
-      - chore/ci-cd-pipeline-webfront
   workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # Usar las variables definidas a nivel de repositorio o de organización
+    env:
+      API_URL: ${{ vars.API_URL }}
+      ENDPOINT_USERS: ${{ vars.ENDPOINT_USERS }}
+      ENDPOINT_FABRICANTES: ${{ vars.ENDPOINT_FABRICANTES }}
+      ENDPOINT_VENTAS: ${{ vars.ENDPOINT_VENTAS }}
+      ENDPOINT_INVENTARIO: ${{ vars.ENDPOINT_INVENTARIO }}
 
     steps:
       - name: Checkout code
@@ -22,13 +28,12 @@ jobs:
 
       - name: Configure environment variables
         run: |
-          # Se configuran las variables de entorno con base en las almacenadas en secrets
-          sed -i 's|__API_URL__|${{ secrets.API_URL }}|g' WebApp/src/environment/environment.prod.ts
-          sed -i 's|__ENDPOINT_USERS__|${{ secrets.ENDPOINT_USERS }}|g' WebApp/src/environment/environment.prod.ts
-          sed -i 's|__ENDPOINT_FABRICANTES__|${{ secrets.ENDPOINT_FABRICANTES }}|g' WebApp/src/environment/environment.prod.ts
-          sed -i 's|__ENDPOINT_VENTAS__|${{ secrets.ENDPOINT_VENTAS }}|g' WebApp/src/environment/environment.prod.ts
-          sed -i 's|__ENDPOINT_INVENTARIO__|${{ secrets.ENDPOINT_INVENTARIO }}|g' WebApp/src/environment/environment.prod.ts
-          
+          # Se configuran las variables de entorno con base en las variables de GitHub
+          sed -i 's|__API_URL__|'"$API_URL"'|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__ENDPOINT_USERS__|'"$ENDPOINT_USERS"'|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__ENDPOINT_FABRICANTES__|'"$ENDPOINT_FABRICANTES"'|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__ENDPOINT_VENTAS__|'"$ENDPOINT_VENTAS"'|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__ENDPOINT_INVENTARIO__|'"$ENDPOINT_INVENTARIO"'|g' WebApp/src/environment/environment.prod.ts
           
           echo "Preview environment.prod.ts:"
           cat WebApp/src/environment/environment.prod.ts
