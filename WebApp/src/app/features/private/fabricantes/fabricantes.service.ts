@@ -10,7 +10,9 @@ import { environment } from '../../../../environment/environment';
 export class FabricantesService {
   private readonly http = inject(HttpClient);
   private readonly snackbarService = inject(SnackbarService);
-  private readonly apiUrl = environment.fabricanteUrl;
+
+  private readonly apiUrl = environment.apiUrl+':'+environment.endpointFabricantes;
+
 
   constructor() {
   }
@@ -20,7 +22,7 @@ export class FabricantesService {
     numeroTel: string;
     representante: string;
   }) {
-    this.http.post<Fabricante>(`${this.apiUrl}/fabricantes`, fabricante, {
+    this.http.post<Fabricante>(`${this.apiUrl}`, fabricante, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('auth')}`
       }

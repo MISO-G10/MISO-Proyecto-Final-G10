@@ -1,0 +1,69 @@
+name: Despliegue Aplicación Web
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    # Usar las variables definidas a nivel de repositorio o de organización
+    env:
+      API_URL: ${{ vars.API_URL }}
+      ENDPOINT_USERS: ${{ vars.ENDPOINT_USERS }}
+      ENDPOINT_FABRICANTES: ${{ vars.ENDPOINT_FABRICANTES }}
+      ENDPOINT_VENTAS: ${{ vars.ENDPOINT_VENTAS }}
+      ENDPOINT_INVENTARIO: ${{ vars.ENDPOINT_INVENTARIO }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Configure environment variables
+        run: |
+          # Se configuran las variables de entorno con base en las variables de GitHub
+          sed -i 's|__API_URL__|'"$API_URL"'|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__ENDPOINT_USERS__|'"$ENDPOINT_USERS"'|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__ENDPOINT_FABRICANTES__|'"$ENDPOINT_FABRICANTES"'|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__ENDPOINT_VENTAS__|'"$ENDPOINT_VENTAS"'|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__ENDPOINT_INVENTARIO__|'"$ENDPOINT_INVENTARIO"'|g' WebApp/src/environment/environment.prod.ts
+          
+          echo "Preview environment.prod.ts:"
+          cat WebApp/src/environment/environment.prod.ts
+
+      - name: Install dependencies
+        working-directory: WebApp
+        run: npm ci
+
+      - name: Build Angular app
+        working-directory: WebApp
+        run: npm run build -- --configuration production
+
+      - name: Deploy to production server
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.GCE_HOST_FRONT_WEB }}
+          username: ${{ secrets.GCE_USER_FRONT_WEB }}
+          key: ${{ secrets.GCE_SSH_KEY_FRONT }}
+          port: 22
+          source: "WebApp/dist/web-app/"
+          target: "/var/www/html/"
+          strip_components: 2
+
+      - name: Restart Nginx
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: ${{ secrets.GCE_HOST_FRONT_WEB }}
+          username: ${{ secrets.GCE_USER_FRONT_WEB }}
+          key: ${{ secrets.GCE_SSH_KEY_FRONT }}
+          port: 22
+          script: |
+            sudo systemctl restart nginx
+            echo "Despliegue completado con éxito."

@@ -1,6 +1,8 @@
 export const environment = {
-  apiUrl:"https://ccps1.wym.services",
-  inventarioUrl: "https://ccps1.wym.services/inventarios",
-  fabricanteUrl: "https://ccps1.wym.services",
-  salesUrl: "https://ccps1.wym.services/ventas"
+    apiUrl: "__API_URL__",
+    endpointUsers: "__ENDPOINT_USERS__",
+    endpointFabricantes: "__ENDPOINT_FABRICANTES__",
+    endpointVentas: "__ENDPOINT_VENTAS__",
+    endpointInventario: "__ENDPOINT_INVENTARIO__"
 }
+

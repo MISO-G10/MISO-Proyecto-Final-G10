@@ -17,7 +17,7 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
-  private readonly apiUrl = environment.apiUrl+'/usuarios';
+  private readonly apiUrl = environment.apiUrl+':'+environment.endpointUsers;
   private readonly snackbarService = inject(SnackbarService);
 
   login(username: string, password: string) {

@@ -9,7 +9,7 @@ interface SellerResponse {
 @Injectable({ providedIn: 'root' })
 export class SellerService{
     private readonly http = inject(HttpClient);
-    private readonly apiUrl = environment.apiUrl+'/usuarios';
+    private readonly apiUrl = environment.apiUrl+':'+environment.endpointUsers;
 
     createSeller(seller: User) {
         return this.http.post<SellerResponse>(`${this.apiUrl}`, seller)
