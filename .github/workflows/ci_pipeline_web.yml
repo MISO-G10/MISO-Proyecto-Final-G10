@@ -21,6 +21,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+     
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -52,9 +54,14 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.GCE_SSH_KEY_FRONT }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          
+          echo "Generando clave pública a partir de la clave privada..."
           ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
           
-          echo "Verificando formato de la clave (primeras líneas):"
+          echo "Clave pública derivada (vs authorized_keys):"
+          cat ~/.ssh/id_rsa.pub
+          
+          echo "Verificando formato de la clave privada (primeras líneas):"
           head -n 2 ~/.ssh/id_rsa
           
           echo "Intentando conexión SSH con verbosidad:"
