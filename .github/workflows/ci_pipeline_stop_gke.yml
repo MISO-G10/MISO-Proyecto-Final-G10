@@ -1,0 +1,36 @@
+name: Stop GKE Workloads
+
+on:
+  workflow_dispatch:  # Permite ejecutarlo manualmente
+
+jobs:
+  stop:
+    name: Delete all Kubernetes resources
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+      CLUSTER_NAME: ${{ secrets.GKE_CLUSTER_NAME }}
+      CLUSTER_LOCATION: ${{ secrets.GKE_CLUSTER_LOCATION }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+
+      - name: Get GKE credentials
+        run: |
+          gcloud container clusters get-credentials "$CLUSTER_NAME" --region "$CLUSTER_LOCATION" --project "$PROJECT_ID"
+
+      - name: Delete all Kubernetes resources
+        run: |
+          kubectl delete -f ./Backend/k8s/ --ignore-not-found=true

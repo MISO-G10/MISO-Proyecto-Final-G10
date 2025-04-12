@@ -1,5 +1,5 @@
 
-Guía para Desplegar Microservicios en GKE Autopilot con GitHub Actions
+# Guía para Desplegar Microservicios en GKE Autopilot con GitHub Actions
 
 ## 1. Crear un proyecto en Google Cloud
 
@@ -79,7 +79,7 @@ gcloud iam service-accounts keys create ~/github-key.json \
 
 | Nombre                 | Valor                                                  |
 |------------------------|--------------------------------------------------------|
-| `GCP_PROJECT`          | ID del proyecto (ej. `ccp-microservicios-123456`)      |
+| `GCP_PROJECT`          | ID del proyecto (ej. `miso-ccp-backend`)      |
 | `GKE_CLUSTER_NAME`     | Nombre del clúster (ej. `ccp-cluster`)                 |
 | `GKE_CLUSTER_LOCATION` | Región (ej. `us-central1`)                             |
 | `GCP_SA_KEY`           | Contenido del archivo `github-key.json`               |
