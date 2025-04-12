@@ -74,8 +74,9 @@ jobs:
           username: ${{ secrets.GCE_USER_FRONT_WEB }}
           key: ${{ secrets.GCE_SSH_KEY_FRONT }}
           port: 22
-          source: "WebApp/dist/web-app/*"
+          source: "WebApp/dist/web-app/browser/*"
           target: "/var/www/html/"
+          rm: true
           strip_components: 0
           debug: true
 
