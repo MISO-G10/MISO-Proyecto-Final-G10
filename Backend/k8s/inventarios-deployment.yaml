@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventarios
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventarios
+  template:
+    metadata:
+      labels:
+        app: inventarios
+    spec:
+      containers:
+      - name: inventarios
+        image: gcr.io/miso-ccp-backend/inventarios:latest
+        ports:
+          - containerPort: 3003
+        env:
+          - name: DB_NAME
+            value: "inventarios"
+          - name: DB_HOST
+            value: "postgres"
+          - name: DB_PORT
+            value: "5432"
+          - name: DB_USER
+            value: "postgres"
+          - name: DB_PASSWORD
+            value: "postgres"
+          - name: USUARIOS_PATH
+            value: "http://usuarios:3000"
+        resources:
+        requests:
+          memory: "256Mi"
+          cpu: "500m"
+        limits:
+          memory: "512Mi"
+          cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventarios
+spec:
+  selector:
+    app: inventarios
+  ports:
+    - port: 3003
+      targetPort: 3003
+  type: ClusterIP

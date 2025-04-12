@@ -45,9 +45,9 @@ RUN apt-get update && \
 COPY --from=builder /app /app
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 
-EXPOSE 5000
+EXPOSE 3002
 ENV FLASK_ENV=production
 ENV PYTHONPATH=/app
 
 # Run the application with gunicorn
-CMD ["uv", "run", "--", "gunicorn", "--bind", "0.0.0.0:5000", "app.app:app"]
+CMD ["uv", "run", "--", "gunicorn", "--bind", "0.0.0.0:3002", "app.app:app"]

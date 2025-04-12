@@ -61,7 +61,7 @@ services:
       context: ./ventas
       dockerfile: Dockerfile
     ports:
-      - "3002:5000"
+      - "3002:3002"
     environment:
       DB_NAME: ventas
       DB_HOST: ccp_gestion_db

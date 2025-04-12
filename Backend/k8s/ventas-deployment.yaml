@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ventas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ventas
+  template:
+    metadata:
+      labels:
+        app: ventas
+    spec:
+      containers:
+      - name: ventas
+        image: gcr.io/miso-ccp-backend/ventas:latest
+        ports:
+          - containerPort: 3002
+        env:
+          - name: DB_NAME
+            value: "ventas"
+          - name: DB_HOST
+            value: "postgres"
+          - name: DB_PORT
+            value: "5432"
+          - name: DB_USER
+            value: "postgres"
+          - name: DB_PASSWORD
+            value: "postgres"
+          - name: USERS_SERVICE_URL
+            value: "http://usuarios:3000/usuarios"
+        resources:
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ventas
+spec:
+  selector:
+    app: ventas
+  ports:
+    - port: 3002
+      targetPort: 3002
+  type: ClusterIP
