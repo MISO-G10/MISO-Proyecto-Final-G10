@@ -58,6 +58,26 @@ spec:
             name: pgdata
           - mountPath: /docker-entrypoint-initdb.d
             name: init-sql
+        readinessProbe:
+          exec:
+            command:
+              - pg_isready
+              - -U
+              - postgres
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 5
+        livenessProbe:
+          exec:
+            command:
+              - pg_isready
+              - -U
+              - postgres
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 6
       volumes:
         - name: pgdata
           persistentVolumeClaim:

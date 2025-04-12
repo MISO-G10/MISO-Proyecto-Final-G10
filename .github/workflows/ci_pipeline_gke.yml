@@ -60,3 +60,14 @@ jobs:
       - name: Apply Kubernetes manifests
         run: |
           kubectl apply -f ./Backend/k8s/
+
+      - name: Wait for deployments to be ready
+        run: |
+          kubectl rollout status deployment/usuarios --timeout=120s
+          kubectl rollout status deployment/fabricantes --timeout=120s
+          kubectl rollout status deployment/ventas --timeout=120s
+          kubectl rollout status deployment/inventarios --timeout=120s
+
+      - name: Wait for postgres to be ready
+        run: |
+          kubectl rollout status deployment/postgres --timeout=120s
