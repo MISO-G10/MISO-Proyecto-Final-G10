@@ -28,6 +28,22 @@ spec:
               value: "postgres"
             - name: DB_PASSWORD
               value: "postgres"
+          readinessProbe:
+            httpGet:
+              path: /usuarios/ping
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /usuarios/ping
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 5
           resources:
             requests:
               memory: "256Mi"

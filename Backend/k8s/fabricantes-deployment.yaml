@@ -17,13 +17,6 @@ spec:
         image: gcr.io/miso-ccp-backend/fabricantes:latest
         ports:
           - containerPort: 3001
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "250m"
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
         env:
           - name: DB_NAME
             value: "fabricantes"
@@ -37,6 +30,29 @@ spec:
             value: "postgres"
           - name: USUARIOS_PATH
             value: "http://usuarios:3000"
+            readinessProbe:
+              httpGet:
+                path: /fabricantes/ping
+                port: 3000
+              initialDelaySeconds: 5
+              periodSeconds: 5
+              timeoutSeconds: 2
+              failureThreshold: 3
+            livenessProbe:
+              httpGet:
+                path: /fabricantes/ping
+                port: 3000
+              initialDelaySeconds: 15
+              periodSeconds: 10
+              timeoutSeconds: 2
+              failureThreshold: 5
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
 ---
 apiVersion: v1
 kind: Service

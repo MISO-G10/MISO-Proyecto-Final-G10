@@ -30,13 +30,29 @@ spec:
             value: "postgres"
           - name: USERS_SERVICE_URL
             value: "http://usuarios:3000/usuarios"
+        readinessProbe:
+            httpGet:
+              path: /ventas/ping
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+        livenessProbe:
+            httpGet:
+              path: /ventas/ping
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 5
         resources:
-        requests:
-          memory: "64Mi"
-          cpu: "250m"
-        limits:
-          memory: "128Mi"
-          cpu: "500m"
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
