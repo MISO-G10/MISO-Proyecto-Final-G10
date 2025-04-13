@@ -3,7 +3,9 @@ from ..commands.create import Create
 from ..commands.update import Update
 from ..commands.login import Login
 from ..commands.clean import Clean
+from ..commands.list import List
 from ..commands.validate import Validate
+from ..models.usuario import Usuario  # Assuming the Usuario model is defined in this file
 import os
 
 operations_blueprint = Blueprint('usuarios', __name__)
@@ -45,3 +47,25 @@ def health_check():
 def reset_usuario_database():
     result = Clean().execute()
     return jsonify(result), 200
+
+@operations_blueprint.route('', methods=['GET'])
+def list_usuarios():
+    # Obtener el token de la cabecera
+    auth_header = request.headers.get('Authorization')
+    if not auth_header:
+        return jsonify({'error': 'Token is missing!'}), 401
+
+    # Simulate token validation and role extraction
+    current_user = Validate(auth_header).execute()  # This should return the role
+    user_role = current_user['rol']
+
+    # Role-based access control
+    if user_role in ['ADMINISTRADOR', 'VENDEDOR', 'DIRECTOR_VENTAS']:
+        # Use the List command to get the users
+        usuarios = List(current_user, request.args.to_dict()).execute()
+    else:
+        # No access for other roles
+        return jsonify({'error': 'Access denied!'}), 403
+
+    # Since usuarios is already serialized, return it directly
+    return jsonify(usuarios), 200
