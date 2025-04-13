@@ -49,7 +49,7 @@ export class LoginComponent {
   ];
 
   getErrorMessages = getErrorMessages;
-  validaciones: { [key: string]: { type: string; message: string }[] } = validaciones;
+  validaciones: { [key: string]: { type: string; message: string }[] } = validaciones();
 
   hide = true;
   isLoading = signal(false);
