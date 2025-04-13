@@ -56,9 +56,17 @@ def list_usuarios():
     user_role = current_user['rol']
 
     # Control de acceso basado en roles
-    if user_role in ['ADMINISTRADOR', 'VENDEDOR', 'DIRECTOR_VENTAS']:
-        # Obtener usuarios
+    if user_role == 'ADMINISTRADOR':
+        # Administrador puede ver todos los usuarios
         usuarios = List(current_user, request.args.to_dict()).execute()
+    elif user_role == 'VENDEDOR':
+        # Vendedor solo puede ver tenderos
+        all_usuarios = List(current_user, request.args.to_dict()).execute()
+        usuarios = [user for user in all_usuarios if user['rol'] in ['TENDERO']]
+    elif user_role == 'DIRECTOR_VENTAS':
+        # Director de ventas puede ver tenderos y vendedores
+        all_usuarios = List(current_user, request.args.to_dict()).execute()
+        usuarios = [user for user in all_usuarios if user['rol'] in ['TENDERO', 'VENDEDOR']]
     else:
         # Se deniega el acceso para roles no autorizados
         return jsonify({'error': 'Access denied!'}), 403

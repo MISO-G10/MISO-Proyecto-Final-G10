@@ -38,6 +38,11 @@ class List(BaseCommannd):
             # Eliminar campos no deseados
             for field in ['createdAt', 'expireAt', 'password', 'salt', 'token', 'updatedAt']:
                 serialized_user.pop(field, None)
+            
+            # Convertir el Enum rol a string
+            if 'rol' in serialized_user and hasattr(user.rol, 'value'):
+                serialized_user['rol'] = user.rol.value
+                
             serialized_results.append(serialized_user)
 
         return serialized_results
