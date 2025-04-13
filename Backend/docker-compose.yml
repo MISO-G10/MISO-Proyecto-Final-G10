@@ -111,6 +111,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       USUARIOS_PATH: http://usuarios:3000
+      FRONTEND_URL: http://localhost:4200
     networks:
       - ccp_gestion_net
     depends_on:
