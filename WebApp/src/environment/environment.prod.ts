@@ -3,6 +3,6 @@ export const environment = {
     endpointUsers: "__ENDPOINT_USERS__",
     endpointFabricantes: "__ENDPOINT_FABRICANTES__",
     endpointVentas: "__ENDPOINT_VENTAS__",
-    endpointInventario: "__ENDPOINT_INVENTARIO__"
+    endpointInventario: "__ENDPOINT_INVENTARIO__",
+    endpointVisitas: "__ENDPOINT_VISITAS__"
 }
-
