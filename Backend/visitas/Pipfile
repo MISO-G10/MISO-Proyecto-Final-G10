@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = false
+name = "visitas"
+
+[packages]
+bcrypt = "*"
+sqlalchemy = "*"
+flask = "*"
+python-dotenv = "*"
+psycopg2-binary = "*"
+sqlalchemy-serializer = "*"
+python-dateutil = "*"
+pytz = "*"
+flask-cors = "*"
+requests = "*"
+marshmallow = "*"
+
+[dev-packages]
+pytest = "*"
+pytest-flask = "*"
+pytest-mock = "*"
+pytest-cov = "*"
+pytest-env = "*"
+debugpy = "*"
+
+[requires]
+python_version = "3.11"
