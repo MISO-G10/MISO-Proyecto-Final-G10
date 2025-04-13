@@ -14,7 +14,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 
-def create_test_user(username, password, nombre, apellido, rol):
+def create_test_user(username, password, nombre, apellido, rol, telefono=None, direccion=None):
     """Create a test user with the specified attributes"""
     db = SessionLocal()
     try:
@@ -37,6 +37,8 @@ def create_test_user(username, password, nombre, apellido, rol):
             password=hashed_password.decode('utf-8'),
             nombre=nombre,
             apellido=apellido,
+            telefono=telefono,
+            direccion=direccion,
             rol=rol,
             salt=salt,
             token="",
@@ -72,7 +74,31 @@ def seed_all_users():
         "tendero123", 
         "Tendero", 
         "Prueba", 
-        UsuarioRol.TENDERO
+        UsuarioRol.TENDERO,
+        telefono="+(311) 205-34897",
+        direccion="Bossque II 10-20"
+    )
+    
+    # Create tendero user
+    tendero_id2 = create_test_user(
+        "tendero2@gmail.com", 
+        "tendero123", 
+        "Tendero", 
+        "Prueba", 
+        UsuarioRol.TENDERO,
+        telefono="+(311) 205-34897",
+        direccion="Calle 124 St"
+    )
+    
+    # Create tendero user
+    tendero_id3 = create_test_user(
+        "tendero3@gmail.com", 
+        "tendero123", 
+        "Tendero", 
+        "Prueba", 
+        UsuarioRol.TENDERO,
+        telefono="+(311) 205-3487",
+        direccion="Calle 123 5-40"
     )
     
     # Create vendedor user
@@ -103,7 +129,7 @@ def seed_all_users():
     )
 
     # Create comprasproveedores user
-    director_ventas_id = create_test_user(
+    comprasproveedores_id = create_test_user(
         "encargadoproveedores@gmail.com", 
         "encargadoproveedores123", 
         "Encargado", 

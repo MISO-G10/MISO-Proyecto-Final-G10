@@ -23,7 +23,9 @@ def test_create_usuario(client):
         "username": "enola",
         "password": "gd5kv2d8gapjnrz",
         "nombre": "Bradley",
-        "apellido": "Veum"
+        "apellido": "Veum",
+        "telefono": "12345678",
+        "direccion": "123 Main St"
     }
 
     response = client.post('/usuarios', json=usuario_json)
@@ -90,7 +92,9 @@ def test_validate_usuario(client):
             "apellido": "Steuber",
             "id": "ad60d00e-c30e-4e22-9b51-4447057131a4",
             "rol": "ADMINISTRADOR",
-            "username": "jodi steuber"
+            "username": "jodi steuber",
+            "telefono": "12345678",
+            "direccion": "123 Main St"
         }
 
     # Replace Validate.execute with the mock
@@ -106,6 +110,8 @@ def test_validate_usuario(client):
     assert 'id' in response_json
     assert 'rol' in response_json
     assert 'username' in response_json
+    assert 'telefono' in response_json
+    assert 'direccion' in response_json
     assert response_json['username'] == "jodi steuber"
 
     # Restore the original method

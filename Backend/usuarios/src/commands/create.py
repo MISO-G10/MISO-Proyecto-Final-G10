@@ -36,6 +36,8 @@ class Create(BaseCommannd):
                 password=hash_pawd,
                 nombre=self.data.get('nombre'),
                 apellido=self.data.get('apellido'),
+                telefono=self.data.get('telefono'),
+                direccion=self.data.get('direccion'),
                 rol=self.data.get('rol'),
                 salt=salt,
                 token="",
