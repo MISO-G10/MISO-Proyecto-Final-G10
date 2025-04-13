@@ -8,7 +8,7 @@ from ..utils.helpers import serialize_sqlalchemy
 
 
 class ListUsuarioSchema(Schema):
-    #Esta linea permite filtrar por nombre del Usuario
+    #Esta linea permite filtrar por rol del Usuario
     rol = fields.Str(required=False)
 
 class List(BaseCommannd):
@@ -21,7 +21,6 @@ class List(BaseCommannd):
         payload = self.safe_payload()
         conditions = []
         query = db.query(Usuario)
-        print(payload.get('rol'))
         
         if payload.get('rol'):
             conditions.append(Usuario.rol == payload['rol'])
@@ -29,7 +28,19 @@ class List(BaseCommannd):
         if conditions:
             query = query.filter(*conditions)
 
-        return serialize_sqlalchemy(query.all())
+        # Obtener resultados
+        results = query.all()
+
+        # Serializar y filtrar campos
+        serialized_results = []
+        for user in results:
+            serialized_user = serialize_sqlalchemy(user)
+            # Eliminar campos no deseados
+            for field in ['createdAt', 'expireAt', 'password', 'salt', 'token', 'updatedAt']:
+                serialized_user.pop(field, None)
+            serialized_results.append(serialized_user)
+
+        return serialized_results
 
     def safe_payload(self):
         try:

@@ -5,8 +5,6 @@ from ..commands.login import Login
 from ..commands.clean import Clean
 from ..commands.list import List
 from ..commands.validate import Validate
-from ..models.usuario import Usuario  # Assuming the Usuario model is defined in this file
-import os
 
 operations_blueprint = Blueprint('usuarios', __name__)
 
@@ -15,7 +13,6 @@ def create_usuario():
     json = request.get_json()
     result = Create(json).execute()
     return jsonify(result), 201
-
 
 @operations_blueprint.route('/<uuid:id>', methods = ['PATCH'])
 def update_usuario(id):
@@ -28,7 +25,6 @@ def login_usuario():
     json = request.get_json()
     result = Login(json).execute()
     return jsonify(result), 200
-
 
 @operations_blueprint.route('/me', methods = ['GET'])
 def validate_usuario():
@@ -55,16 +51,16 @@ def list_usuarios():
     if not auth_header:
         return jsonify({'error': 'Token is missing!'}), 401
 
-    # Simulate token validation and role extraction
-    current_user = Validate(auth_header).execute()  # This should return the role
+    # Validación del token y extracción del role
+    current_user = Validate(auth_header).execute()
     user_role = current_user['rol']
 
-    # Role-based access control
+    # Control de acceso basado en roles
     if user_role in ['ADMINISTRADOR', 'VENDEDOR', 'DIRECTOR_VENTAS']:
-        # Use the List command to get the users
+        # Obtener usuarios
         usuarios = List(current_user, request.args.to_dict()).execute()
     else:
-        # No access for other roles
+        # Se deniega el acceso para roles no autorizados
         return jsonify({'error': 'Access denied!'}), 403
 
     # Since usuarios is already serialized, return it directly
