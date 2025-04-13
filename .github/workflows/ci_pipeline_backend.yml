@@ -29,39 +29,18 @@ jobs:
           # Se guarda la variable FRONTEND_URL temporalmente en el servidor
           echo "$FRONTEND_URL" | ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} "cat > ~/frontend_url.txt"
           
-          
+          # Ejecutamos los comandos en el servidor
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} << 'EOF'
             set -e
             cd ~/MISO-Proyecto-Final-G10
             git pull origin master
             cd Backend
             
-            # Se lee la variable almacenada y se crea un script temporal para actualizar el dockerfile con este nuevo valor
+            # Se lee la variable almacenada
             FRONTEND_URL=$(cat ~/frontend_url.txt)
             
-            cat > update_cors.sh << 'SCRIPT'
-            #!/bin/bash
-            # Obtener la URL del frontend
-            FRONTEND_URL="$1"
-            
-            # Método usando awk para detectar y actualizar todos los servicios
-            awk -v url="$FRONTEND_URL" '
-            /FRONTEND_URL:/ {
-              # Reemplazar la línea con la nueva URL
-              print "      FRONTEND_URL: " url
-              next
-            }
-            # Imprimir todas las demás líneas sin cambios
-            { print }
-            ' docker-compose.yml > docker-compose.yml.new
-            
-            # Reemplazar el archivo original
-            mv docker-compose.yml.new docker-compose.yml
-            SCRIPT
-            
-            # Se ejecuta el script con la URL del frontend
-            chmod +x update_cors.sh          
-            ./update_cors.sh "$FRONTEND_URL"
+            # Método directo usando sed para actualizar todos los servicios
+            sed -i 's|FRONTEND_URL: http://localhost:4200|FRONTEND_URL: '"$FRONTEND_URL"'|g' docker-compose.yml
             
             # Se muestran los cambios para verificación
             echo "Cambios realizados en docker-compose.yml:"
@@ -72,5 +51,5 @@ jobs:
             docker-compose up -d --build
             
             # Limpiar archivos temporales
-            rm ~/frontend_url.txt update_cors.sh
+            rm ~/frontend_url.txt
           EOF
