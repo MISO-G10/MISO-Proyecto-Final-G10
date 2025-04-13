@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from flask_cors import CORS 
+from flask_cors import CORS
 # CONFIG
 from src.utils.config import get_config
 # DB
@@ -19,8 +19,10 @@ def create_app(env_name='development'):
     CORS(
         app,
         resources={
-            r"/usuarios/*": {
-                "origins": ["http://localhost:4200"],  # Solo permite tu frontend Angular
+            r"*": {
+                "origins": [
+                    os.environ.get("FRONTEND_URL")
+                ],  # Solo permite tu frontend Angular
                 "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
                 "allow_headers": ["Content-Type", "Authorization"],
                 "supports_credentials": True

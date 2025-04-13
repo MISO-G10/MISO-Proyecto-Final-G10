@@ -1,3 +1,5 @@
+import os
+
 from flask import jsonify, json, redirect
 from flask_openapi3 import OpenAPI, Info
 from flask_openapi3.models import Server
@@ -58,8 +60,10 @@ def create_app():
     CORS(
         app,
         resources={
-            r"/*": {
-                "origins": ["http://localhost:4200"],
+            r"*": {
+                "origins": [
+                    os.environ.get("FRONTEND_URL")
+                ],
                 "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
                 "allow_headers": ["Content-Type", "Authorization"],
                 "supports_credentials": True
