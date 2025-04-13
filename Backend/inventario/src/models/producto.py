@@ -14,7 +14,7 @@ class Categoria(enum.Enum):
 
 class Producto(Base, Model):
     __tablename__ = 'Producto'
-    sku = Column(String, primary_key=True, nullable=False)  # SKU calculado como id fabricante+id producto
+    sku = Column(String, nullable=False)  # SKU calculado como id fabricante+id producto
     nombre = Column(String, nullable=False)
     descripcion = Column(String, nullable=False)
     perecedero = Column(Boolean, nullable=False)

@@ -99,4 +99,5 @@ def add_producto_to_bodega(bodega_id):
         return jsonify(result[0]), result[1]
 
     # The result is already a dictionary from the command
+
     return jsonify(result), 200
