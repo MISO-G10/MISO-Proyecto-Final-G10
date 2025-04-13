@@ -1,0 +1,12 @@
+{
+  "locale": "en",
+  "translations": {
+    "login.usuario": "Username",
+    "login.contrasena": "Password",
+    "login.ingresar": "Log in",
+    "login.olvido_contrasena": "Forgot password?",
+    "login.email_requerido": "The email is required",
+    "login.contrasena_requerida": "The password is required",
+    "login.email_invalido": "The email is invalid"
+  }
+}
