@@ -18,6 +18,8 @@ class Usuario(Base, Model):
     password = Column(String, nullable=False)
     nombre = Column(String)
     apellido = Column(String)
+    telefono = Column(String)
+    direccion = Column(String)
     rol = Column(Enum(UsuarioRol), nullable=False)
     
     salt = Column(String, nullable=False)

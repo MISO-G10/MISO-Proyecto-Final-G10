@@ -1,7 +1,7 @@
 [[source]]
 url = "https://pypi.org/simple"
 verify_ssl = false
-name = "usuarios"
+name = "visitas"
 
 [packages]
 bcrypt = "*"
@@ -9,6 +9,9 @@ sqlalchemy = "*"
 flask = "*"
 python-dotenv = "*"
 psycopg2-binary = "*"
+sqlalchemy-serializer = "*"
+python-dateutil = "*"
+pytz = "*"
 flask-cors = "*"
 requests = "*"
 marshmallow = "*"
