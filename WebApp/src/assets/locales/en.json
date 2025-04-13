@@ -1,0 +1,9 @@
+{
+  "locale": "en",
+  "translations": {
+    "login.usuario": "Username",
+    "login.contrasena": "Password",
+    "login.ingresar": "Log in",
+    "login.olvido_contrasena": "Forgot password?"
+  }
+}
