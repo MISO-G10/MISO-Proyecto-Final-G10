@@ -33,7 +33,8 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} << 'EOF'
             set -e
             cd ~/MISO-Proyecto-Final-G10
-            git pull origin master
+            git fetch origin
+            git reset --hard origin/master
             cd Backend
             
             # Se lee la variable almacenada
