@@ -1,6 +1,7 @@
 name: Ejecutar Tests Release
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - master
@@ -103,6 +104,14 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-cov
 
+      - name: Install dependencies visitas
+        working-directory: ./Backend/visitas
+        run: |
+          echo "Installing dependencies visitas..."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
       - name: Run usuarios tests
         id: usuarios_tests
         working-directory: ./Backend/usuarios
@@ -118,9 +127,14 @@ jobs:
         working-directory: ./Backend/inventario
         run: pytest tests/ --cov=. --cov-report=term-missing
 
+      - name: Run visitas tests
+        id: visitas_tests
+        working-directory: ./Backend/visitas
+        run: pytest tests/ --cov=. --cov-report=term-missing
+
       - name: Validate if test failed
         id: result_with_error
-        if: steps.usuarios_tests.outcome == 'failure' || steps.fabricantes_tests.outcome == 'failure' || steps.inventario_tests.outcome == 'failure'
+        if: steps.usuarios_tests.outcome == 'failure' || steps.fabricantes_tests.outcome == 'failure' || steps.inventario_tests.outcome == 'failure' || steps.visitas_tests.outcome == 'failure'
         env:
           MENSAJE_ERROR: Una o varias pruebas del backend fallaron
         run: |
@@ -129,7 +143,7 @@ jobs:
 
       - name: Validate if test passed
         id: result_with_success
-        if: steps.usuarios_tests.outcome == 'success' && steps.fabricantes_tests.outcome == 'success' && (steps.inventario_tests.outcome == 'success' || steps.inventario_tests.outcome == 'skipped')
+        if: steps.usuarios_tests.outcome == 'success' && steps.fabricantes_tests.outcome == 'success' && (steps.inventario_tests.outcome == 'success' || steps.inventario_tests.outcome == 'skipped') && (steps.visitas_tests.outcome == 'success' || steps.visitas_tests.outcome == 'skipped')
         env:
           MENSAJE_EXITO: Todas las pruebas del backend fueron exitosas
         run: echo "${MENSAJE_EXITO}"
