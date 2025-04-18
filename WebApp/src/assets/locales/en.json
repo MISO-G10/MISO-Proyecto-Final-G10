@@ -7,6 +7,14 @@
     "login.olvido_contrasena": "Forgot password?",
     "login.email_requerido": "The email is required",
     "login.contrasena_requerida": "The password is required",
-    "login.email_invalido": "The email is invalid"
+    "login.email_invalido": "The email is invalid",
+    
+    "private.tooltip.user":"User details",
+    "private.tooltip.logout":"Logout",
+    "private.navicon.home":"Home",
+    "private.navicon.sellers":"Sellers",
+    "private.navicon.sales":"Sales",
+    "private.navicon.manufacturer":"Manufacturer"
+
   }
 }
