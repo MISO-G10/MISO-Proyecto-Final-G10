@@ -37,7 +37,7 @@ export class AuthService {
       next: (response) => {
         if (response) {
           localStorage.setItem('user', JSON.stringify(response));
-          this.snackbarService.success('Bienvenido', {
+          this.snackbarService.success($localize`:@@login.success:Bienvenido` , {
             duration: 5000,
             position: { horizontal: 'center', vertical: 'bottom' }
           });
@@ -63,7 +63,7 @@ export class AuthService {
     localStorage.clear();
     this.router.navigate(['/login']);
 
-    this.snackbarService.warning('Sesión cerrada', {
+    this.snackbarService.warning($localize`:@@logout.success:Sesión cerrada`, {
       duration: 5000,
       position: { horizontal: 'center', vertical: 'bottom' }
     });

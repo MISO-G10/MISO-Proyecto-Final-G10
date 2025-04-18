@@ -30,6 +30,19 @@ export class SellersComponent {
     private readonly dialog = inject(MatDialog);
     private readonly sellerService= inject(SellerService);
     
+    readonly translations = {
+      search_placeholder: $localize`:@@private.seller.search.placeholder:Nombre, email o teléfono`,
+      search_tittle: $localize`:@@private.seller.search.tittle:Buscar vendedor`,
+      new_seller: $localize`:@@private.seller.button.new_seller:Nuevo vendedor`,
+      table_col1: $localize`:@@private.seller.table.col1:Nombre`,
+      table_col2: $localize`:@@private.seller.table.col2:Usuario`,  
+      table_col3: $localize`:@@private.seller.table.col3:Teléfono`,
+      table_col4: $localize`:@@private.seller.table.col4:Dirección`,
+      table_col5: $localize`:@@private.seller.table.col5:Acciones`,
+      tooltip_detail: $localize`:@@private.seller.tooltip.detail:Ver detalles`,
+      tooltip_edit: $localize`:@@private.seller.tooltip.edit:Editar`,
+      
+    };
     
     displayedColumns: string[] = ['nombre', 'username', 'telefono', 'direccion', 'actions'];
     sellers = signal<User[]>([]);
