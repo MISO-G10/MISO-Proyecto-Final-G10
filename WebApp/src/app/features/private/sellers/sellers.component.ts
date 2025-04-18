@@ -6,9 +6,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
-import {Seller} from './models/seller';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import {  RouterModule } from '@angular/router';
+import { SellerService } from '../../../core/services/seller.services';
+import { User } from '../../auth/login/models/user';
 
 @Component({
     selector: 'app-sellers',
@@ -27,42 +28,42 @@ import { RouterModule } from '@angular/router';
 })
 export class SellersComponent {
     private readonly dialog = inject(MatDialog);
-
-    displayedColumns: string[] = ['name', 'email', 'phone', 'joinDate', 'actions'];
-    sellers = signal<Seller[]>([
-        { id: '1', name: 'María González', email: 'maria@example.com', phone: '0991234567', joinDate: new Date('2023-01-15') },
-        { id: '2', name: 'Carlos Rodríguez', email: 'carlos@example.com', phone: '0987654321', joinDate: new Date('2023-03-22') },
-        { id: '3', name: 'Ana Martínez', email: 'ana@example.com', phone: '0976543210', joinDate: new Date('2023-05-10') },
-    ]);
-
+    private readonly sellerService= inject(SellerService);
+    
+    
+    displayedColumns: string[] = ['nombre', 'username', 'telefono', 'direccion', 'actions'];
+    sellers = signal<User[]>([]);
     searchTerm = signal('');
-    filteredSellers = signal<Seller[]>([]);
+    filteredSellers = signal<User[]>([]);
+    
+    ngOnInit() {
+      this.loadSellers();
+    }
 
-    constructor() {
+    loadSellers() {
+      this.sellerService.listSeller().subscribe((users: User[]) => {
+        const sellerFilter = users.filter(user => user.rol === 'VENDEDOR').reverse();
+        this.sellers.set(sellerFilter);
         this.filterSellers();
+      });
     }
 
     filterSellers() {
-        const term = this.searchTerm().toLowerCase();
-        if (!term) {
-          this.filteredSellers.set(this.sellers());
-          return;
-        }
-        
-        this.filteredSellers.set(
-          this.sellers().filter(seller => 
-            seller.name.toLowerCase().includes(term) || 
-            seller.email.toLowerCase().includes(term) ||
-            seller.phone.includes(term)
-        ))
-      }
-
-     
+      const term = this.searchTerm().toLowerCase();
   
-
-  deleteSeller(id: string): void {
-    this.sellers.update(list => list.filter(seller => seller.id !== id));
-    this.filterSellers();
-  }
+      if (!term) {
+        this.filteredSellers.set(this.sellers());
+        return;
+      }
+  
+      this.filteredSellers.set(
+        this.sellers().filter(user =>
+          user.nombre.toLowerCase().includes(term) ||
+          user.username.toLowerCase().includes(term) ||
+          (user.telefono?.toLowerCase().includes(term) ?? false)
+        )
+      );
+    }
+  
 
 }

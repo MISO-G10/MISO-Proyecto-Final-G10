@@ -14,6 +14,7 @@ import { SellerService } from '../../../../core/services/seller.services';
 import  { User } from '../../../auth/login/models/user';
 import  { UserRole } from '../../../auth/login/models/roles';
 import { SnackbarService } from '../../../../shared/ui/snackbar.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-seller',
@@ -34,6 +35,7 @@ export class CreateSellerComponent {
   private readonly fb = inject(FormBuilder);
   private readonly sellerService=inject(SellerService)
   private readonly snackbarService = inject(SnackbarService);
+  private readonly router = inject(Router);
   getErrorMessages = getErrorMessages;
   validaciones=validaciones;
   hide1=true;
@@ -65,6 +67,7 @@ export class CreateSellerComponent {
             position: { horizontal: 'end', vertical: 'top' }
           });
           this.onCancelCreate()
+          this.router.navigate(['/private/sellers']);
         } 
         
       },
