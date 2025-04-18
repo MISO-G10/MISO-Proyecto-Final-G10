@@ -14,4 +14,7 @@ export class SellerService{
     createSeller(seller: User) {
         return this.http.post<SellerResponse>(`${this.apiUrl}`, seller)
     }
+    listSeller(){
+        return this.http.get<User[]>(`${this.apiUrl}`)
+    }
 }
