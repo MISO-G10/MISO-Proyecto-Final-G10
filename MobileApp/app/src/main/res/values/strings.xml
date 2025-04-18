@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">CCP Application</string>
     <string name="home">Home</string>
+    <string name="logout">Log Out</string>
     <string name="app_icon_tittle">CCP</string>
     <string name="login_email_input_placeholder">JhonDoe@gmail.com</string>
     <string name="login_email_input_label">Email</string>
@@ -15,5 +16,9 @@
     <string name="bottom_nav_1">Home</string>
     <string name="bottom_nav_2">Orders</string>
     <string name="bottom_nav_3">Shopping</string>
+    <string name="bottom_nav_4">Visits</string>
+    <string name="bottom_nav_5">Clients</string>
+    <string name="bottom_nav_6">Catalog</string>
+
 
 </resources>

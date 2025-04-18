@@ -5,10 +5,10 @@
   </button>
   <span>CCP App</span>
   <span class="spacer"></span>
-  <button mat-icon-button matTooltip="Ver usuario">
+  <button mat-icon-button [matTooltip]="translations['tooltip_user']">
     <mat-icon>account_circle</mat-icon>
   </button>
-  <button mat-icon-button matTooltip="Salir" (click)="logOut()">
+  <button mat-icon-button [matTooltip]="translations['tooltip_logout']" (click)="logOut()">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
@@ -21,23 +21,23 @@
 
       <a mat-list-item routerLink="home">
         <mat-icon mat-list-icon>home</mat-icon>
-        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Inicio</span>
+        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_home'] }}</span>
       </a>
 
 
       <a mat-list-item routerLink="sellers" *ngIf="canRenderRole(['ADMINISTRADOR','DIRECTOR_VENTAS'])">
         <mat-icon mat-list-icon>supervisor_account</mat-icon>
-        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Vendedores</span>
+        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_sellers'] }}</span>
       </a>
 
       <a mat-list-item routerLink="sales" *ngIf="canRenderRole(['ADMINISTRADOR','DIRECTOR_VENTAS'])">
         <mat-icon mat-list-icon>attach_money</mat-icon>
-        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Ventas</span>
+        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_sales'] }}</span>
       </a>
 
       <a mat-list-item routerLink="fabricantes" *ngIf="canRenderRole(['ADMINISTRADOR','ENCARGADO_COMPRAS_PROVEEDORES'])">
         <mat-icon mat-list-icon>business</mat-icon>
-        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">Fabricantes</span>
+        <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_manufacturer'] }}</span>
       </a>
     </mat-nav-list>
   </mat-sidenav>

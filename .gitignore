@@ -1,24 +1,37 @@
-# Celery stuff
+# Celery
 celerybeat-schedule
 celerybeat.pid
 
-# Environments
-apps/exp-01/.env
+# Python
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.coverage
+*.log
+
+# Pytest
+.pytest_cache/
+
+# Env files
+.env
+*.env
 .env.development
-.venv
+
+# Virtualenvs
+.venv/
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
 
-# misc
-.mypy_cache/
+# SQLite (test)
+*.sqlite3
 
-# PyCharm
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+# IDEs
 .idea/
+.vscode/
 .DS_Store
+
+# VSCode (if not ignoring the whole .vscode/)
+# .vscode/settings.json  # optional

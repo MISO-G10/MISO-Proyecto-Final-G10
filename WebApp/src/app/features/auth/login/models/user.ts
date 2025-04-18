@@ -7,6 +7,8 @@ export interface User {
     apellido:string;
     rol:UserRole;
     password?: string;
+    direccion?: string;
+    telefono?: string;
   }
 
 

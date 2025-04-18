@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+    kotlin("plugin.serialization") version "1.9.0"
 }
 
 android {
@@ -19,13 +19,26 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+
+
     buildTypes {
+        debug {
+            buildConfigField("String", "API_URL", "\"http://10.0.2.2\"")
+            buildConfigField("String", "ENDPOINT_USUARIOS", "\":3000/usuarios/\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_URL", "\"__API_URL__\"")
+            buildConfigField("String", "ENDPOINT_USUARIOS", "\"__ENDPOINT_USERS__\"")
         }
     }
     compileOptions {
@@ -38,10 +51,12 @@ android {
     buildFeatures {
         compose = true
     }
+
 }
 
 dependencies {
 
+    // Dependencias básicas
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -53,6 +68,8 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.9")
     implementation(libs.material3)
     implementation(libs.androidx.ui.text.google.fonts)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -61,17 +78,19 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Retrofit
+    // Retrofit y Networking
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    // Retrofit with Scalar Converter
+
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
-    //Kotlin serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
+    // Serialización
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
+    // Otras dependencias
     implementation("androidx.camera:camera-core:1.3.0")
-    implementation("androidx.navigation:navigation-compose:2.7.5")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
-    //iconos adicionales
     implementation("androidx.compose.material:material-icons-extended:1.7.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
 }

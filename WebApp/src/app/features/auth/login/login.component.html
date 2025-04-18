@@ -46,9 +46,14 @@
     </a>
 
   </form>
-  <select [ngModel]="currentLocale" (ngModelChange)="handleLocaleChange($event)">
-    @for (locale of locales; track locale.id) {
-      <option [value]="locale.id" [selected]="locale.id === currentLocale">{{ locale.label }}</option>
-    }
-  </select>
+
+  <mat-form-field>
+    <mat-label>Idioma</mat-label>
+    <mat-select  [ngModel]="currentLocale" (ngModelChange)="handleLocaleChange($event)">
+      @for (locale of locales; track locale.id) {
+        <mat-option [value]="locale.id">{{ locale.label }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  
 </div>

@@ -51,7 +51,7 @@ def test_cannot_create_fabricante_with_invalid_token(client, valid_fabricante_da
 
     assert response.status_code == 403
 
-'''
+
 def test_cannot_create_fabricante_with_missing_fields(client, valid_fabricante_data):
     
     invalid_data = valid_fabricante_data.copy()
@@ -63,8 +63,8 @@ def test_cannot_create_fabricante_with_missing_fields(client, valid_fabricante_d
 
     assert response.status_code == 400
     assert "nombre" in json_response["msg"]
-'''
-'''
+
+
 def test_list_fabricantes(client, valid_fabricante_data):
    
     client.post('/fabricantes', json=valid_fabricante_data, headers={"Authorization": "Bearer 1234"})
@@ -73,16 +73,16 @@ def test_list_fabricantes(client, valid_fabricante_data):
 
     assert response.status_code == 200
     assert len(response.get_json()) == 1
-'''
+
 # Fabricante filtrado por nombre
-'''def test_list_nombre(client, valid_fabricante_data):
+def test_list_nombre(client, valid_fabricante_data):
     
     new_fabricante = valid_fabricante_data.copy()
     
     client.post('/fabricantes', json=valid_fabricante_data, headers={'Authorization': 'Bearer 1234'})
     
     #print(new_fabricante["nombre"])
-    response = client.get('/fabricantes?flight=' + new_fabricante["nombre"], headers={'Authorization': 'Bearer 1234'})
+    response = client.get('/fabricantes?nombre=' + new_fabricante["nombre"], headers={'Authorization': 'Bearer 1234'})
 
     assert response.status_code == 200
-    assert len(response.get_json()) == 1'''
+    assert len(response.get_json()) == 1

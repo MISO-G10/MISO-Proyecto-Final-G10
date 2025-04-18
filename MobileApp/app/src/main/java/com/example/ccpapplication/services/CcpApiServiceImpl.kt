@@ -1,12 +1,17 @@
 package com.example.ccpapplication.services
 
+import com.example.ccpapplication.data.model.AuthResponse
 import com.example.ccpapplication.data.model.User
-import retrofit2.http.GET
+import com.example.ccpapplication.data.model.UserLogin
+import retrofit2.http.Body
 import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.Response
+import retrofit2.http.GET
 
 interface CcpApiServiceImpl:CcpApiServiceAdapter {
-    @POST("/users/login")
-    suspend fun login(): User
+    @GET("me")
+    override suspend fun getUser(): Response<User>
+    @POST("auth")
+    override suspend fun login(@Body userLogin: UserLogin): Response<AuthResponse>
 
 }

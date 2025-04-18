@@ -1,8 +1,12 @@
 package com.example.ccpapplication.services
 
+import com.example.ccpapplication.data.model.AuthResponse
 import com.example.ccpapplication.data.model.User
+import com.example.ccpapplication.data.model.UserLogin
+import retrofit2.Response
+
 
 interface CcpApiServiceAdapter {
-    suspend fun getUser(userId: String): User
-    suspend fun login(username: String, password: String): User?
+    suspend fun getUser(): Response<User>
+    suspend fun login(userLogin: UserLogin): Response<AuthResponse>
 }

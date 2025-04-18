@@ -18,7 +18,7 @@ interface SnackbarOptions {
 })
 export class SnackbarService {
   private readonly defaultDuration = 5000;
-  private readonly defaultAction = 'Cerrar';
+  private readonly defaultAction = $localize`:@@snackbar.default.action:Cerrar`;
 
   private readonly config: Record<SnackbarType, MatSnackBarConfig> = {
     success: {
