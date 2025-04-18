@@ -22,7 +22,7 @@ class App: Application(
     override fun onCreate() {
         super.onCreate()
         instance = this
-        container = DefaultAppContainer()
+        container = DefaultAppContainer(this)
         updateLocale(this, Locale("es"))
     }
 

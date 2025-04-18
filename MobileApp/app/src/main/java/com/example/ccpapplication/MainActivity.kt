@@ -12,10 +12,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalConfiguration
 import com.example.ccpapplication.navigation.AppNavigation
+import com.example.ccpapplication.services.interceptors.TokenManager
 import com.example.ccpapplication.ui.theme.AppTheme
 
 class MainActivity : AppCompatActivity() {
     private val appViewModel: AppViewModel by viewModels()
+    private val tokenManager: TokenManager by lazy {
+        App.instance.container.tokenManager
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             val configuration = LocalConfiguration.current
             configuration.setLocale(java.util.Locale(currentLocale))
             AppTheme {
-                AppNavigation(appViewModel =appViewModel )
+                AppNavigation(appViewModel =appViewModel, tokenManager = tokenManager )
             }
         }
     }
