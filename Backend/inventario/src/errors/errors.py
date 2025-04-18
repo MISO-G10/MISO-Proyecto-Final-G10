@@ -15,18 +15,32 @@ class ApiError(Exception):
             "msg": self.description
         }
 
+
 class Unauthorized(ApiError):
     code = 401
     description = "Acceso no autorizado"
 
-class Forbidden(ApiError):
-    code = 403
-    description = "Acceso no autorizado"
 
 class Forbidden(ApiError):
     code = 403
     description = "Acceso no autorizado"
+
+
+class Forbidden(ApiError):
+    code = 403
+    description = "Acceso no autorizado"
+
 
 class InvalidProductoData(ApiError):
     code = 400
     description = "Datos del producto no válidos"
+
+
+class InvalidBodegaData(ApiError):
+    code = 400
+    description = "Datos de la bodega no válidos"
+
+
+class ResourceNotFound(ApiError):
+    code = 404
+    description = "Recurso no encontrado"
