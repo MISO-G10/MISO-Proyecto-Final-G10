@@ -46,7 +46,6 @@ import com.example.ccpapplication.ui.components.GenericButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun Login(
@@ -71,7 +70,7 @@ fun Login(
             Image(
                 painter = painterResource(id = R.drawable.ic_ccp_logo),
                 contentDescription = stringResource(R.string.app_icon_tittle),
-                modifier = Modifier.size(180.dp)
+                modifier = Modifier.size(220.dp)
             )
 
 
