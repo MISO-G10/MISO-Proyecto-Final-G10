@@ -14,6 +14,7 @@ import { localeProvider } from '../../../core/locale/locale.provider';
 import { setLocaleData } from '../../../core/locale/set-locale-data';
 import { Locale } from '../../../core/locale/locale';
 import { localeStorage } from '../../../core/locale/locale.storage';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ import { localeStorage } from '../../../core/locale/locale.storage';
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    FormsModule
+    FormsModule,  
+    MatSelectModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import  {getErrorMessages} from '../../../../shared/validators/error-messages';
-import {validaciones} from '../../../../shared/validators/error_validators/seller-validator'
+import validaciones from '../../../../shared/validators/error_validators/seller-validator'
 import { passwordMatchValidator } from '../../../../shared/validators/custom_validators/password-match.validator';
 import {  MatIconModule } from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
@@ -14,6 +14,7 @@ import { SellerService } from '../../../../core/services/seller.services';
 import  { User } from '../../../auth/login/models/user';
 import  { UserRole } from '../../../auth/login/models/roles';
 import { SnackbarService } from '../../../../shared/ui/snackbar.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-seller',
@@ -34,8 +35,10 @@ export class CreateSellerComponent {
   private readonly fb = inject(FormBuilder);
   private readonly sellerService=inject(SellerService)
   private readonly snackbarService = inject(SnackbarService);
+  private readonly router = inject(Router);
   getErrorMessages = getErrorMessages;
-  validaciones=validaciones;
+  validaciones: { [key: string]: { type: string; message: string }[] } = validaciones();
+  
   hide1=true;
   hide2=true;
   sellerForm=this.fb.group({
@@ -46,7 +49,20 @@ export class CreateSellerComponent {
     confirmPassword: ['',[Validators.required]]
   },
   { validators: passwordMatchValidator })
-
+  readonly translations = {
+    form_title: $localize`:@@private.seller.create.form.tittle:Registro de vendedor`,
+    field1_title: $localize`:@@private.seller.create.form.field1.tittle:Nombre`,
+    field1_placeholder: $localize`:@@private.seller.create.form.field1.placeholder:Ej: Juan`,
+    field2_title: $localize`:@@private.seller.create.form.field2.tittle:Apellido`,
+    field2_placeholder: $localize`:@@private.seller.create.form.field2.placeholder:Ej: Pérez`,
+    field3_title: $localize`:@@private.seller.create.form.field3.tittle:Correo electrónico`,
+    field3_placeholder: $localize`:@@private.seller.create.form.field3.placeholder:Ej: JuanPerez@gmail.com`,
+    field4_title: $localize`:@@private.seller.create.form.field4.tittle:Contraseña`,
+    field5_title: $localize`:@@private.seller.create.form.field5.tittle:Confirmar contraseña`,
+    button_cancel: $localize`:@@private.seller.create.form.button.cancel:Cancelar`,
+    button_submit: $localize`:@@private.seller.create.form.button.submit:Registrar Vendedor`
+  };
+  
   onCreateSeller(){
 
     const seller:User = {
@@ -65,6 +81,7 @@ export class CreateSellerComponent {
             position: { horizontal: 'end', vertical: 'top' }
           });
           this.onCancelCreate()
+          this.router.navigate(['/private/sellers']);
         } 
         
       },

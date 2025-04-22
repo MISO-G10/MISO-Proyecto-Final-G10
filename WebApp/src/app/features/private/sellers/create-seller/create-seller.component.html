@@ -1,15 +1,15 @@
 <div class="seller-container">
     <mat-card class="seller-card">
       <mat-card-header>
-        <mat-card-title class="seller-title">Registro de Vendedor</mat-card-title>        
+        <mat-card-title class="seller-title">{{translations["form_title"]}}</mat-card-title>        
       </mat-card-header>
   
       <mat-card-content>
         <form [formGroup]="sellerForm" (ngSubmit)="onCreateSeller()" class="seller-form">
           <!-- Nombre -->
           <mat-form-field appearance="outline" floatLabel="always">
-            <mat-label>Nombre</mat-label>
-            <input matInput formControlName="name" placeholder="Ej: Carlos">
+            <mat-label>{{translations["field1_title"]}}</mat-label>
+            <input matInput formControlName="name" [placeholder]="translations['field1_placeholder']">
             <mat-icon matPrefix>person</mat-icon>
             <mat-error class="error-message" *ngFor="let message of getErrorMessages(sellerForm.get('name'), validaciones['name'])">
               {{ message }}
@@ -18,8 +18,8 @@
   
           <!-- Apellido -->
           <mat-form-field appearance="outline" floatLabel="always">
-            <mat-label>Apellido</mat-label>
-            <input matInput formControlName="lastName" placeholder="Ej: Mendoza">
+            <mat-label>{{translations["field2_title"]}}</mat-label>
+            <input matInput formControlName="lastName" [placeholder]="translations['field2_placeholder']">
             <mat-icon matPrefix>people</mat-icon>
             <mat-error class="error-message" *ngFor="let message of getErrorMessages(sellerForm.get('lastName'), validaciones['lastName'])">
               {{ message }}
@@ -28,8 +28,8 @@
   
           <!-- Email -->
           <mat-form-field appearance="outline" floatLabel="always">
-            <mat-label>Correo electrónico</mat-label>
-            <input matInput formControlName="email" type="email" placeholder="Ej: vendedor@tienda.com">
+            <mat-label>{{translations["field3_title"]}}</mat-label>
+            <input matInput formControlName="email" type="email" [placeholder]="translations['field3_placeholder']">
             <mat-icon matPrefix>email</mat-icon>
             <mat-error class="error-message" *ngFor="let message of getErrorMessages(sellerForm.get('email'), validaciones['email'])">
               {{ message }}
@@ -38,7 +38,7 @@
   
           <!-- Contraseña -->
           <mat-form-field appearance="outline" floatLabel="always">
-            <mat-label>Contraseña</mat-label>
+            <mat-label>{{translations["field4_title"]}}</mat-label>
             <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="password">
             <mat-icon matPrefix>lock</mat-icon>
             <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'" type="button">
@@ -51,7 +51,7 @@
   
           <!-- Confirmar Contraseña -->
           <mat-form-field appearance="outline" floatLabel="always">
-            <mat-label>Confirmar Contraseña</mat-label>
+            <mat-label>{{translations["field5_title"]}}</mat-label>
             <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="confirmPassword">
             <mat-icon matPrefix>lock_reset</mat-icon>
             <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" type="button">
@@ -66,11 +66,11 @@
           <div class="button-group">
             <button mat-stroked-button type="button" (click)="onCancelCreate()" class="cancel-button">
               <mat-icon>cancel</mat-icon>
-              Cancelar
+              {{translations["button_cancel"]}}
             </button>
             <button mat-flat-button color="primary" type="submit" [disabled]="sellerForm.invalid" class="submit-button">
               <mat-icon>person_add</mat-icon>
-              Registrar Vendedor
+              {{translations["button_submit"]}}
             </button>            
           </div>
         </form>

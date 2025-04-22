@@ -9,7 +9,8 @@ import com.example.ccpapplication.AppViewModel
 
 object Graph {
     const val AUTHENTICATION = "auth_graph"
-    const val MAIN = "main_graph"
+    const val CLIENT = "client_graph"
+    const val ADMIN="admin_graph"
 }
 
 @Composable
@@ -21,6 +22,7 @@ fun AppNavGraph(navController: NavHostController = rememberNavController(),
         startDestination = Graph.AUTHENTICATION
     ) {
         authNavGraph(navController = navController,appViewModel = appViewModel)
+        clientNavGraph(navController = navController)
         mainNavGraph(navController = navController)
     }
 }
