@@ -41,8 +41,12 @@ import com.example.ccpapplication.AppViewModel
 import com.example.ccpapplication.R
 import com.example.ccpapplication.ui.components.ButtonType
 
-import com.example.ccpapplication.ui.components.CircleWithText
 import com.example.ccpapplication.ui.components.GenericButton
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun Login(
@@ -63,8 +67,14 @@ fun Login(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.weight(1f)
         ) {
-            Spacer(modifier = Modifier.height(64.dp))
-            CircleWithText(circleSize = 100.dp, text = stringResource(R.string.app_icon_tittle))
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_ccp_logo),
+                contentDescription = stringResource(R.string.app_icon_tittle),
+                modifier = Modifier.size(180.dp)
+            )
+
+
             FormLayout(
                 formState = userViewModel.formState,
                 modifier = Modifier
@@ -232,4 +242,3 @@ fun LanguageSegmentedControl(
         }
     }
 }
-
