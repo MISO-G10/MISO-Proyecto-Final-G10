@@ -1,5 +1,6 @@
 package com.example.ccpapplication.pages.login
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -41,8 +42,14 @@ import com.example.ccpapplication.AppViewModel
 import com.example.ccpapplication.R
 import com.example.ccpapplication.ui.components.ButtonType
 
-import com.example.ccpapplication.ui.components.CircleWithText
 import com.example.ccpapplication.ui.components.GenericButton
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun Login(
@@ -50,6 +57,17 @@ fun Login(
     navController: NavController,
     appViewModel: AppViewModel
 ) {
+
+    val context = LocalContext.current
+
+    // Escucha los eventos emitidos por el ViewModel
+    LaunchedEffect(Unit) {
+        userViewModel.messageEvent.collectLatest { uiText ->
+            val message = uiText.asString(context)
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     userViewModel.onToggleLanguage(appViewModel.getSavedLocale())
     Column(
         verticalArrangement = Arrangement.Bottom,
@@ -63,8 +81,14 @@ fun Login(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.weight(1f)
         ) {
-            Spacer(modifier = Modifier.height(64.dp))
-            CircleWithText(circleSize = 100.dp, text = stringResource(R.string.app_icon_tittle))
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_ccp_logo),
+                contentDescription = stringResource(R.string.app_icon_tittle),
+                modifier = Modifier.size(220.dp)
+            )
+
+
             FormLayout(
                 formState = userViewModel.formState,
                 modifier = Modifier
@@ -232,4 +256,3 @@ fun LanguageSegmentedControl(
         }
     }
 }
-
