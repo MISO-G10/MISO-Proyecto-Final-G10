@@ -1,5 +1,6 @@
 package com.example.ccpapplication.services
 
+import com.example.ccpapplication.data.model.AddVisitResponse
 import com.example.ccpapplication.data.model.AuthResponse
 import com.example.ccpapplication.data.model.UserRegistrationResponse
 import com.example.ccpapplication.data.model.User
@@ -15,6 +16,8 @@ interface CcpApiServiceImpl:CcpApiServiceAdapter {
     override suspend fun getUser(): Response<User>
     @POST("/usuarios/auth")
     override suspend fun login(@Body userLogin: UserLogin): Response<AuthResponse>
+    @POST("")
+    override suspend fun addVisit(): Response<AddVisitResponse>
     @POST("/usuarios")
     override suspend fun registerUser(@Body user: UserRegistration): Response<UserRegistrationResponse>
 
