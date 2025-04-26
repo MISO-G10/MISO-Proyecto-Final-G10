@@ -2,8 +2,10 @@ package com.example.ccpapplication.data.repository
 
 import android.util.Log
 import com.example.ccpapplication.data.model.AuthResponse
+import com.example.ccpapplication.data.model.UserRegistrationResponse
 import com.example.ccpapplication.data.model.User
 import com.example.ccpapplication.data.model.UserLogin
+import com.example.ccpapplication.data.model.UserRegistration
 import com.example.ccpapplication.services.CcpApiServiceAdapter
 import com.example.ccpapplication.services.interceptors.TokenManager
 
@@ -78,6 +80,38 @@ class UserRepositoryImpl (
         } catch (e: Exception) {
             Log.e("UserRepository", "Exception during login: ${e.message}", e)
             Result.failure(Exception("Login failed: ${e.message}"))
+        }
+    }
+
+    override suspend fun registerUser(user: UserRegistration): Result<UserRegistrationResponse> {
+        return try {
+            Log.d("UserRepository", "Trying to register user: ${user.username}")
+
+            val userRegistration = UserRegistration(
+                username = user.username,
+                password = user.password,
+                firstname = user.firstname,
+                lastname = user.lastname,
+                rol = user.rol
+            )
+
+            val response = cppApiService.registerUser(userRegistration)
+
+            if (response.isSuccessful) {
+                response.body()?.let { registrationResponse ->
+                    Log.d("UserRepository", "Registration successful, user ID: ${registrationResponse.id}")
+                    Result.success(registrationResponse)
+                } ?: run {
+                    Log.e("UserRepository", "Registration data not found in response body")
+                    Result.failure(Exception("Registration data not found"))
+                }
+            } else {
+                Log.e("UserRepository", "Registration failed with HTTP ${response.code()} - ${response.message()}")
+                Result.failure(Exception("HTTP ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Log.e("UserRepository", "Exception during registration: ${e.message}", e)
+            Result.failure(Exception("Registration failed: ${e.message}"))
         }
     }
 
