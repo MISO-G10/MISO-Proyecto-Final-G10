@@ -2,13 +2,11 @@ package com.example.ccpapplication.pages.clients
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.widget.Toast
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.ccpapplication.data.model.Client
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -44,7 +43,7 @@ import java.util.Calendar
 @Composable
 fun ScheduleVisitPage(
     navController: NavHostController,
-    client: Client = Client("Tienda Don Jose", "Tel: 322454672", "Calle 53 #123") // ejemplo
+    client: Client = Client("6947210a-5bc1-456d-aaab-e475cf3d71f7", "Tienda Don Jose", "Tel: 322454672", "Calle 53 #123") // ejemplo
 ) {
     // Estados de los campos
     var date by remember { mutableStateOf(LocalDate.now()) }
@@ -213,10 +212,3 @@ fun ScheduleVisitPage(
         }
     }
 }
-
-// Reemplaza con tu data class real
-data class Client(
-    val name: String,
-    val contact: String,
-    val address: String
-)
