@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -65,7 +64,9 @@ fun ClientsPage(
                 ClientItem(
                     client = client,
                     onSchedule = {
-                        navController.navigate("schedule_visit")
+                        navController.navigate(
+                            "schedule_visit/${client.id}/${client.name}/${client.telephone}/${client.address}/${client.username}"
+                        )
                     }
                 )
             }
@@ -116,7 +117,7 @@ fun ClientItem(
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = "Contacto: ${client.contact}",
+                    text = "Contacto: ${client.username}",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
