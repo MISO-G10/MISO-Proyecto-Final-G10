@@ -1,4 +1,5 @@
-package com.example.ccpapplication.pages.home
+package com.example.ccpapplication.pages.clients
+
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,13 +10,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun HomePage(){
+fun ScheduleVisitPage(){
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                .fillMaxSize()){
+        modifier = Modifier
+            .fillMaxSize()){
         Text("Bienvenido a CCP")
     }
-
 }

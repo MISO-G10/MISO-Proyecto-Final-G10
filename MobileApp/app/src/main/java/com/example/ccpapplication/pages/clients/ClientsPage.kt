@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -32,10 +33,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun ClientsPage(
     modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
     viewModel: ClientsViewModel = viewModel()
 ) {
     val clients by viewModel.clients.collectAsState()
@@ -58,42 +62,55 @@ fun ClientsPage(
             contentPadding = PaddingValues(top = 20.dp, bottom = 8.dp)
         ) {
             items(clients) { client ->
-                ClientItem(client = client)
+                ClientItem(
+                    client = client,
+                    onSchedule = {
+                        navController.navigate("schedule_visit")
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-fun ClientItem(client: Client, modifier: Modifier = Modifier) {
+fun ClientItem(
+    client: Client,
+    modifier: Modifier = Modifier,
+    onSchedule: () -> Unit
+) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(12.dp)
+        // Reemplazamos el Row por un Box
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
         ) {
-            // Placeholder de avatar
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center
+            // Contenido (avatar + textos) alineado al inicio superior
+            Column(
+                modifier = Modifier.align(Alignment.TopStart)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = "Avatar",
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            }
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "Avatar",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
 
-            Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(12.dp))
 
-            Column {
                 Text(
                     text = client.name,
                     style = MaterialTheme.typography.titleMedium
@@ -106,6 +123,14 @@ fun ClientItem(client: Client, modifier: Modifier = Modifier) {
                     text = client.address,
                     style = MaterialTheme.typography.bodySmall
                 )
+            }
+
+            // Botón en la esquina superior derecha, solo "Agendar"
+            Button(
+                onClick = onSchedule,
+                modifier = Modifier.align(Alignment.TopEnd)
+            ) {
+                Text(text = "Agendar")
             }
         }
     }
