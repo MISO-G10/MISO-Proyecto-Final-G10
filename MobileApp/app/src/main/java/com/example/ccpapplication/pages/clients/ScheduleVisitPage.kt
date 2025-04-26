@@ -2,6 +2,7 @@ package com.example.ccpapplication.pages.clients
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.widget.Toast
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
@@ -64,7 +65,13 @@ fun ScheduleVisitPage(
     val datePickerDialog = DatePickerDialog(
         context,
         { _, year, month, day ->
-            date = LocalDate.of(year, month + 1, day)
+            val selectedDate = LocalDate.of(year, month + 1, day)
+            if (selectedDate.isBefore(LocalDate.now())) {
+                Toast.makeText(context, "La fecha no puede ser anterior a hoy", Toast.LENGTH_SHORT).show()
+                // No update to date
+            } else {
+                date = selectedDate
+            }
         },
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),
@@ -74,7 +81,13 @@ fun ScheduleVisitPage(
     val fromTimeDialog = TimePickerDialog(
         context,
         { _, hour, minute ->
-            fromTime = LocalTime.of(hour, minute)
+            val selectedTime = LocalTime.of(hour, minute)
+            if (!selectedTime.isBefore(toTime)) {
+                Toast.makeText(context, "La hora de inicio debe ser antes de la hora de fin", Toast.LENGTH_SHORT).show()
+                // No update
+            } else {
+                fromTime = selectedTime
+            }
         },
         fromTime.hour,
         fromTime.minute,
@@ -84,7 +97,13 @@ fun ScheduleVisitPage(
     val toTimeDialog = TimePickerDialog(
         context,
         { _, hour, minute ->
-            toTime = LocalTime.of(hour, minute)
+            val selectedTime = LocalTime.of(hour, minute)
+            if (!selectedTime.isAfter(fromTime)) {
+                Toast.makeText(context, "La hora de fin debe ser después de la hora de inicio", Toast.LENGTH_SHORT).show()
+                // No update
+            } else {
+                toTime = selectedTime
+            }
         },
         toTime.hour,
         toTime.minute,
