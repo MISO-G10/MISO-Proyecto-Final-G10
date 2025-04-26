@@ -35,8 +35,19 @@ class DefaultAppContainer(private val context: Context)  : AppContainer {
 
     }
 
+    private val visitService: CcpApiServiceAdapter by lazy {
+        RetrofitFactory
+            .createRetrofit(BuildConfig.API_URL+BuildConfig.ENDPOINT_VISITAS, tokenManager)
+            .create(CcpApiServiceImpl::class.java)
+
+    }
+
     override val userRepository:UserRepository by lazy {
         UserRepositoryImpl(userService,tokenManager)
     }
+
+    /*override val visitRepository:VisitRepository by lazy {
+        VisitRepositoryImpl(visitService,tokenManager)
+    }*/
 
 }

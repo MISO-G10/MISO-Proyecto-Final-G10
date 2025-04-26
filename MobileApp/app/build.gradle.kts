@@ -30,6 +30,7 @@ android {
         debug {
             buildConfigField("String", "API_URL", "\"http://10.0.2.2\"")
             buildConfigField("String", "ENDPOINT_USUARIOS", "\":3000/usuarios/\"")
+            buildConfigField("String", "ENDPOINT_VISITAS", "\":3004/visitas/\"")
         }
         release {
             isMinifyEnabled = false
@@ -39,6 +40,7 @@ android {
             )
             buildConfigField("String", "API_URL", "\"__API_URL__\"")
             buildConfigField("String", "ENDPOINT_USUARIOS", "\"__ENDPOINT_USERS__\"")
+            buildConfigField("String", "ENDPOINT_VISITAS", "\"__ENDPOINT_USERS__\"")
         }
     }
     compileOptions {
