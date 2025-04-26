@@ -45,7 +45,7 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
                 name = name,
                 telephone = telephone,
                 address = address,
-                username = username
+                email = username
             )
 
             ScheduleVisitPage(navController = navController, client = client)

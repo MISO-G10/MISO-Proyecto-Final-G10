@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Client(
     @SerialName("id") val id: String,
-    @SerialName("name") val name: String,
-    @SerialName("telephone") val telephone: String,
-    @SerialName("address") val address: String,
-    @SerialName("username") val username: String
+    @SerialName("nombre") val name: String,
+    @SerialName("telefono") val telephone: String,
+    @SerialName("direccion") val address: String,
+    @SerialName("username") val email: String
     )
