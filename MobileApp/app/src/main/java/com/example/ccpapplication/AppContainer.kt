@@ -3,6 +3,8 @@ package com.example.ccpapplication
 import android.content.Context
 import com.example.ccpapplication.data.repository.UserRepository
 import com.example.ccpapplication.data.repository.UserRepositoryImpl
+import com.example.ccpapplication.data.repository.VisitRepository
+import com.example.ccpapplication.data.repository.VisitRepositoryImpl
 import com.example.ccpapplication.services.CcpApiServiceAdapter
 import com.example.ccpapplication.services.CcpApiServiceImpl
 import com.example.ccpapplication.services.RetrofitFactory
@@ -20,6 +22,7 @@ import retrofit2.Retrofit
 interface AppContainer {
     val userRepository: UserRepository
     val tokenManager: TokenManager
+    val visitRepository: VisitRepository
 }
 
 class DefaultAppContainer(private val context: Context)  : AppContainer {
@@ -35,8 +38,18 @@ class DefaultAppContainer(private val context: Context)  : AppContainer {
 
     }
 
+    private val visitService: CcpApiServiceAdapter by lazy {
+        RetrofitFactory
+            .createRetrofit(BuildConfig.API_URL+BuildConfig.ENDPOINT_VISITAS, tokenManager)
+            .create(CcpApiServiceImpl::class.java)
+
+    }
+
     override val userRepository:UserRepository by lazy {
         UserRepositoryImpl(userService,tokenManager)
     }
 
+    override val visitRepository:VisitRepository by lazy {
+          VisitRepositoryImpl(visitService,tokenManager)
+    }
 }
