@@ -29,7 +29,7 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "API_URL", "\"http://10.0.2.2\"")
-            buildConfigField("String", "ENDPOINT_VISITAS", "\":3004/visitas/\"")
+            buildConfigField("String", "ENDPOINT_VISITAS", "\":3004/\"")
             buildConfigField("String", "ENDPOINT_USUARIOS", "\":3000/\"")
         }
         release {

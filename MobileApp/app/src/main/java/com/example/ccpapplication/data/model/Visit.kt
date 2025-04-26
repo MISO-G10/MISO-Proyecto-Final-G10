@@ -14,6 +14,15 @@ data class Visit(
 )
 
 @Serializable
+data class VisitAdd(
+    @SerialName("fecha") val date: String,
+    @SerialName("horaDesde") val hourFrom: String,
+    @SerialName("horaHasta") val hourTo: String,
+    @SerialName("comentarios") val comments: String,
+    @SerialName("idUsuario") val idUser: String
+)
+
+@Serializable
 data class AddVisitResponse(
     @SerialName("id") val id: String,
     @SerialName("createdAt") val createdAt: String
