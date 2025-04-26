@@ -43,7 +43,7 @@ import java.util.Calendar
 @Composable
 fun ScheduleVisitPage(
     navController: NavHostController,
-    client: Client = Client("6947210a-5bc1-456d-aaab-e475cf3d71f7", "Tienda Don Jose", "Tel: 322454672", "Calle 53 #123") // ejemplo
+    client: Client = Client(id = "6947210a-5bc1-456d-aaab-e475cf3d71f7", name="Tendero Luis", telephone="3112254000", address="Calle 127 # 127-15", username = "luis@gmail.com")
 ) {
     // Estados de los campos
     var date by remember { mutableStateOf(LocalDate.now()) }
@@ -124,7 +124,7 @@ fun ScheduleVisitPage(
             Column(modifier = Modifier.padding(12.dp)) {
                 Text(client.name, style = MaterialTheme.typography.titleMedium)
                 Spacer(Modifier.height(4.dp))
-                Text(client.contact, style = MaterialTheme.typography.bodyMedium)
+                Text(client.telephone, style = MaterialTheme.typography.bodyMedium)
             }
         }
 

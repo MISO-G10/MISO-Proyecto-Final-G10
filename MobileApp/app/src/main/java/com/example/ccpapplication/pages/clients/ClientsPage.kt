@@ -64,7 +64,9 @@ fun ClientsPage(
                 ClientItem(
                     client = client,
                     onSchedule = {
-                        navController.navigate("schedule_visit")
+                        navController.navigate(
+                            "schedule_visit/${client.id}/${client.name}/${client.telephone}/${client.address}/${client.username}"
+                        )
                     }
                 )
             }
@@ -115,7 +117,7 @@ fun ClientItem(
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = "Contacto: ${client.contact}",
+                    text = "Contacto: ${client.username}",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
