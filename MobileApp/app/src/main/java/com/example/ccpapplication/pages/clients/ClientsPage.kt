@@ -55,7 +55,7 @@ fun ClientsPage(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            contentPadding = PaddingValues(vertical = 8.dp)
+            contentPadding = PaddingValues(top = 20.dp, bottom = 8.dp)
         ) {
             items(clients) { client ->
                 ClientItem(client = client)
