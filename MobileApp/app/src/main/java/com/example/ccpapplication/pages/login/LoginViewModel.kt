@@ -1,6 +1,5 @@
 package com.example.ccpapplication.pages.login
 
-import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,16 +12,16 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import com.example.ccpapplication.App
-import com.example.ccpapplication.data.model.User
+import com.example.ccpapplication.R
 import com.example.ccpapplication.data.model.UserLogin
 import com.example.ccpapplication.data.repository.UserRepository
 import com.example.ccpapplication.navigation.AppPages
 import com.example.ccpapplication.navigation.graph.Graph
 import com.example.ccpapplication.navigation.state.DataUiState
 import com.example.ccpapplication.services.interceptors.TokenManager
+import com.example.ccpapplication.util.UiText
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
 data class LoginPageState(
     val email: MutableState<String>,
@@ -36,6 +35,10 @@ class LoginViewModel(
     private val userRepository: UserRepository,
     private val tokenManager: TokenManager
 ): ViewModel() {
+
+    private val _messageEvent = MutableSharedFlow<UiText>()
+    val messageEvent = _messageEvent
+
     var uiState: DataUiState<UserLogin> by mutableStateOf(DataUiState.Loading)
     var formState: LoginPageState by mutableStateOf(
         LoginPageState(
@@ -64,8 +67,9 @@ class LoginViewModel(
 
                     when {
                         user == null -> {
-                            Toast.makeText(navController.context,
-                                "Usuario no encontrado tras login", Toast.LENGTH_LONG).show()
+                            viewModelScope.launch {
+                                _messageEvent.emit(UiText.StringResource(R.string.user_not_found))
+                            }
                             uiState = DataUiState.Error
                         }
 
@@ -73,8 +77,11 @@ class LoginViewModel(
                             navController.navigate(Graph.ADMIN) {
                                 popUpTo(Graph.AUTHENTICATION) { inclusive = true }
                             }
-                            val welcomeMsg = "¡Bienvenido, ${user.username}!"
-                            Toast.makeText(navController.context, welcomeMsg, Toast.LENGTH_SHORT).show()
+
+                            viewModelScope.launch {
+                                _messageEvent.emit(UiText.StringResource(R.string.welcome_message, user.username))
+                            }
+
                             uiState = DataUiState.Success(authResponse)
                         }
 
@@ -82,21 +89,29 @@ class LoginViewModel(
                             navController.navigate(Graph.CLIENT) {
                                 popUpTo(Graph.AUTHENTICATION) { inclusive = true }
                             }
-                            val welcomeMsg = "¡Bienvenido, ${user.username}!"
-                            Toast.makeText(navController.context, welcomeMsg, Toast.LENGTH_SHORT).show()
+
+                            viewModelScope.launch {
+                                _messageEvent.emit(UiText.StringResource(R.string.welcome_message, user.username))
+                            }
+
                             uiState = DataUiState.Success(authResponse)
                         }
 
                         else -> {
-                            Toast.makeText(navController.context,
-                                "Rol de usuario no reconocido: ${user.rol}", Toast.LENGTH_LONG).show()
+
+                            viewModelScope.launch {
+                                _messageEvent.emit(UiText.StringResource(R.string.role_not_found, user.rol))
+                            }
+
                             uiState = DataUiState.Error
                         }
                     }
                 },
                 onFailure = { exception ->
-                    Toast.makeText(navController.context, "Error: $exception.message", Toast.LENGTH_LONG).show()
-                    uiState = DataUiState.Error
+
+                    _messageEvent.emit(
+                        UiText.StringResource(R.string.generic_error, exception.localizedMessage ?: R.string.unknown_error)
+                    )
                 }
             )
         }

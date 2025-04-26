@@ -19,4 +19,9 @@
     <string name="bottom_nav_4">Visitas</string>
     <string name="bottom_nav_5">Clientes</string>
     <string name="bottom_nav_6">Catalogo</string>
+    <string name="welcome_message">¡Bienvenido, %1$s!</string>
+    <string name="user_not_found">Usuario no encontrado</string>
+    <string name="role_not_found">Rol de usuario no reconocido: %1$s!</string>
+    <string name="generic_error">Error: %1$s!</string>
+    <string name="unknown_error">Error desconocido</string>
 </resources>
