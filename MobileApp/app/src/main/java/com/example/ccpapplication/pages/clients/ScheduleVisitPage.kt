@@ -30,9 +30,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.ccpapplication.R
 import com.example.ccpapplication.data.model.Client
+import com.example.ccpapplication.pages.register.RegisterViewModel
+import com.example.ccpapplication.ui.components.ButtonType
+import com.example.ccpapplication.ui.components.GenericButton
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -43,7 +49,8 @@ import java.util.Calendar
 @Composable
 fun ScheduleVisitPage(
     navController: NavHostController,
-    client: Client = Client(id = "6947210a-5bc1-456d-aaab-e475cf3d71f7", name="Tendero Luis", telephone="3112254000", address="Calle 127 # 127-15", email = "luis@gmail.com")
+    client: Client,
+    viewModel: ScheduleVisitViewModel = viewModel(factory = RegisterViewModel.Factory)
 ) {
     // Estados de los campos
     var date by remember { mutableStateOf(LocalDate.now()) }
@@ -191,7 +198,7 @@ fun ScheduleVisitPage(
 
         // Notas
         OutlinedTextField(
-            value = notes,
+            value = viewModel.comments,
             onValueChange = { notes = it },
             label = { Text("Notas") },
             modifier = Modifier
@@ -202,13 +209,25 @@ fun ScheduleVisitPage(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // Botón Agendar
-        Button(
-            onClick = { /* lógica para guardar la visita */ },
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text("Agendar")
-        }
+//        // Botón Agendar
+//        Button(
+//            onClick = { /* lógica para guardar la visita */ },
+//            modifier = Modifier
+//                .fillMaxWidth()
+//        ) {
+//            Text("Agendar")
+//        }
+
+
+        GenericButton(
+            label = stringResource(R.string.register_register_button_label),
+            onClick = {
+                viewModel.addVisit { success ->
+                    // La navegación se maneja en el LaunchedEffect
+                }
+            },
+            type = ButtonType.PRIMARY,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }

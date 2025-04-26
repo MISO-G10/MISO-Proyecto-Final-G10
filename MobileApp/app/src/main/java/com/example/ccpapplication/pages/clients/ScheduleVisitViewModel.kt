@@ -1,6 +1,5 @@
 package com.example.ccpapplication.pages.clients
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,26 +11,23 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.ccpapplication.App
 import com.example.ccpapplication.R
-import com.example.ccpapplication.data.repository.UserRepository
-import com.example.ccpapplication.data.repository.VisitRepository
-import com.example.ccpapplication.data.model.User
-import com.example.ccpapplication.data.model.UserRegistration
 import com.example.ccpapplication.data.model.VisitAdd
+import com.example.ccpapplication.data.repository.VisitRepository
 import kotlinx.coroutines.launch
 
 class ScheduleVisitViewModel(private val errorMessages: ValidationErrorMessages,
                         private val visitRepository: VisitRepository
 ) : ViewModel() {
-    // Declaración de textos usados en la app
     var date by mutableStateOf("")
     var hourFrom by mutableStateOf("")
     var hourTo by mutableStateOf("")
     var comments by mutableStateOf("")
+    var idUser by mutableStateOf("")
 
     var commentsError by mutableStateOf<String?>(null)
 
     var isLoading by mutableStateOf(false)
-    var registrationSuccessful by mutableStateOf(false)
+    var addVisitSuccessful by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
 
 
@@ -50,7 +46,7 @@ class ScheduleVisitViewModel(private val errorMessages: ValidationErrorMessages,
     }
 
 
-    fun register(onComplete: (Boolean) -> Unit) {
+    fun addVisit(onComplete: (Boolean) -> Unit) {
         if (validateInputs()) {
             viewModelScope.launch {
                 isLoading = true
@@ -60,7 +56,7 @@ class ScheduleVisitViewModel(private val errorMessages: ValidationErrorMessages,
                     hourFrom = hourFrom,
                     hourTo = hourTo,
                     comments = comments,
-                    idUser = ""
+                    idUser = idUser
                 )
 
                 val result = visitRepository.addVisit(visit)
@@ -68,7 +64,7 @@ class ScheduleVisitViewModel(private val errorMessages: ValidationErrorMessages,
                 result.fold(
                     onSuccess = { response ->
                         isLoading = false
-                        registrationSuccessful = true
+                        addVisitSuccessful = true
                         onComplete(true)
                     },
                     onFailure = { exception ->
@@ -87,7 +83,7 @@ class ScheduleVisitViewModel(private val errorMessages: ValidationErrorMessages,
         comments = ""
         commentsError = null
         isLoading = false
-        registrationSuccessful = false
+        addVisitSuccessful = false
         errorMessage = null
     }
 
