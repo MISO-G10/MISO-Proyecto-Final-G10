@@ -5,5 +5,6 @@ sealed class AppPages (val route: String) {
     object RegisterPage : AppPages(route = "register")
     object HomePage : AppPages(route = "home")
     object ShoppingCartPage : AppPages(route = "shoppingCart")
+    object clientsPage : AppPages(route = "clients")
 
 }

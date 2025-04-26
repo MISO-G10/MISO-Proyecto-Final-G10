@@ -16,6 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navigation
 import com.example.ccpapplication.navigation.BottomDrawer
 import com.example.ccpapplication.navigation.BottomNavItem
+import com.example.ccpapplication.pages.clients.ClientsPage
 import com.example.ccpapplication.pages.home.HomePage
 import com.example.ccpapplication.pages.orders.Order
 
@@ -26,6 +27,10 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
     ) {
         composable(BottomNavItem.Home.route) {
             HomePage()
+        }
+
+        composable(BottomNavItem.Clients.route) {
+            ClientsPage()
         }
 
     }
