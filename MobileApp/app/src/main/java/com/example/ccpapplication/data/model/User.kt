@@ -22,8 +22,23 @@ data class UserLogin(
     )
 
 @Serializable
+data class UserRegistration(
+    @SerialName("username") val username: String,
+    @SerialName("password") val password: String,
+    @SerialName("nombre") val firstname: String,
+    @SerialName("apellido") val lastname: String,
+    @SerialName("rol") val rol: String
+)
+
+@Serializable
 data class AuthResponse(
     @SerialName("token") val token: String,
     @SerialName("id") val id: String,
     @SerialName("expireAt") val expireAt: String
+)
+
+@Serializable
+data class UserRegistrationResponse(
+    @SerialName("createdAt") val createdAt: String,
+    @SerialName("id") val id: String
 )
