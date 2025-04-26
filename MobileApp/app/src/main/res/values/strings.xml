@@ -44,5 +44,6 @@
     <string name="register_validation_error_passwordconf_empty">Please confirm your password</string>
     <string name="register_saving_message">Saving...</string>
     <string name="register_success_message">Registered successfully</string>
+    <string name="add_visit_validation_error_comments_empty">Notes cannot be empty</string>
 
 </resources>
