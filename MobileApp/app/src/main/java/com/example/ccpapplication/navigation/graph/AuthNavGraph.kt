@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.ccpapplication.AppViewModel
-import com.example.ccpapplication.ChangeLanguage
 import com.example.ccpapplication.navigation.AppPages
 import com.example.ccpapplication.pages.login.Login
 import com.example.ccpapplication.pages.login.LoginViewModel

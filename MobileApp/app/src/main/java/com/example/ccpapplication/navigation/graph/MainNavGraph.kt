@@ -1,24 +1,18 @@
 package com.example.ccpapplication.navigation.graph
 
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navigation
 import com.example.ccpapplication.navigation.BottomDrawer
 import com.example.ccpapplication.navigation.BottomNavItem
 import com.example.ccpapplication.pages.clients.ClientsPage
+import com.example.ccpapplication.pages.clients.ScheduleVisitPage
 import com.example.ccpapplication.pages.home.HomePage
-import com.example.ccpapplication.pages.orders.Order
+
+import com.example.ccpapplication.navigation.graph.Graph.SCHEDULE_VISIT
 
 fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
     navigation(
@@ -30,7 +24,11 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
         }
 
         composable(BottomNavItem.Clients.route) {
-            ClientsPage()
+            ClientsPage(navController = navController)
+        }
+
+        composable(SCHEDULE_VISIT) {
+            ScheduleVisitPage(navController = navController)
         }
 
     }
@@ -38,7 +36,7 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
 
 @Composable
 fun MainNavigationDrawer(
-    navController: NavController,
+    navController: NavHostController,
 ) {
 
     val menus = listOf(
