@@ -7,13 +7,20 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.ccpapplication.App
 import com.example.ccpapplication.R
+import com.example.ccpapplication.data.repository.UserRepository
+import com.example.ccpapplication.data.model.User
+import com.example.ccpapplication.data.model.UserRegistration
+import kotlinx.coroutines.launch
 
-class RegisterViewModel(private val errorMessages: ValidationErrorMessages) : ViewModel() {
-    
+class RegisterViewModel(private val errorMessages: ValidationErrorMessages,
+                        private val userRepository: UserRepository
+) : ViewModel() {
+    // Declaración de textos usados en la app
     var firstName by mutableStateOf("")
     var lastName by mutableStateOf("")
     var email by mutableStateOf("")
@@ -31,8 +38,11 @@ class RegisterViewModel(private val errorMessages: ValidationErrorMessages) : Vi
     var registrationSuccessful by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
 
+
+
+
     // Función para validar los campos de entrada del formulario
-    fun validateInputs(): Boolean {
+    private fun validateInputs(): Boolean {
         var isValid = true
         
         // Validar nombre
@@ -87,18 +97,35 @@ class RegisterViewModel(private val errorMessages: ValidationErrorMessages) : Vi
         return isValid
     }
 
-    // Función para registrar al nuevo usuario y hacer llamado al backend
+
     fun register(onComplete: (Boolean) -> Unit) {
         if (validateInputs()) {
-            // Simulación de registro exitoso (sin backend)
-            isLoading = true
-            
-            // Simular un pequeño retraso para mostrar el loading
-            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                isLoading = false
-                registrationSuccessful = true
-                onComplete(true)
-            }, 1000)
+            viewModelScope.launch {
+                isLoading = true
+
+                val user = UserRegistration(
+                    username = email,
+                    password = password,
+                    firstname = firstName,
+                    lastname = lastName,
+                    rol = clientType
+                )
+
+                val result = userRepository.registerUser(user)
+
+                result.fold(
+                    onSuccess = { response ->
+                        isLoading = false
+                        registrationSuccessful = true
+                        onComplete(true)
+                    },
+                    onFailure = { exception ->
+                        isLoading = false
+                        errorMessage = exception.message
+                        onComplete(false)
+                    }
+                )
+            }
         } else {
             onComplete(false)
         }
@@ -125,6 +152,7 @@ class RegisterViewModel(private val errorMessages: ValidationErrorMessages) : Vi
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as App)
+                val userRepository = application.container.userRepository
                 val errorMessages = ValidationErrorMessages(
                     firstNameEmpty = application.getString(R.string.register_validation_error_firstname_empty),
                     lastNameEmpty = application.getString(R.string.register_validation_error_lastname_empty),
@@ -135,7 +163,7 @@ class RegisterViewModel(private val errorMessages: ValidationErrorMessages) : Vi
                     confirmPasswordEmpty = application.getString(R.string.register_validation_error_password_empty),
                     passwordMismatch = application.getString(R.string.register_validation_error_pwd_mismatch)
                 )
-                RegisterViewModel(errorMessages)
+                RegisterViewModel(errorMessages = errorMessages,userRepository = userRepository)
             }
         }
     }
