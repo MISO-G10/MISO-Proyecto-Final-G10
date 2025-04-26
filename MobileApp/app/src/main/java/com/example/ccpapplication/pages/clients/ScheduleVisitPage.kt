@@ -50,22 +50,20 @@ import java.util.Calendar
 fun ScheduleVisitPage(
     navController: NavHostController,
     client: Client,
-    viewModel: ScheduleVisitViewModel = viewModel(factory = RegisterViewModel.Factory)
+    viewModel: ScheduleVisitViewModel = viewModel(factory = ScheduleVisitViewModel.Factory)
 ) {
-    // Estados de los campos
-    var date by remember { mutableStateOf(LocalDate.now()) }
-    var fromTime by remember { mutableStateOf(LocalTime.of(9, 0)) }
-    var toTime by remember { mutableStateOf(LocalTime.of(10, 0)) }
-    var notes by remember { mutableStateOf("") }
-
     val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
+    val selectedDate = if (viewModel.date.isNotEmpty()) LocalDate.parse(viewModel.date) else LocalDate.now()
+    val selectedFromTime = if (viewModel.hourFrom.isNotEmpty()) LocalTime.parse(viewModel.hourFrom) else LocalTime.of(9, 0)
+    val selectedToTime = if (viewModel.hourTo.isNotEmpty()) LocalTime.parse(viewModel.hourTo) else LocalTime.of(10, 0)
 
     val context = LocalContext.current
 
     // Prepare calendar for initial date/year/month/day
     val calendar = Calendar.getInstance().apply {
-        set(date.year, date.monthValue - 1, date.dayOfMonth)
+        set(selectedDate.year, selectedDate.monthValue - 1, selectedDate.dayOfMonth)
     }
 
     val datePickerDialog = DatePickerDialog(
@@ -76,7 +74,7 @@ fun ScheduleVisitPage(
                 Toast.makeText(context, "La fecha no puede ser anterior a hoy", Toast.LENGTH_SHORT).show()
                 // No update to date
             } else {
-                date = selectedDate
+                viewModel.date = selectedDate.toString()
             }
         },
         calendar.get(Calendar.YEAR),
@@ -88,15 +86,15 @@ fun ScheduleVisitPage(
         context,
         { _, hour, minute ->
             val selectedTime = LocalTime.of(hour, minute)
-            if (!selectedTime.isBefore(toTime)) {
+            if (!selectedTime.isBefore(selectedToTime)) {
                 Toast.makeText(context, "La hora de inicio debe ser antes de la hora de fin", Toast.LENGTH_SHORT).show()
                 // No update
             } else {
-                fromTime = selectedTime
+                viewModel.hourFrom = selectedTime.format(timeFormatter)
             }
         },
-        fromTime.hour,
-        fromTime.minute,
+        selectedFromTime.hour,
+        selectedFromTime.minute,
         true
     )
 
@@ -104,15 +102,15 @@ fun ScheduleVisitPage(
         context,
         { _, hour, minute ->
             val selectedTime = LocalTime.of(hour, minute)
-            if (!selectedTime.isAfter(fromTime)) {
+            if (!selectedTime.isAfter(selectedFromTime)) {
                 Toast.makeText(context, "La hora de fin debe ser después de la hora de inicio", Toast.LENGTH_SHORT).show()
                 // No update
             } else {
-                toTime = selectedTime
+                viewModel.hourTo = selectedTime.format(timeFormatter)
             }
         },
-        toTime.hour,
-        toTime.minute,
+        selectedToTime.hour,
+        selectedToTime.minute,
         true
     )
 
@@ -138,7 +136,7 @@ fun ScheduleVisitPage(
         // Fecha
         val dateInteractionSource = remember { MutableInteractionSource() }
         OutlinedTextField(
-            value = date.format(dateFormatter),
+            value = selectedDate.format(dateFormatter),
             onValueChange = {},
             label = { Text("Fecha") },
             modifier = Modifier
@@ -161,7 +159,7 @@ fun ScheduleVisitPage(
         ) {
             val fromTimeInteractionSource = remember { MutableInteractionSource() }
             OutlinedTextField(
-                value = fromTime.format(timeFormatter),
+                value = selectedFromTime.format(timeFormatter),
                 onValueChange = {},
                 label = { Text("Desde") },
                 modifier = Modifier
@@ -179,7 +177,7 @@ fun ScheduleVisitPage(
 
             val toTimeInteractionSource = remember { MutableInteractionSource() }
             OutlinedTextField(
-                value = toTime.format(timeFormatter),
+                value = selectedToTime.format(timeFormatter),
                 onValueChange = {},
                 label = { Text("Hasta") },
                 modifier = Modifier
@@ -199,7 +197,7 @@ fun ScheduleVisitPage(
         // Notas
         OutlinedTextField(
             value = viewModel.comments,
-            onValueChange = { notes = it },
+            onValueChange = { viewModel.comments = it },
             label = { Text("Notas") },
             modifier = Modifier
                 .fillMaxWidth()
