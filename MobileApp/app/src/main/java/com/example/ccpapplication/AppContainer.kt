@@ -30,7 +30,7 @@ class DefaultAppContainer(private val context: Context)  : AppContainer {
 
     private val userService: CcpApiServiceAdapter by lazy {
         RetrofitFactory
-            .createRetrofit(BuildConfig.API_URL+":3000", tokenManager)
+            .createRetrofit(BuildConfig.API_URL+BuildConfig.ENDPOINT_USUARIOS, tokenManager)
             .create(CcpApiServiceImpl::class.java)
 
     }

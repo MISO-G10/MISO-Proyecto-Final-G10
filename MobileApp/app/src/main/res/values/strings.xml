@@ -43,6 +43,6 @@
     <string name="register_validation_error_password_empty">Password cannot be empty</string>
     <string name="register_validation_error_passwordconf_empty">Please confirm your password</string>
     <string name="register_saving_message">Saving...</string>
-    <string name="register_success_message">Your account has been created successfully</string>
+    <string name="register_success_message">Registered successfully</string>
 
 </resources>

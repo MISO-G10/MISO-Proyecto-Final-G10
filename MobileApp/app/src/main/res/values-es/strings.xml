@@ -43,7 +43,7 @@
     <string name="register_validation_error_password_empty">La contraseña no puede estar vacía</string>
     <string name="register_validation_error_passwordconf_empty">Por favor confirme su contraseña</string>
     <string name="register_saving_message">Guardando...</string>
-    <string name="register_success_message">Su cuenta se ha registrado exitosamente</string>
+    <string name="register_success_message">Registro exitoso</string>
 
 
 
