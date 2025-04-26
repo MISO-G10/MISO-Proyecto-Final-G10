@@ -111,23 +111,22 @@ fun ScheduleVisitPage(
         }
 
         // Fecha
-        Box(
+        val dateInteractionSource = remember { MutableInteractionSource() }
+        OutlinedTextField(
+            value = date.format(dateFormatter),
+            onValueChange = {},
+            label = { Text("Fecha") },
             modifier = Modifier
-                .fillMaxWidth()
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) {
+                .fillMaxWidth(),
+            readOnly = true,
+            interactionSource = dateInteractionSource
+        )
+        androidx.compose.runtime.LaunchedEffect(dateInteractionSource) {
+            dateInteractionSource.interactions.collect { interaction ->
+                if (interaction is androidx.compose.foundation.interaction.PressInteraction.Release) {
                     datePickerDialog.show()
                 }
-        ) {
-            OutlinedTextField(
-                value = date.format(dateFormatter),
-                onValueChange = {},
-                label = { Text("Fecha") },
-                modifier = Modifier.fillMaxWidth(),
-                readOnly = true
-            )
+            }
         }
 
         // Desde / Hasta
@@ -135,41 +134,40 @@ fun ScheduleVisitPage(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Box(
+            val fromTimeInteractionSource = remember { MutableInteractionSource() }
+            OutlinedTextField(
+                value = fromTime.format(timeFormatter),
+                onValueChange = {},
+                label = { Text("Desde") },
                 modifier = Modifier
-                    .weight(1f)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) {
+                    .weight(1f),
+                readOnly = true,
+                interactionSource = fromTimeInteractionSource
+            )
+            androidx.compose.runtime.LaunchedEffect(fromTimeInteractionSource) {
+                fromTimeInteractionSource.interactions.collect { interaction ->
+                    if (interaction is androidx.compose.foundation.interaction.PressInteraction.Release) {
                         fromTimeDialog.show()
                     }
-            ) {
-                OutlinedTextField(
-                    value = fromTime.format(timeFormatter),
-                    onValueChange = {},
-                    label = { Text("Desde") },
-                    modifier = Modifier.fillMaxWidth(),
-                    readOnly = true
-                )
+                }
             }
-            Box(
+
+            val toTimeInteractionSource = remember { MutableInteractionSource() }
+            OutlinedTextField(
+                value = toTime.format(timeFormatter),
+                onValueChange = {},
+                label = { Text("Hasta") },
                 modifier = Modifier
-                    .weight(1f)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) {
+                    .weight(1f),
+                readOnly = true,
+                interactionSource = toTimeInteractionSource
+            )
+            androidx.compose.runtime.LaunchedEffect(toTimeInteractionSource) {
+                toTimeInteractionSource.interactions.collect { interaction ->
+                    if (interaction is androidx.compose.foundation.interaction.PressInteraction.Release) {
                         toTimeDialog.show()
                     }
-            ) {
-                OutlinedTextField(
-                    value = toTime.format(timeFormatter),
-                    onValueChange = {},
-                    label = { Text("Hasta") },
-                    modifier = Modifier.fillMaxWidth(),
-                    readOnly = true
-                )
+                }
             }
         }
 
