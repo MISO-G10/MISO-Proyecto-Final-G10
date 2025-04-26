@@ -24,6 +24,25 @@
     <string name="role_not_found">User role not recognized: %1$s!</string>
     <string name="generic_error">Error: %1$s!</string>
     <string name="unknown_error">Unknown error</string>
-
+    <string name="register_firstname_input_label">First Name</string>
+    <string name="register_lastname_input_label">Last Name</string>
+    <string name="register_email_input_label">Email</string>
+    <string name="register_password_input_label">Password</string>
+    <string name="register_confirmpwd_input_label">Confirm Password</string>
+    <string name="register_client_type_input_label">Client Type</string>
+    <string name="register_register_button_label">Sign Up</string>
+    <string name="register_login_button_label">Sign In</string>
+    <string name="register_login_sub_1">Already have an account? </string>
+    <string name="register_page_title">New Account </string>
+    <string name="register_validation_error_pwd_mismatch">Passwords do not match</string>
+    <string name="register_validation_error_pwd_length">The password must be at least 8 characters long</string>
+    <string name="register_validation_error_email_invalid">The email address is not valid</string>
+    <string name="register_validation_error_firstname_empty">First name cannot be empty</string>
+    <string name="register_validation_error_lastname_empty">Last name cannot be empty</string>
+    <string name="register_validation_error_email_empty">Email cannot be empty</string>
+    <string name="register_validation_error_password_empty">Password cannot be empty</string>
+    <string name="register_validation_error_passwordconf_empty">Please confirm your password</string>
+    <string name="register_saving_message">Saving...</string>
+    <string name="register_success_message">Registered successfully</string>
 
 </resources>

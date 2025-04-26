@@ -10,7 +10,8 @@ import com.example.ccpapplication.ChangeLanguage
 import com.example.ccpapplication.navigation.AppPages
 import com.example.ccpapplication.pages.login.Login
 import com.example.ccpapplication.pages.login.LoginViewModel
-import com.example.ccpapplication.pages.login.RegisterPage
+import com.example.ccpapplication.pages.register.RegisterPage
+import com.example.ccpapplication.pages.register.RegisterViewModel
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController,appViewModel: AppViewModel) {
     navigation(
@@ -26,7 +27,11 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController,appViewModel: 
             )
         }
         composable(route = AppPages.RegisterPage.route) {
-            RegisterPage()
+            val registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.Factory)
+            RegisterPage(
+                navController = navController,
+                viewModel = registerViewModel
+            )
         }
     }
 }
