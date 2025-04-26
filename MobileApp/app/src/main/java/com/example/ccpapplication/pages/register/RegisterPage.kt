@@ -223,7 +223,7 @@ fun RegisterPage(
                         fontSize = 14.sp
                     )
                 )
-
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(R.string.register_login_button_label),
                     style = TextStyle(
