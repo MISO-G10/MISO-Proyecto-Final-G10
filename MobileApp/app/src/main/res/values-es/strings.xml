@@ -55,6 +55,7 @@
     <string name="add_visit_validation_error_hour_to">La hora final debe ser mayor a la hora inicial</string>
     <string name="ccp_welcome">Bienvenido a CCP</string>
     <string name="schedule_visit_button_label">Agendar visita</string>
+    <string name="add_visit_label_button">Agendar visita</string>
 
 
 </resources>
