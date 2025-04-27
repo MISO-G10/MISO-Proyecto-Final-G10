@@ -13,10 +13,14 @@ import com.example.ccpapplication.App
 import com.example.ccpapplication.R
 import com.example.ccpapplication.data.model.VisitAdd
 import com.example.ccpapplication.data.repository.VisitRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ScheduleVisitViewModel(private val errorMessages: ValidationErrorMessages,
-                        private val visitRepository: VisitRepository
+class ScheduleVisitViewModel(
+    private val errorMessages: ValidationErrorMessages,
+    private val visitRepository: VisitRepository,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
     var date by mutableStateOf("")
     var hourFrom by mutableStateOf("")

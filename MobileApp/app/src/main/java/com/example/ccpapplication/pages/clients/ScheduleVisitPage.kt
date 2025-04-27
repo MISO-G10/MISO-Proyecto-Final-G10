@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -46,7 +46,6 @@ private val DefaultHourFrom: LocalTime = LocalTime.of(9, 0)
 private val DefaultHourTo: LocalTime = LocalTime.of(10, 0)
 private val TimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleVisitPage(
     navController: NavHostController,
@@ -178,9 +177,9 @@ fun ScheduleVisitPage(
             readOnly = true,
             interactionSource = dateInteractionSource
         )
-        androidx.compose.runtime.LaunchedEffect(dateInteractionSource) {
+        LaunchedEffect(dateInteractionSource) {
             dateInteractionSource.interactions.collect { interaction ->
-                if (interaction is androidx.compose.foundation.interaction.PressInteraction.Release) {
+                if (interaction is PressInteraction.Release) {
                     datePickerDialog.show()
                 }
             }
@@ -201,9 +200,9 @@ fun ScheduleVisitPage(
                 readOnly = true,
                 interactionSource = fromTimeInteractionSource
             )
-            androidx.compose.runtime.LaunchedEffect(fromTimeInteractionSource) {
+            LaunchedEffect(fromTimeInteractionSource) {
                 fromTimeInteractionSource.interactions.collect { interaction ->
-                    if (interaction is androidx.compose.foundation.interaction.PressInteraction.Release) {
+                    if (interaction is PressInteraction.Release) {
                         fromTimeDialog.show()
                     }
                 }
@@ -219,9 +218,9 @@ fun ScheduleVisitPage(
                 readOnly = true,
                 interactionSource = toTimeInteractionSource
             )
-            androidx.compose.runtime.LaunchedEffect(toTimeInteractionSource) {
+            LaunchedEffect(toTimeInteractionSource) {
                 toTimeInteractionSource.interactions.collect { interaction ->
-                    if (interaction is androidx.compose.foundation.interaction.PressInteraction.Release) {
+                    if (interaction is PressInteraction.Release) {
                         toTimeDialog.show()
                     }
                 }
@@ -253,9 +252,9 @@ fun ScheduleVisitPage(
         Spacer(modifier = Modifier.weight(1f))
 
         GenericButton(
-            label = stringResource(R.string.register_register_button_label),
+            label = stringResource(R.string.add_visit_label_button),
             onClick = {
-                viewModel.addVisit { success ->
+                viewModel.addVisit { _ ->
                     // La navegación se maneja en el LaunchedEffect
                 }
             },
