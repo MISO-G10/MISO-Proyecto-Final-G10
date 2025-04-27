@@ -30,10 +30,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.ccpapplication.R
 
 @Composable
 fun ClientsPage(
@@ -131,7 +133,7 @@ fun ClientItem(
                 onClick = onSchedule,
                 modifier = Modifier.align(Alignment.TopEnd)
             ) {
-                Text(text = "Agendar")
+                Text(text = stringResource(R.string.schedule_visit_button_label))
             }
         }
     }

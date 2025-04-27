@@ -54,5 +54,6 @@
     <string name="add_visit_validation_error_hour_from">Start time must be before end time</string>
     <string name="add_visit_validation_error_hour_to">End time must be after start time</string>
     <string name="ccp_welcome">Welcome to CCP</string>
+    <string name="schedule_visit_button_label">Schedule visit</string>
 
 </resources>
