@@ -25,7 +25,7 @@ fun HomePage(){
         horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                 .fillMaxSize()){
-        Text("homePage")
+        Text("Bienvenido a CCP")
     }
 
 }
