@@ -1,9 +1,12 @@
 package com.example.ccpapplication.pages.clients
 
+import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.ccpapplication.data.model.Client
 import org.junit.Rule
@@ -36,7 +39,7 @@ class ScheduleVisitPageTest {
     fun screen_displaysClientInformationCorrectly() {
         composeTestRule.setContent {
             ScheduleVisitPage(
-                navController = androidx.navigation.compose.rememberNavController(),
+                navController = rememberNavController(),
                 client = fakeClient
             )
         }
@@ -49,5 +52,55 @@ class ScheduleVisitPageTest {
         assertTextExists("To", "Hasta")
         assertTextExists("Notes", "Notas")
         assertTextExists("Schedule visit", "Agendar visita")
+    }
+
+
+    @Test
+    fun scheduleVisitButton_isDisplayed() {
+        composeTestRule.setContent {
+            ScheduleVisitPage(
+                navController = androidx.navigation.compose.rememberNavController(),
+                client = fakeClient
+            )
+        }
+
+        assertTextExists("Schedule visit", "Agendar visita")
+    }
+
+    @Test
+    fun submittingFormWithEmptyNotes_showsErrorMessage() {
+        composeTestRule.setContent {
+            ScheduleVisitPage(
+                navController = rememberNavController(),
+                client = fakeClient
+            )
+        }
+
+        composeTestRule.onNode(
+            hasText("Schedule visit", ignoreCase = true) or hasText("Agendar visita", ignoreCase = true)
+        ).performClick()
+
+        // Esperar que aparezca el error de notas vacías en ingles o español
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule.onAllNodesWithText("Notes cannot be empty", substring = true, ignoreCase = true)
+                .fetchSemanticsNodes().isNotEmpty() ||
+            composeTestRule.onAllNodesWithText("El campo de Notas no puede estar vacio", substring = true, ignoreCase = true)
+                .fetchSemanticsNodes().isNotEmpty()
+        }
+
+        // Asegurarse que el mensaje de error esté visible
+        val notesErrorCount = composeTestRule.onAllNodesWithText(
+            "Notes cannot be empty",
+            substring = true,
+            ignoreCase = true
+        ).fetchSemanticsNodes().size
+
+        val notasVacioErrorCount = composeTestRule.onAllNodesWithText(
+            "El campo de Notas no puede estar vacio",
+            substring = true,
+            ignoreCase = true
+        ).fetchSemanticsNodes().size
+
+        assert(notesErrorCount + notasVacioErrorCount == 1) { "Se esperaba un error para las notas vacias." }
     }
 }
