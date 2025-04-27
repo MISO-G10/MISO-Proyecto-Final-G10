@@ -41,7 +41,7 @@ sealed class BottomNavItem(
     object Orders : BottomNavItem("orders", R.string.bottom_nav_2, Icons.Filled.AddToPhotos)
     object Shopping : BottomNavItem("shoppingCar", R.string.bottom_nav_3, Icons.Filled.ShoppingCart)
     object Visits : BottomNavItem("visits", R.string.bottom_nav_4, Icons.Filled.AddBusiness)
-    object Clients : BottomNavItem("clients", R.string.bottom_nav_5, Icons.Filled.PeopleAlt)
+    object Clients : BottomNavItem(Graph.CLIENTS, R.string.bottom_nav_5, Icons.Filled.PeopleAlt)
     object Catalog : BottomNavItem("catalog", R.string.bottom_nav_6, Icons.Filled.Inventory)
 }
 

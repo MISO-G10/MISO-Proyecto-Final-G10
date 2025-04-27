@@ -45,6 +45,7 @@
     <string name="register_saving_message">Guardando...</string>
     <string name="register_success_message">Registro exitoso</string>
     <string name="add_visit_validation_error_comments_empty">El campo de Notas no puede estar vacio</string>
+    <string name="add_visit_success_message">La visita se agregó exitosamente</string>
 
 
 </resources>
