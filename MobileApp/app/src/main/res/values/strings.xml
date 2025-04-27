@@ -46,5 +46,13 @@
     <string name="register_success_message">Registered successfully</string>
     <string name="add_visit_validation_error_comments_empty">Notes cannot be empty</string>
     <string name="add_visit_success_message">Visit successfully added</string>
+    <string name="add_visit_label_date">Date</string>
+    <string name="add_visit_label_hour_from">From</string>
+    <string name="add_visit_label_hour_to">To</string>
+    <string name="add_visit_label_comments">Notes</string>
+    <string name="add_visit_validation_error_date">The selected date cannot be earlier than today</string>
+    <string name="add_visit_validation_error_hour_from">Start time must be before end time</string>
+    <string name="add_visit_validation_error_hour_to">End time must be after start time</string>
+    <string name="ccp_welcome">Welcome to CCP</string>
 
 </resources>

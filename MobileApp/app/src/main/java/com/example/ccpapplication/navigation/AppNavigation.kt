@@ -1,6 +1,8 @@
 package com.example.ccpapplication.navigation
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.AddBusiness
@@ -19,7 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -65,7 +69,13 @@ fun AppNavigation(appViewModel: AppViewModel,
             // Solo pintamos TopBar si estamos en cliente o admin
             if (currentGraph == Graph.CLIENT || currentGraph == Graph.ADMIN) {
                 TopAppBar(
-                    title = { Text(stringResource(R.string.app_name)) },
+                    title = {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_ccp_logo),
+                            contentDescription = stringResource(R.string.app_icon_tittle),
+                            modifier = Modifier.size(120.dp)
+                        )
+                    },
                     actions = {
                         IconButton(onClick = {
                             // 1) Limpiar token/usuario

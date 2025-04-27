@@ -62,6 +62,10 @@ fun ScheduleVisitPage(
 
     val context = LocalContext.current
 
+    val errorDateText = stringResource(R.string.add_visit_validation_error_date)
+    val errorHourFromText = stringResource(R.string.add_visit_validation_error_hour_from)
+    val errorHourToText = stringResource(R.string.add_visit_validation_error_hour_to)
+
     LaunchedEffect(Unit) {
         viewModel.idUser = client.id
         if (viewModel.date.isBlank()) {
@@ -101,7 +105,7 @@ fun ScheduleVisitPage(
         { _, year, month, day ->
             val selectedDate = LocalDate.of(year, month + 1, day)
             if (selectedDate.isBefore(LocalDate.now())) {
-                Toast.makeText(context, "La fecha no puede ser anterior a hoy", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, errorDateText, Toast.LENGTH_SHORT).show()
                 // No update to date
             } else {
                 viewModel.date = selectedDate.toString()
@@ -117,7 +121,7 @@ fun ScheduleVisitPage(
         { _, hour, minute ->
             val selectedTime = LocalTime.of(hour, minute)
             if (!selectedTime.isBefore(selectedToTime)) {
-                Toast.makeText(context, "La hora de inicio debe ser antes de la hora de fin", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, errorHourFromText, Toast.LENGTH_SHORT).show()
                 // No update
             } else {
                 viewModel.hourFrom = selectedTime.format(TimeFormatter)
@@ -133,7 +137,7 @@ fun ScheduleVisitPage(
         { _, hour, minute ->
             val selectedTime = LocalTime.of(hour, minute)
             if (!selectedTime.isAfter(selectedFromTime)) {
-                Toast.makeText(context, "La hora de fin debe ser después de la hora de inicio", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, errorHourToText, Toast.LENGTH_SHORT).show()
                 // No update
             } else {
                 viewModel.hourTo = selectedTime.format(TimeFormatter)
@@ -168,7 +172,7 @@ fun ScheduleVisitPage(
         OutlinedTextField(
             value = selectedDate.format(dateFormatter),
             onValueChange = {},
-            label = { Text("Fecha") },
+            label = { Text(stringResource(R.string.add_visit_label_date)) },
             modifier = Modifier
                 .fillMaxWidth(),
             readOnly = true,
@@ -191,7 +195,7 @@ fun ScheduleVisitPage(
             OutlinedTextField(
                 value = selectedFromTime.format(TimeFormatter),
                 onValueChange = {},
-                label = { Text("Desde") },
+                label = { Text(stringResource(R.string.add_visit_label_hour_from)) },
                 modifier = Modifier
                     .weight(1f),
                 readOnly = true,
@@ -209,7 +213,7 @@ fun ScheduleVisitPage(
             OutlinedTextField(
                 value = selectedToTime.format(TimeFormatter),
                 onValueChange = {},
-                label = { Text("Hasta") },
+                label = { Text(stringResource(R.string.add_visit_label_hour_to)) },
                 modifier = Modifier
                     .weight(1f),
                 readOnly = true,
@@ -227,8 +231,13 @@ fun ScheduleVisitPage(
         // Notas
         OutlinedTextField(
             value = viewModel.comments,
-            onValueChange = { viewModel.comments = it },
-            label = { Text("Notas") },
+            onValueChange = {
+                viewModel.comments = it
+                if (viewModel.commentsError != null && it.isNotBlank()) {
+                    viewModel.commentsError = null
+                }
+            },
+            label = { Text(stringResource(R.string.add_visit_label_comments)) },
             isError = viewModel.commentsError != null,
             supportingText = {
                 viewModel.commentsError?.let {

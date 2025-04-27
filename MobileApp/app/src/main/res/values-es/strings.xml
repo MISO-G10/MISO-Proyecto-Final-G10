@@ -46,6 +46,14 @@
     <string name="register_success_message">Registro exitoso</string>
     <string name="add_visit_validation_error_comments_empty">El campo de Notas no puede estar vacio</string>
     <string name="add_visit_success_message">La visita se agregó exitosamente</string>
+    <string name="add_visit_label_date">Fecha</string>
+    <string name="add_visit_label_hour_from">Desde</string>
+    <string name="add_visit_label_hour_to">Hasta</string>
+    <string name="add_visit_label_comments">Notas</string>
+    <string name="add_visit_validation_error_date">La fecha seleccionada no puede ser antrerior a hoy</string>
+    <string name="add_visit_validation_error_hour_from">La hora inicial no puede ser mayor a la hora final</string>
+    <string name="add_visit_validation_error_hour_to">La hora final debe ser mayor a la hora inicial</string>
+    <string name="ccp_welcome">Bienvenido a CCP</string>
 
 
 </resources>
