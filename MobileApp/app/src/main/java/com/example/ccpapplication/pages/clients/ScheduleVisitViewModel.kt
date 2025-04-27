@@ -45,7 +45,6 @@ class ScheduleVisitViewModel(private val errorMessages: ValidationErrorMessages,
         return isValid
     }
 
-
     fun addVisit(onComplete: (Boolean) -> Unit) {
         if (validateInputs()) {
             viewModelScope.launch {
@@ -77,14 +76,6 @@ class ScheduleVisitViewModel(private val errorMessages: ValidationErrorMessages,
         } else {
             onComplete(false)
         }
-    }
-
-    fun resetForm() {
-        comments = ""
-        commentsError = null
-        isLoading = false
-        addVisitSuccessful = false
-        errorMessage = null
     }
 
     companion object {
