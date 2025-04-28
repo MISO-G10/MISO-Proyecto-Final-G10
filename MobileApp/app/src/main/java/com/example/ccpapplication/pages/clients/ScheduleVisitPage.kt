@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -31,15 +31,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.ccpapplication.R
 import com.example.ccpapplication.data.model.Client
+import com.example.ccpapplication.navigation.graph.Graph
 import com.example.ccpapplication.ui.components.ButtonType
 import com.example.ccpapplication.ui.components.GenericButton
+import com.example.ccpapplication.ui.components.LoadingDialog
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+private val DefaultDate: LocalDate = LocalDate.now()
+private val DefaultHourFrom: LocalTime = LocalTime.of(9, 0)
+private val DefaultHourTo: LocalTime = LocalTime.of(10, 0)
+private val TimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
 @Composable
 fun ScheduleVisitPage(
     navController: NavHostController,
@@ -47,16 +53,45 @@ fun ScheduleVisitPage(
     viewModel: ScheduleVisitViewModel = viewModel(factory = ScheduleVisitViewModel.Factory)
 ) {
     val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-    val selectedDate = if (viewModel.date.isNotEmpty()) LocalDate.parse(viewModel.date) else LocalDate.now()
-    val selectedFromTime = if (viewModel.hourFrom.isNotEmpty()) LocalTime.parse(viewModel.hourFrom) else LocalTime.of(9, 0)
-    val selectedToTime = if (viewModel.hourTo.isNotEmpty()) LocalTime.parse(viewModel.hourTo) else LocalTime.of(10, 0)
+    val selectedDate = if (viewModel.date.isNotEmpty()) LocalDate.parse(viewModel.date) else DefaultDate
+    val selectedFromTime = if (viewModel.hourFrom.isNotEmpty()) LocalTime.parse(viewModel.hourFrom) else DefaultHourFrom
+    val selectedToTime = if (viewModel.hourTo.isNotEmpty()) LocalTime.parse(viewModel.hourTo) else DefaultHourTo
+    val confirmCreation = stringResource(R.string.add_visit_success_message)
 
     val context = LocalContext.current
 
+    val errorDateText = stringResource(R.string.add_visit_validation_error_date)
+    val errorHourFromText = stringResource(R.string.add_visit_validation_error_hour_from)
+    val errorHourToText = stringResource(R.string.add_visit_validation_error_hour_to)
+
     LaunchedEffect(Unit) {
         viewModel.idUser = client.id
+        if (viewModel.date.isBlank()) {
+            viewModel.date = DefaultDate.toString()
+        }
+        if (viewModel.hourFrom.isBlank()) {
+            viewModel.hourFrom = DefaultHourFrom.format(TimeFormatter)
+        }
+        if (viewModel.hourTo.isBlank()) {
+            viewModel.hourTo = DefaultHourTo.format(TimeFormatter)
+        }
+    }
+
+    //Evento de para agregar visita
+    LaunchedEffect(viewModel.addVisitSuccessful) {
+        if (viewModel.addVisitSuccessful) {
+            //Mostrar mensaje de éxito
+            Toast.makeText(context, confirmCreation, Toast.LENGTH_SHORT).show()
+
+            // Navegar a la página de Clientes
+            navController.navigate(Graph.CLIENTS) {
+                popUpTo(Graph.SCHEDULE_VISIT) { inclusive = true }
+            }
+        } else if (viewModel.errorMessage != null) {
+            // Mostrar mensaje de error
+            Toast.makeText(context, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+        }
     }
 
     // Prepare calendar for initial date/year/month/day
@@ -69,7 +104,7 @@ fun ScheduleVisitPage(
         { _, year, month, day ->
             val selectedDate = LocalDate.of(year, month + 1, day)
             if (selectedDate.isBefore(LocalDate.now())) {
-                Toast.makeText(context, "La fecha no puede ser anterior a hoy", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, errorDateText, Toast.LENGTH_SHORT).show()
                 // No update to date
             } else {
                 viewModel.date = selectedDate.toString()
@@ -85,10 +120,10 @@ fun ScheduleVisitPage(
         { _, hour, minute ->
             val selectedTime = LocalTime.of(hour, minute)
             if (!selectedTime.isBefore(selectedToTime)) {
-                Toast.makeText(context, "La hora de inicio debe ser antes de la hora de fin", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, errorHourFromText, Toast.LENGTH_SHORT).show()
                 // No update
             } else {
-                viewModel.hourFrom = selectedTime.format(timeFormatter)
+                viewModel.hourFrom = selectedTime.format(TimeFormatter)
             }
         },
         selectedFromTime.hour,
@@ -101,10 +136,10 @@ fun ScheduleVisitPage(
         { _, hour, minute ->
             val selectedTime = LocalTime.of(hour, minute)
             if (!selectedTime.isAfter(selectedFromTime)) {
-                Toast.makeText(context, "La hora de fin debe ser después de la hora de inicio", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, errorHourToText, Toast.LENGTH_SHORT).show()
                 // No update
             } else {
-                viewModel.hourTo = selectedTime.format(timeFormatter)
+                viewModel.hourTo = selectedTime.format(TimeFormatter)
             }
         },
         selectedToTime.hour,
@@ -127,7 +162,7 @@ fun ScheduleVisitPage(
             Column(modifier = Modifier.padding(12.dp)) {
                 Text(client.name, style = MaterialTheme.typography.titleMedium)
                 Spacer(Modifier.height(4.dp))
-                Text(client.telephone, style = MaterialTheme.typography.bodyMedium)
+                Text(client.telephone ?: "Sin teléfono", style = MaterialTheme.typography.bodyMedium)
             }
         }
 
@@ -136,15 +171,15 @@ fun ScheduleVisitPage(
         OutlinedTextField(
             value = selectedDate.format(dateFormatter),
             onValueChange = {},
-            label = { Text("Fecha") },
+            label = { Text(stringResource(R.string.add_visit_label_date)) },
             modifier = Modifier
                 .fillMaxWidth(),
             readOnly = true,
             interactionSource = dateInteractionSource
         )
-        androidx.compose.runtime.LaunchedEffect(dateInteractionSource) {
+        LaunchedEffect(dateInteractionSource) {
             dateInteractionSource.interactions.collect { interaction ->
-                if (interaction is androidx.compose.foundation.interaction.PressInteraction.Release) {
+                if (interaction is PressInteraction.Release) {
                     datePickerDialog.show()
                 }
             }
@@ -157,17 +192,17 @@ fun ScheduleVisitPage(
         ) {
             val fromTimeInteractionSource = remember { MutableInteractionSource() }
             OutlinedTextField(
-                value = selectedFromTime.format(timeFormatter),
+                value = selectedFromTime.format(TimeFormatter),
                 onValueChange = {},
-                label = { Text("Desde") },
+                label = { Text(stringResource(R.string.add_visit_label_hour_from)) },
                 modifier = Modifier
                     .weight(1f),
                 readOnly = true,
                 interactionSource = fromTimeInteractionSource
             )
-            androidx.compose.runtime.LaunchedEffect(fromTimeInteractionSource) {
+            LaunchedEffect(fromTimeInteractionSource) {
                 fromTimeInteractionSource.interactions.collect { interaction ->
-                    if (interaction is androidx.compose.foundation.interaction.PressInteraction.Release) {
+                    if (interaction is PressInteraction.Release) {
                         fromTimeDialog.show()
                     }
                 }
@@ -175,17 +210,17 @@ fun ScheduleVisitPage(
 
             val toTimeInteractionSource = remember { MutableInteractionSource() }
             OutlinedTextField(
-                value = selectedToTime.format(timeFormatter),
+                value = selectedToTime.format(TimeFormatter),
                 onValueChange = {},
-                label = { Text("Hasta") },
+                label = { Text(stringResource(R.string.add_visit_label_hour_to)) },
                 modifier = Modifier
                     .weight(1f),
                 readOnly = true,
                 interactionSource = toTimeInteractionSource
             )
-            androidx.compose.runtime.LaunchedEffect(toTimeInteractionSource) {
+            LaunchedEffect(toTimeInteractionSource) {
                 toTimeInteractionSource.interactions.collect { interaction ->
-                    if (interaction is androidx.compose.foundation.interaction.PressInteraction.Release) {
+                    if (interaction is PressInteraction.Release) {
                         toTimeDialog.show()
                     }
                 }
@@ -195,8 +230,19 @@ fun ScheduleVisitPage(
         // Notas
         OutlinedTextField(
             value = viewModel.comments,
-            onValueChange = { viewModel.comments = it },
-            label = { Text("Notas") },
+            onValueChange = {
+                viewModel.comments = it
+                if (viewModel.commentsError != null && it.isNotBlank()) {
+                    viewModel.commentsError = null
+                }
+            },
+            label = { Text(stringResource(R.string.add_visit_label_comments)) },
+            isError = viewModel.commentsError != null,
+            supportingText = {
+                viewModel.commentsError?.let {
+                    Text(text = it)
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(120.dp),
@@ -205,25 +251,19 @@ fun ScheduleVisitPage(
 
         Spacer(modifier = Modifier.weight(1f))
 
-//        // Botón Agendar
-//        Button(
-//            onClick = { /* lógica para guardar la visita */ },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//        ) {
-//            Text("Agendar")
-//        }
-
-
         GenericButton(
-            label = stringResource(R.string.register_register_button_label),
+            label = stringResource(R.string.add_visit_label_button),
             onClick = {
-                viewModel.addVisit { success ->
+                viewModel.addVisit { _ ->
                     // La navegación se maneja en el LaunchedEffect
                 }
             },
             type = ButtonType.PRIMARY,
             modifier = Modifier.fillMaxWidth()
         )
+
+        if (viewModel.isLoading) {
+            LoadingDialog(message = stringResource(R.string.register_saving_message))
+        }
     }
 }

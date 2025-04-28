@@ -13,10 +13,14 @@ import com.example.ccpapplication.App
 import com.example.ccpapplication.R
 import com.example.ccpapplication.data.model.VisitAdd
 import com.example.ccpapplication.data.repository.VisitRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ScheduleVisitViewModel(private val errorMessages: ValidationErrorMessages,
-                        private val visitRepository: VisitRepository
+class ScheduleVisitViewModel(
+    private val errorMessages: ValidationErrorMessages,
+    private val visitRepository: VisitRepository,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
     var date by mutableStateOf("")
     var hourFrom by mutableStateOf("")
@@ -44,7 +48,6 @@ class ScheduleVisitViewModel(private val errorMessages: ValidationErrorMessages,
         }
         return isValid
     }
-
 
     fun addVisit(onComplete: (Boolean) -> Unit) {
         if (validateInputs()) {
@@ -77,14 +80,6 @@ class ScheduleVisitViewModel(private val errorMessages: ValidationErrorMessages,
         } else {
             onComplete(false)
         }
-    }
-
-    fun resetForm() {
-        comments = ""
-        commentsError = null
-        isLoading = false
-        addVisitSuccessful = false
-        errorMessage = null
     }
 
     companion object {

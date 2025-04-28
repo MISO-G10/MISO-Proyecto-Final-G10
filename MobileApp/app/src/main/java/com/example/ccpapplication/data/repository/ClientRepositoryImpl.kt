@@ -1,14 +1,51 @@
 package com.example.ccpapplication.data.repository
 
+import android.util.Log
 import com.example.ccpapplication.data.model.Client
+import com.example.ccpapplication.services.CcpApiServiceAdapter
+import com.example.ccpapplication.services.interceptors.TokenManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class ClientRepositoryImpl : ClientRepository {
+class ClientRepositoryImpl(
+    private val cppApiService: CcpApiServiceAdapter,
+    private val tokenManager: TokenManager
+) : ClientRepository {
+    
     override suspend fun getClients(): List<Client> {
-        // En lugar de este mock, llamar al API
-        return listOf(
-            Client(id = "6947210a-5bc1-456d-aaab-e475cf3d71f7", name="Tendero Luis", telephone="3112254000", address="Calle 127 # 127-15", email = "luis@gmail.com"),
-            Client(id = "1909723c-3337-494b-932e-84fb6d8dbd9c", name="Tienda Pepe", telephone="3186934007", address="Calle 127 # 127-16", email = "pepe@gmail.com"),
-            Client(id = "6858f755-3674-4c44-9201-985698398a33", name="Tienda Juan", telephone="2312681", address="Calle 127 # 127-17", email = "juan@gmail.com")
-        )
+        return withContext(Dispatchers.IO) {
+            try {
+                Log.d("ClientRepository", "Iniciando petición para obtener tenderos asignados")
+                val token = tokenManager.getToken()
+                Log.d("ClientRepository", "Token disponible: ${!token.isNullOrEmpty()}")
+                
+                val response = cppApiService.getAssignedClients()
+                Log.d("ClientRepository", "Respuesta recibida: ${response.code()}")
+                
+                if (response.isSuccessful && response.body() != null) {
+                    val clients = response.body()!!
+                    Log.d("ClientRepository", "Tenderos obtenidos: ${clients.size}")
+                    clients.forEach { client ->
+                        Log.d("ClientRepository", "Tendero: ${client.name}, ID: ${client.id}")
+                    }
+                    clients
+                } else {
+                    Log.e("ClientRepository", "Error al obtener tenderos: ${response.code()} - ${response.message()}")
+                    if (response.errorBody() != null) {
+                        try {
+                            val errorBodyString = response.errorBody()?.string() ?: "No error body"
+                            Log.e("ClientRepository", "Error body: $errorBodyString")
+                        } catch (e: Exception) {
+                            Log.e("ClientRepository", "No se pudo leer el error body")
+                        }
+                    }
+                    emptyList()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("ClientRepository", "Excepción al obtener tenderos: ${e.message}")
+                emptyList()
+            }
+        }
     }
 }
