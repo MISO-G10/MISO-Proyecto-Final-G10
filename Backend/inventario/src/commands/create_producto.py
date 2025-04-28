@@ -23,7 +23,7 @@ class CreateProductoSchema(Schema):
     reglasTributarias = fields.Str(required=True)
     categoria = fields.Str(required=True)
     fabricante_id = fields.Str(required=True)
-    
+
     @validates_schema
     def validate_categoria(self, data, **kwargs):
         try:
@@ -50,7 +50,7 @@ class Create(BaseCommand):
             producto_existente = db.query(Producto).filter_by(sku=sku).first()
             if producto_existente:
                 return {"error": "El producto ya existe para este fabricante"}, 400
-            
+
             # Se instancia un nuevo producto
             nuevo_producto = Producto(
                 sku=sku,
@@ -72,6 +72,7 @@ class Create(BaseCommand):
             db.commit()
 
             return {
+                "id": nuevo_producto.id,
                 "sku": nuevo_producto.sku,
                 "createdAt": nuevo_producto.createdAt.isoformat()
             }
