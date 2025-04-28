@@ -9,6 +9,7 @@ from ..commands.show import Show
 from ..commands.create_asignacion import CreateAsignacion
 from ..commands.list_asignacion import ListAsignacion
 from ..commands.update_asignacion import UpdateAsignacion
+from ..commands.get_vendedor_tenderos import GetVendedorTenderos
 
 operations_blueprint = Blueprint('visitas', __name__)
 
@@ -101,3 +102,17 @@ def update_asignacion(id):
     result = UpdateAsignacion(id, json).execute()
 
     return jsonify(result), 200
+
+@operations_blueprint.route('/asignaciones/mis-tenderos', methods=['GET'])
+@token_required
+def get_mis_tenderos():
+    current_usuario = g.current_usuario
+    
+    # Verificar que el usuario sea un vendedor
+    if 'rol' not in current_usuario or current_usuario['rol'].upper() != 'VENDEDOR':
+        return jsonify({"error": "Acceso no autorizado. Se requiere rol de vendedor"}), 403
+    
+    service = GetVendedorTenderos(current_usuario)
+    tenderos = service.execute()
+    
+    return jsonify(tenderos), 200
