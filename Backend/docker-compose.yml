@@ -98,6 +98,26 @@ services:
       ccp_gestion_db:
         condition: service_healthy
 
+  visitas:
+    build:
+      context: ./visitas
+      dockerfile: Dockerfile
+    ports:
+      - "3004:3004"
+    environment:
+      DB_NAME: visitas
+      DB_HOST: ccp_gestion_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      USUARIOS_PATH: http://usuarios:3000
+      FRONTEND_URL: http://localhost:4200
+    networks:
+      - ccp_gestion_net
+    depends_on:
+      ccp_gestion_db:
+        condition: service_healthy
+
 networks:
   ccp_gestion_net:
     driver: bridge

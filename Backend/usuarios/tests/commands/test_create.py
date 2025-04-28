@@ -18,6 +18,8 @@ def test_create_usuario_success(mock_session):
         'password': 'password123',
         'nombre': 'Test',
         'apellido': 'User',
+        'telefono': '12345678',
+        'direccion': '123 Main St',
         'rol': UsuarioRol.ADMINISTRADOR
     }
     
@@ -74,7 +76,7 @@ def test_create_usuario_invalid_username(mock_session):
         'username': 'Juan de la pena!',
         'password': 'password123',
         'nombre': 'Test 2',
-        'apellido': 'User 2'
+        'apellido': 'User 2',
     }
     
     # Configurar el mock para simular que no hay usuario existente
@@ -90,7 +92,9 @@ def test_create_usuario_invalid_password(mock_session):
         'username': 'testuser@gmail.com',
         'password': '',
         'nombre': 'Test 2',
-        'apellido': 'User 2'
+        'apellido': 'User 2',
+        'telefono': '12345678',
+        'direccion': '123 Main St'
     }
     
     # Configurar el mock para simular que no hay usuario existente

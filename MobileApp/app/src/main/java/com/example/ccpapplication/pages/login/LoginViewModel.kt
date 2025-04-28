@@ -12,14 +12,16 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import com.example.ccpapplication.App
+import com.example.ccpapplication.R
 import com.example.ccpapplication.data.model.UserLogin
 import com.example.ccpapplication.data.repository.UserRepository
 import com.example.ccpapplication.navigation.AppPages
 import com.example.ccpapplication.navigation.graph.Graph
 import com.example.ccpapplication.navigation.state.DataUiState
+import com.example.ccpapplication.services.interceptors.TokenManager
+import com.example.ccpapplication.util.UiText
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
 data class LoginPageState(
     val email: MutableState<String>,
@@ -31,8 +33,12 @@ data class LoginPageState(
 
 class LoginViewModel(
     private val userRepository: UserRepository,
-
+    private val tokenManager: TokenManager
 ): ViewModel() {
+
+    private val _messageEvent = MutableSharedFlow<UiText>()
+    val messageEvent = _messageEvent
+
     var uiState: DataUiState<UserLogin> by mutableStateOf(DataUiState.Loading)
     var formState: LoginPageState by mutableStateOf(
         LoginPageState(
@@ -45,27 +51,69 @@ class LoginViewModel(
 
 
 
-    fun loginUser(navController: NavController){
+    fun loginUser(navController: NavController) {
         viewModelScope.launch {
-            uiState = try {
-                val user = UserLogin(
-                    username = formState.email.value,
-                    password = formState.password.value,
+            uiState = DataUiState.Loading
+            val user = UserLogin(
+                username = formState.email.value,
+                password = formState.password.value,
+            )
 
+            val result = userRepository.login(user)
+
+            result.fold(
+                onSuccess = { authResponse ->
+                    val user = tokenManager.getUser()
+
+                    when {
+                        user == null -> {
+                            viewModelScope.launch {
+                                _messageEvent.emit(UiText.StringResource(R.string.user_not_found))
+                            }
+                            uiState = DataUiState.Error
+                        }
+
+                        user.rol in listOf("ADMINISTRADOR", "VENDEDOR", "DIRECTOR_VENTAS") -> {
+                            navController.navigate(Graph.ADMIN) {
+                                popUpTo(Graph.AUTHENTICATION) { inclusive = true }
+                            }
+
+                            viewModelScope.launch {
+                                _messageEvent.emit(UiText.StringResource(R.string.welcome_message, user.username))
+                            }
+
+                            uiState = DataUiState.Success(authResponse)
+                        }
+
+                        user.rol == "TENDERO" -> {
+                            navController.navigate(Graph.CLIENT) {
+                                popUpTo(Graph.AUTHENTICATION) { inclusive = true }
+                            }
+
+                            viewModelScope.launch {
+                                _messageEvent.emit(UiText.StringResource(R.string.welcome_message, user.username))
+                            }
+
+                            uiState = DataUiState.Success(authResponse)
+                        }
+
+                        else -> {
+
+                            viewModelScope.launch {
+                                _messageEvent.emit(UiText.StringResource(R.string.role_not_found, user.rol))
+                            }
+
+                            uiState = DataUiState.Error
+                        }
+                    }
+                },
+                onFailure = { exception ->
+
+                    _messageEvent.emit(
+                        UiText.StringResource(R.string.generic_error, exception.localizedMessage ?: R.string.unknown_error)
                     )
-                val loginResult = userRepository.login(user)
-                navController.navigate(Graph.MAIN)
-                DataUiState.Success(
-                    loginResult
-                )
-            }catch (e: IOException) {
-
-                DataUiState.Error
-            } catch (e: HttpException) {
-
-                DataUiState.Error
-            }
-
+                }
+            )
         }
     }
     fun togglePasswordVisibility() {
@@ -85,7 +133,8 @@ class LoginViewModel(
             initializer {
                 val application = (this[APPLICATION_KEY] as App)
                 val userRepository = application.container.userRepository
-                LoginViewModel(userRepository = userRepository)
+                val tokenManager = application.container.tokenManager
+                LoginViewModel(userRepository = userRepository, tokenManager = tokenManager)
             }
         }
     }

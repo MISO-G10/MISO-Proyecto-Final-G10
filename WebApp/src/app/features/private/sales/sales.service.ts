@@ -11,7 +11,8 @@ import { environment } from '../../../../environment/environment';
 export class SalesService {
   private readonly http = inject(HttpClient);
   private readonly snackbarService = inject(SnackbarService);
-  private readonly apiUrl = environment.salesUrl;
+  private readonly apiUrl = environment.apiUrl+':'+environment.endpointVentas;
+
 
   constructor() {
   }
@@ -24,7 +25,7 @@ export class SalesService {
     fecha_fin: string;
     seller_ids: string[];
   }) {
-    this.http.post<SalesPlan>(`${this.apiUrl}/planes`, sale, {
+    this.http.post<SalesPlan>(`${this.apiUrl}`, sale, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('auth')}`
       }

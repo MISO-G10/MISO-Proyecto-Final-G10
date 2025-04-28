@@ -1,85 +1,64 @@
 package com.example.ccpapplication.navigation.graph
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navigation
+import com.example.ccpapplication.data.model.Client
+import com.example.ccpapplication.navigation.BottomDrawer
 import com.example.ccpapplication.navigation.BottomNavItem
+import com.example.ccpapplication.navigation.graph.Graph.SCHEDULE_VISIT
+import com.example.ccpapplication.pages.clients.ClientsPage
+import com.example.ccpapplication.pages.clients.ScheduleVisitPage
 import com.example.ccpapplication.pages.home.HomePage
-import com.example.ccpapplication.pages.orders.Order
 
 fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
     navigation(
-        route = Graph.MAIN,
+        route = Graph.ADMIN,
         startDestination = BottomNavItem.Home.route
     ) {
         composable(BottomNavItem.Home.route) {
             HomePage()
         }
-        composable(BottomNavItem.Orders.route) {
-            Order()
+
+        composable(BottomNavItem.Clients.route) {
+            ClientsPage(navController = navController)
+        }
+
+        composable(
+            route = "$SCHEDULE_VISIT/{id}/{name}/{telephone}/{address}/{username}"
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: ""
+            val name = backStackEntry.arguments?.getString("name") ?: ""
+            val telephone = backStackEntry.arguments?.getString("telephone") ?: ""
+            val address = backStackEntry.arguments?.getString("address") ?: ""
+            val username = backStackEntry.arguments?.getString("username") ?: ""
+
+            val client = Client(
+                id = id,
+                name = name,
+                telephone = telephone,
+                address = address,
+                email = username
+            )
+
+            ScheduleVisitPage(navController = navController, client = client)
         }
 
     }
 }
+
 @Composable
-fun NavigationDrawer(
-    navController: NavController,
+fun MainNavigationDrawer(
+    navController: NavHostController,
 ) {
 
-    val scope = rememberCoroutineScope()
     val menus = listOf(
         BottomNavItem.Home,
-        BottomNavItem.Orders,
-        BottomNavItem.Shopping
+        BottomNavItem.Visits,
+        BottomNavItem.Clients,
+        BottomNavItem.Catalog
     )
-    NavigationBar {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
-        menus.forEach { item ->
-            NavigationBarItem(
-                icon = { Icon(imageVector = item.icon, contentDescription = stringResource(item.title) ) },
-                label = { Text(text = stringResource(item.title)) },
-                selected = currentRoute == item.route,
-                onClick = {
-                    navController.navigate(item.route) {
-                        // Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
-                        // on the back stack as users select items
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) {
-                                saveState = true
-                            }
-                        }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
-                        launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
-                        restoreState = true
-                    }
-                }
-            )
-        }
-    }
-}
-@Preview
-@Composable
-fun navigationDrawerPreview(){
-    Column(Modifier.fillMaxSize()) {
-
-    }
+    BottomDrawer(navController,menus)
 }

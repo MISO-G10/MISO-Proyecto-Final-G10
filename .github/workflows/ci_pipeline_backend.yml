@@ -9,6 +9,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Usar las variables definidas a nivel de repositorio o de organización
+    env:
+      FRONTEND_URL: ${{ vars.FRONTEND_URL }}
 
     steps:
       - name: Checkout code (opcional para logs)
@@ -23,11 +26,31 @@ jobs:
 
       - name: Despliegue a GCP
         run: |
+          # Se guarda la variable FRONTEND_URL temporalmente en el servidor
+          echo "$FRONTEND_URL" | ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} "cat > ~/frontend_url.txt"
+          
+          # Ejecutamos los comandos en el servidor
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} << 'EOF'
             set -e
             cd ~/MISO-Proyecto-Final-G10
-            git pull origin master
+            git fetch origin
+            git reset --hard origin/master
             cd Backend
+            
+            # Se lee la variable almacenada
+            FRONTEND_URL=$(cat ~/frontend_url.txt)
+            
+            # Método directo usando sed para actualizar todos los servicios
+            sed -i 's|FRONTEND_URL: http://localhost:4200|FRONTEND_URL: '"$FRONTEND_URL"'|g' docker-compose.yml
+            
+            # Se muestran los cambios para verificación
+            echo "Cambios realizados en docker-compose.yml:"
+            grep -A 1 "FRONTEND_URL:" docker-compose.yml
+            
+            # Se detienen y se reconstruyen los contenedores
             docker-compose down
             docker-compose up -d --build
+            
+            # Limpiar archivos temporales
+            rm ~/frontend_url.txt
           EOF

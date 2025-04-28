@@ -9,7 +9,7 @@ interface ProductoResponse {
 @Injectable({ providedIn: 'root' })
 export class ProductoService{
     private readonly http = inject(HttpClient);
-    private readonly apiProductosUrl = environment.inventarioUrl+'/createproduct';
+    private readonly apiProductosUrl = environment.apiUrl+':'+environment.endpointInventario+'/createproduct';
 
   crearProducto(producto: Producto) {
     // Crear una copia del objeto y transformar el nombre del campo

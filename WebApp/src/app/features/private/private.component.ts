@@ -27,6 +27,16 @@ export class PrivateComponent {
     @ViewChild('sidenav') sidenav!: MatSidenav;
     private readonly router = inject(Router);
     private readonly authService = inject(AuthService);
+
+    readonly translations = {
+      tooltip_user: $localize`:@@private.tooltip.user:Ver usuario`,
+      tooltip_logout: $localize`:@@private.tooltip.logout:Salir`,
+      navicon_home: $localize`:@@private.navicon.home:Inicio`,
+      navicon_sellers: $localize`:@@private.navicon.sellers:Vendedores`,
+      navicon_sales: $localize`:@@private.navicon.sales:Ventas`,
+      navicon_manufacturer: $localize`:@@private.navicon.manufacturer:Fabricantes`,
+    };
+    
     isClickExpanded = false;
     isHoverExpanded = false;
     expandedWidth = 200;

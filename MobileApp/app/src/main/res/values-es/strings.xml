@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Aplicación CCP</string>
     <string name="home">Inicio</string>
+    <string name="logout">Salir</string>
     <string name="app_icon_tittle">CCP</string>
     <string name="login_email_input_placeholder">JhonDoe@gmail.com</string>
     <string name="login_email_input_label">Correo Electrónico</string>
@@ -8,11 +9,53 @@
     <string name="login_password_input_trailing_true">Ocultar contraseña</string>
     <string name="login_password_input_trailing_false">Mostrar contraseña</string>
     <string name="login_submit_button_label">Iniciar Sesión</string>
-    <string name="login_register_sub_1">No tienes cuenta aún? </string>
+    <string name="login_register_sub_1">¿No tienes cuenta aún? </string>
     <string name="login_register_sub_2">Regístrate</string>
     <string name="login_text_lang_1">Español</string>
     <string name="login_text_lang_2">Ingles</string>
     <string name="bottom_nav_1">Inicio</string>
     <string name="bottom_nav_2">Ordenes</string>
     <string name="bottom_nav_3">Carrito</string>
+    <string name="bottom_nav_4">Visitas</string>
+    <string name="bottom_nav_5">Clientes</string>
+    <string name="bottom_nav_6">Catalogo</string>
+    <string name="welcome_message">¡Bienvenido, %1$s!</string>
+    <string name="user_not_found">Usuario no encontrado</string>
+    <string name="role_not_found">Rol de usuario no reconocido: %1$s!</string>
+    <string name="generic_error">Error: %1$s!</string>
+    <string name="unknown_error">Error desconocido</string>
+    <string name="register_firstname_input_label">Nombre</string>
+    <string name="register_lastname_input_label">Apellido</string>
+    <string name="register_email_input_label">Correo electrónico</string>
+    <string name="register_password_input_label">Contraseña</string>
+    <string name="register_confirmpwd_input_label">Confirmar Contraseña</string>
+    <string name="register_client_type_input_label">Tipo de Cliente</string>
+    <string name="register_register_button_label">Registrarse</string>
+    <string name="register_login_button_label">Iniciar sesión</string>
+    <string name="register_login_sub_1">¿Ya tienes una cuenta?</string>
+    <string name="register_page_title">Nueva Cuenta </string>
+    <string name="register_validation_error_pwd_mismatch">Las contraseñas no coinciden</string>
+    <string name="register_validation_error_pwd_length">La contraseña debe tener al menos 8 caracteres</string>
+    <string name="register_validation_error_email_invalid">El correo electrónico no es válido</string>
+    <string name="register_validation_error_firstname_empty">El nombre no puede estar vacío</string>
+    <string name="register_validation_error_lastname_empty">El apellido no puede estar vacío</string>
+    <string name="register_validation_error_email_empty">El correo electrónico no puede estar vacío</string>
+    <string name="register_validation_error_password_empty">La contraseña no puede estar vacía</string>
+    <string name="register_validation_error_passwordconf_empty">Por favor confirme su contraseña</string>
+    <string name="register_saving_message">Guardando...</string>
+    <string name="register_success_message">Registro exitoso</string>
+    <string name="add_visit_validation_error_comments_empty">El campo de Notas no puede estar vacio</string>
+    <string name="add_visit_success_message">La visita se agregó exitosamente</string>
+    <string name="add_visit_label_date">Fecha</string>
+    <string name="add_visit_label_hour_from">Desde</string>
+    <string name="add_visit_label_hour_to">Hasta</string>
+    <string name="add_visit_label_comments">Notas</string>
+    <string name="add_visit_validation_error_date">La fecha seleccionada no puede ser antrerior a hoy</string>
+    <string name="add_visit_validation_error_hour_from">La hora inicial no puede ser mayor a la hora final</string>
+    <string name="add_visit_validation_error_hour_to">La hora final debe ser mayor a la hora inicial</string>
+    <string name="ccp_welcome">Bienvenido a CCP</string>
+    <string name="schedule_visit_button_label">Agendar visita</string>
+    <string name="add_visit_label_button">Agendar visita</string>
+
+
 </resources>

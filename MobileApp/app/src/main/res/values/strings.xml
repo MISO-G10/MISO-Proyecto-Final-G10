@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">CCP Application</string>
     <string name="home">Home</string>
+    <string name="logout">Log Out</string>
     <string name="app_icon_tittle">CCP</string>
     <string name="login_email_input_placeholder">JhonDoe@gmail.com</string>
     <string name="login_email_input_label">Email</string>
@@ -15,5 +16,45 @@
     <string name="bottom_nav_1">Home</string>
     <string name="bottom_nav_2">Orders</string>
     <string name="bottom_nav_3">Shopping</string>
+    <string name="bottom_nav_4">Visits</string>
+    <string name="bottom_nav_5">Clients</string>
+    <string name="bottom_nav_6">Catalog</string>
+    <string name="welcome_message">"Welcome, %1$s!"</string>
+    <string name="user_not_found">User not found</string>
+    <string name="role_not_found">User role not recognized: %1$s!</string>
+    <string name="generic_error">Error: %1$s!</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="register_firstname_input_label">First Name</string>
+    <string name="register_lastname_input_label">Last Name</string>
+    <string name="register_email_input_label">Email</string>
+    <string name="register_password_input_label">Password</string>
+    <string name="register_confirmpwd_input_label">Confirm Password</string>
+    <string name="register_client_type_input_label">Client Type</string>
+    <string name="register_register_button_label">Sign Up</string>
+    <string name="register_login_button_label">Sign In</string>
+    <string name="register_login_sub_1">Already have an account? </string>
+    <string name="register_page_title">New Account </string>
+    <string name="register_validation_error_pwd_mismatch">Passwords do not match</string>
+    <string name="register_validation_error_pwd_length">The password must be at least 8 characters long</string>
+    <string name="register_validation_error_email_invalid">The email address is not valid</string>
+    <string name="register_validation_error_firstname_empty">First name cannot be empty</string>
+    <string name="register_validation_error_lastname_empty">Last name cannot be empty</string>
+    <string name="register_validation_error_email_empty">Email cannot be empty</string>
+    <string name="register_validation_error_password_empty">Password cannot be empty</string>
+    <string name="register_validation_error_passwordconf_empty">Please confirm your password</string>
+    <string name="register_saving_message">Saving...</string>
+    <string name="register_success_message">Registered successfully</string>
+    <string name="add_visit_validation_error_comments_empty">Notes cannot be empty</string>
+    <string name="add_visit_success_message">Visit successfully added</string>
+    <string name="add_visit_label_date">Date</string>
+    <string name="add_visit_label_hour_from">From</string>
+    <string name="add_visit_label_hour_to">To</string>
+    <string name="add_visit_label_comments">Notes</string>
+    <string name="add_visit_validation_error_date">The selected date cannot be earlier than today</string>
+    <string name="add_visit_validation_error_hour_from">Start time must be before end time</string>
+    <string name="add_visit_validation_error_hour_to">End time must be after start time</string>
+    <string name="ccp_welcome">Welcome to CCP</string>
+    <string name="schedule_visit_button_label">Schedule visit</string>
+    <string name="add_visit_label_button">Schedule visit</string>
 
 </resources>
