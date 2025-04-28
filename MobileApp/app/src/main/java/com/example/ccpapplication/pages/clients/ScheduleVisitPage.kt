@@ -162,7 +162,7 @@ fun ScheduleVisitPage(
             Column(modifier = Modifier.padding(12.dp)) {
                 Text(client.name, style = MaterialTheme.typography.titleMedium)
                 Spacer(Modifier.height(4.dp))
-                Text(client.telephone, style = MaterialTheme.typography.bodyMedium)
+                Text(client.telephone ?: "Sin teléfono", style = MaterialTheme.typography.bodyMedium)
             }
         }
 

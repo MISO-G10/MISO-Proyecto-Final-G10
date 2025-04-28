@@ -41,7 +41,7 @@ import com.example.ccpapplication.R
 fun ClientsPage(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    viewModel: ClientsViewModel = viewModel()
+    viewModel: ClientsViewModel = viewModel(factory = ClientsViewModel.Factory)
 ) {
     val clients by viewModel.clients.collectAsState()
 
@@ -121,10 +121,6 @@ fun ClientItem(
                 Text(
                     text = "Contacto: ${client.email}",
                     style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = client.address,
-                    style = MaterialTheme.typography.bodySmall
                 )
             }
 
