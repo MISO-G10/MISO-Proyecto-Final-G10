@@ -1,6 +1,8 @@
 package com.example.ccpapplication
 
 import android.content.Context
+import com.example.ccpapplication.data.repository.InventaryRepository
+import com.example.ccpapplication.data.repository.InventaryRepositoryImpl
 import com.example.ccpapplication.data.repository.UserRepository
 import com.example.ccpapplication.data.repository.UserRepositoryImpl
 import com.example.ccpapplication.data.repository.VisitRepository
@@ -23,6 +25,7 @@ interface AppContainer {
     val userRepository: UserRepository
     val tokenManager: TokenManager
     val visitRepository: VisitRepository
+    val inventarioRepository:InventaryRepository
 }
 
 class DefaultAppContainer(private val context: Context)  : AppContainer {
@@ -44,6 +47,12 @@ class DefaultAppContainer(private val context: Context)  : AppContainer {
             .create(CcpApiServiceImpl::class.java)
 
     }
+    private val inventarioService: CcpApiServiceAdapter by lazy {
+        RetrofitFactory
+            .createRetrofit(BuildConfig.API_URL+BuildConfig.ENDPOINT_INVENTARIOS, tokenManager)
+            .create(CcpApiServiceImpl::class.java)
+
+    }
 
     override val userRepository:UserRepository by lazy {
         UserRepositoryImpl(userService,tokenManager)
@@ -52,4 +61,8 @@ class DefaultAppContainer(private val context: Context)  : AppContainer {
     override val visitRepository:VisitRepository by lazy {
           VisitRepositoryImpl(visitService,tokenManager)
     }
+    override val inventarioRepository:InventaryRepository by lazy {
+        InventaryRepositoryImpl(inventarioService)
+    }
+
 }

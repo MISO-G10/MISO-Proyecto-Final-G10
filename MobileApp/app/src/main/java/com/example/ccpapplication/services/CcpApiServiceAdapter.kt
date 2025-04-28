@@ -2,6 +2,7 @@ package com.example.ccpapplication.services
 
 import com.example.ccpapplication.data.model.AddVisitResponse
 import com.example.ccpapplication.data.model.AuthResponse
+import com.example.ccpapplication.data.model.Producto
 import com.example.ccpapplication.data.model.UserRegistrationResponse
 import com.example.ccpapplication.data.model.User
 import com.example.ccpapplication.data.model.UserLogin
@@ -15,4 +16,5 @@ interface CcpApiServiceAdapter {
     suspend fun login(userLogin: UserLogin): Response<AuthResponse>
     suspend fun addVisit(visit: VisitAdd): Response<AddVisitResponse>
     suspend fun registerUser(user: UserRegistration): Response<UserRegistrationResponse>
+    suspend fun listProductos():Response<List<Producto>>
 }
