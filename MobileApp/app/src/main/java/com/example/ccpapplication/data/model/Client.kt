@@ -9,5 +9,8 @@ data class Client(
     @SerialName("nombre") val name: String,
     @SerialName("telefono") val telephone: String = "Sin teléfono",
     @SerialName("direccion") val address: String = "Sin dirección",
-    @SerialName("username") val email: String
+    @SerialName("username") val email: String,
+    @SerialName("apellido") val lastName: String = "",
+    @SerialName("ultima_visita") val lastVisitDate: String? = null,
+    @SerialName("numero_visitas") val visitCount: Int = 0
 )

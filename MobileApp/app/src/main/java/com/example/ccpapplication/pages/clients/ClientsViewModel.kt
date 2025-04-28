@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.example.ccpapplication.data.repository.ClientRepository
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 class ClientsViewModel(
     private val clientRepository: ClientRepository
@@ -28,7 +31,25 @@ class ClientsViewModel(
     fun loadClients() {
         viewModelScope.launch {
             try {
-                _clients.value = clientRepository.getClients()
+                // Obtener los clientes del repositorio
+                val clientsList = clientRepository.getClients()
+                
+                val sortedClients = clientsList.sortedByDescending { client ->
+                    try {
+                        if (client.lastVisitDate != null && client.lastVisitDate.isNotEmpty()) {
+                            // Intentar parsear la fecha
+                            LocalDateTime.parse(client.lastVisitDate, DateTimeFormatter.ISO_DATE_TIME)
+                        } else {
+                            // Si no hay fecha, colocar al final
+                            LocalDateTime.MIN
+                        }
+                    } catch (e: DateTimeParseException) {
+                        // Si hay error al parsear, colocar al final
+                        LocalDateTime.MIN
+                    }
+                }
+                
+                _clients.value = sortedClients
             } catch (e: Exception) {
                 Log.e("ClientsViewModel", "Error al cargar tenderos: ${e.message}")
                 e.printStackTrace()

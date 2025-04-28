@@ -2,7 +2,10 @@ import os
 import requests
 from src.db.session import SessionLocal
 from src.models.asignacion import AsignacionClienteTendero
+from src.models.visita import Visita
 from .base_command import BaseCommand
+from .get_tendero_visitas_info import GetTenderoVisitasInfo
+from sqlalchemy import func, desc
 
 
 class GetVendedorTenderos(BaseCommand):
@@ -28,6 +31,18 @@ class GetVendedorTenderos(BaseCommand):
             
             # Obtener información completa de los tenderos del servicio de usuarios
             tenderos_info = self._get_tenderos_info(ids_tenderos)
+            
+            # Enriquecer la información con datos de visitas
+            for tendero in tenderos_info:
+                visitas_info = GetTenderoVisitasInfo(tendero['id']).execute()
+                tendero['ultima_visita'] = visitas_info['ultima_visita']
+                tendero['numero_visitas'] = visitas_info['numero_visitas']
+            
+            # Ordenar por fecha de última visita (descendente)
+            tenderos_info.sort(
+                key=lambda x: x['ultima_visita'] if x['ultima_visita'] else '',
+                reverse=True
+            )
             
             return tenderos_info
         except Exception as e:
