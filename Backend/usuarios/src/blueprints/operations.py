@@ -5,6 +5,7 @@ from ..commands.login import Login
 from ..commands.clean import Clean
 from ..commands.list import List
 from ..commands.validate import Validate
+from ..commands.batch_get import BatchGet
 
 operations_blueprint = Blueprint('usuarios', __name__)
 
@@ -73,3 +74,29 @@ def list_usuarios():
 
     # Since usuarios is already serialized, return it directly
     return jsonify(usuarios), 200
+
+@operations_blueprint.route('/batch', methods=['POST'])
+def get_usuarios_batch():
+    # Obtener el token de la cabecera para validación
+    auth_header = request.headers.get('Authorization')
+    if not auth_header:
+        return jsonify({'error': 'Token is missing!'}), 401
+    
+    # Validar el token
+    try:
+        current_user = Validate(auth_header).execute()
+    except Exception:
+        return jsonify({'error': 'Invalid token!'}), 401
+    
+    # Verificar permisos - solo ciertos roles pueden acceder a esta funcionalidad
+    user_role = current_user['rol']
+    if user_role not in ['ADMINISTRADOR', 'VENDEDOR', 'DIRECTOR_VENTAS']:
+        return jsonify({'error': 'Access denied!'}), 403
+    
+    # Obtener los datos del request
+    json = request.get_json()
+    
+    # Ejecutar el comando para obtener usuarios por batch
+    result = BatchGet(json).execute()
+    
+    return jsonify(result), 200

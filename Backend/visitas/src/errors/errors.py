@@ -30,3 +30,11 @@ class InvalidVisitaData(ApiError):
 class VisitaNotFound(ApiError):
     code = 404
     description = "Visita no encontrada"
+
+class InvalidAsignacionData(ApiError):
+    code = 400
+    description = "Datos de la asignación no válidos"
+
+class AsignacionNotFound(ApiError):
+    code = 404
+    description = "Asignación no encontrada"
