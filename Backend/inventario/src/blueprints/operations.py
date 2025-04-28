@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, Blueprint, g
 from ..commands.create_producto import Create
+from ..commands.listar_productos import ListProductos
 from ..commands.clean import Clean
 from src.utils.validate_token import token_required
 import os
@@ -40,3 +41,9 @@ def create_producto():
     
     # Si no es una tupla, es una respuesta exitosa
     return jsonify(result), 201
+
+# Listar todos los productos
+@operations_blueprint.route("/productos", methods=['GET'])
+def list_productos():
+    result = ListProductos().execute()
+    return jsonify(result), 200
