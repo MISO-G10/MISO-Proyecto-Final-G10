@@ -46,12 +46,6 @@ def create_producto():
     # Si no es una tupla, es una respuesta exitosa
     return jsonify(result), 201
 
-# Listar todos los productos
-@operations_blueprint.route("/productos", methods=['GET'])
-@token_required
-def list_productos():
-    result = ListProductos().execute()
-    return jsonify(result), 200
 
 @operations_blueprint.route("/productos/ubicacion", methods=['GET'])
 @token_required
@@ -107,3 +101,10 @@ def add_producto_to_bodega(bodega_id):
         return jsonify(result[0]), result[1]
 
     # The result is already a dictionary from the command
+    
+# Listar todos los productos
+@operations_blueprint.route("/productos", methods=['GET'])
+@token_required
+def list_productos():
+    result = ListProductos().execute()
+    return jsonify(result), 200
