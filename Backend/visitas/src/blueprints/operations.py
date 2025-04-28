@@ -6,6 +6,9 @@ from src.utils.validate_token import token_required
 from ..commands.delete import Delete
 from ..commands.list import List
 from ..commands.show import Show
+from ..commands.create_asignacion import CreateAsignacion
+from ..commands.list_asignacion import ListAsignacion
+from ..commands.update_asignacion import UpdateAsignacion
 
 operations_blueprint = Blueprint('visitas', __name__)
 
@@ -62,5 +65,39 @@ def health_check():
 @operations_blueprint.route("/reset", methods=['POST'])
 def reset_visita_database():
     result = Clean().execute()
+
+    return jsonify(result), 200
+
+# Rutas para la asignación de vendedores a tenderos
+@operations_blueprint.route('/asignaciones', methods=['POST'])
+@token_required
+def create_asignacion():
+    json = request.get_json()
+    current_usuario = g.current_usuario
+
+    result = CreateAsignacion(current_usuario, json).execute()
+
+    return jsonify(result), 201
+
+@operations_blueprint.route('/asignaciones', methods=['GET'])
+@token_required
+def list_asignaciones():
+    current_usuario = g.current_usuario
+
+    service = ListAsignacion(
+        usuario=current_usuario,
+        data=request.args.to_dict()
+    )
+
+    asignaciones = service.execute()
+
+    return jsonify(asignaciones), 200
+
+@operations_blueprint.route('/asignaciones/<string:id>', methods=['PUT'])
+@token_required
+def update_asignacion(id):
+    json = request.get_json()
+
+    result = UpdateAsignacion(id, json).execute()
 
     return jsonify(result), 200
