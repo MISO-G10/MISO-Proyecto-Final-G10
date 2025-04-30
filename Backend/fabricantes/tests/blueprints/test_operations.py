@@ -33,10 +33,10 @@ def test_reset_database(client):
     response = client.post('/fabricantes/reset')
     assert response.status_code == 200
 
-'''
+
 def test_create_fabricante_success(client, valid_fabricante_data):
     response = client.post('/fabricantes', json=valid_fabricante_data, headers={'Authorization': 'Bearer 1234'})
-    assert response.status_code == 201'''
+    assert response.status_code == 201
     
 
 
