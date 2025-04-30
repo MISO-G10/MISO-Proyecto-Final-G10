@@ -1,9 +1,14 @@
 package com.example.ccpapplication
 
 import android.content.Context
+
+import com.example.ccpapplication.data.repository.InventaryRepository
+import com.example.ccpapplication.data.repository.InventaryRepositoryImpl
+
 import android.util.Log
 import com.example.ccpapplication.data.repository.ClientRepository
 import com.example.ccpapplication.data.repository.ClientRepositoryImpl
+
 import com.example.ccpapplication.data.repository.UserRepository
 import com.example.ccpapplication.data.repository.UserRepositoryImpl
 import com.example.ccpapplication.data.repository.VisitRepository
@@ -26,7 +31,9 @@ interface AppContainer {
     val userRepository: UserRepository
     val tokenManager: TokenManager
     val visitRepository: VisitRepository
+    val inventarioRepository:InventaryRepository
     val clientRepository: ClientRepository
+
 }
 
 class DefaultAppContainer(private val context: Context)  : AppContainer {
@@ -48,6 +55,12 @@ class DefaultAppContainer(private val context: Context)  : AppContainer {
             .createRetrofit(baseUrl, tokenManager)
             .create(CcpApiServiceImpl::class.java)
     }
+    private val inventarioService: CcpApiServiceAdapter by lazy {
+        RetrofitFactory
+            .createRetrofit(BuildConfig.API_URL+BuildConfig.ENDPOINT_INVENTARIOS, tokenManager)
+            .create(CcpApiServiceImpl::class.java)
+
+    }
 
     override val userRepository:UserRepository by lazy {
         UserRepositoryImpl(userService,tokenManager)
@@ -56,10 +69,16 @@ class DefaultAppContainer(private val context: Context)  : AppContainer {
     override val visitRepository:VisitRepository by lazy {
           VisitRepositoryImpl(visitService,tokenManager)
     }
+
+    override val inventarioRepository:InventaryRepository by lazy {
+        InventaryRepositoryImpl(inventarioService)
+    }
+
     
     override val clientRepository:ClientRepository by lazy {
         // Usamos el servicio de visitas ya que el endpoint de tenderos está en ese servicio
         Log.d("AppContainer", "Creando repositorio de clientes usando el servicio de visitas")
         ClientRepositoryImpl(visitService,tokenManager)
     }
+
 }

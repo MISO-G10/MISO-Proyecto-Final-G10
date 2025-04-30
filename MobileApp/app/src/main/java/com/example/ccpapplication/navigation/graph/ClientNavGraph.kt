@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -15,6 +16,8 @@ import com.example.ccpapplication.navigation.BottomDrawer
 import com.example.ccpapplication.navigation.BottomNavItem
 import com.example.ccpapplication.pages.home.HomePage
 import com.example.ccpapplication.pages.orders.Order
+import com.example.ccpapplication.pages.products.ProductPage
+import com.example.ccpapplication.pages.products.ProductViewModel
 
 fun NavGraphBuilder.clientNavGraph(navController: NavHostController) {
     navigation(
@@ -27,6 +30,15 @@ fun NavGraphBuilder.clientNavGraph(navController: NavHostController) {
         composable(BottomNavItem.Orders.route) {
             Order()
         }
+        composable(BottomNavItem.Shopping.route){
+            val productViewModel:ProductViewModel=
+                viewModel(factory=ProductViewModel.Factory)
+            ProductPage(
+                productUiState=productViewModel.productUiState ,
+                showAddToShopping=true
+            )
+        }
+
 
     }
 }
