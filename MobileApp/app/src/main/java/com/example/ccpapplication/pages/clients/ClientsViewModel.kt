@@ -17,7 +17,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
-class ClientsViewModel(
+open class ClientsViewModel(
     private val clientRepository: ClientRepository
 ) : ViewModel() {
 
@@ -51,10 +51,15 @@ class ClientsViewModel(
                 
                 _clients.value = sortedClients
             } catch (e: Exception) {
-                Log.e("ClientsViewModel", "Error al cargar tenderos: ${e.message}")
-                e.printStackTrace()
+                handleError(e)
             }
         }
+    }
+    
+    // Método protegido para manejar errores, que puede ser sobrescrito en pruebas
+    protected open fun handleError(e: Exception) {
+        Log.e("ClientsViewModel", "Error al cargar tenderos: ${e.message}")
+        e.printStackTrace()
     }
     
     companion object {

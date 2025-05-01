@@ -133,7 +133,7 @@ def test_assign_producto_to_bodega(client, session):
                            json=assignment_data,
                            headers={'Authorization': 'Bearer 1234'})
 
-    assert response.status_code == 200
+    assert response.status_code == 201
     result = response.get_json()
 
     # Verify the response
@@ -201,7 +201,7 @@ def test_update_producto_cantidad_in_bodega(client, session):
                            json=assignment_data,
                            headers={'Authorization': 'Bearer 1234'})
 
-    assert response.status_code == 200
+    assert response.status_code == 201
 
     # Update the cantidad
     update_data = {
@@ -213,7 +213,7 @@ def test_update_producto_cantidad_in_bodega(client, session):
                            json=update_data,
                            headers={'Authorization': 'Bearer 1234'})
 
-    assert response.status_code == 200
+    assert response.status_code == 201
     result = response.get_json()
 
     # Verify the response

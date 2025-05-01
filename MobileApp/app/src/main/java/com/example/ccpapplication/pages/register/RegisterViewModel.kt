@@ -17,7 +17,7 @@ import com.example.ccpapplication.data.model.User
 import com.example.ccpapplication.data.model.UserRegistration
 import kotlinx.coroutines.launch
 
-class RegisterViewModel(private val errorMessages: ValidationErrorMessages,
+class RegisterViewModel(protected val errorMessages: ValidationErrorMessages,
                         private val userRepository: UserRepository
 ) : ViewModel() {
     // Declaración de textos usados en la app
@@ -42,7 +42,7 @@ class RegisterViewModel(private val errorMessages: ValidationErrorMessages,
 
 
     // Función para validar los campos de entrada del formulario
-    private fun validateInputs(): Boolean {
+    open fun validateInputs(): Boolean {
         var isValid = true
         
         // Validar nombre
@@ -65,11 +65,22 @@ class RegisterViewModel(private val errorMessages: ValidationErrorMessages,
         if (email.isBlank()) {
             emailError = errorMessages.emailEmpty
             isValid = false
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailError = errorMessages.emailInvalid
-            isValid = false
         } else {
-            emailError = null
+            // Usar una expresión regular simple cuando estamos en entorno de pruebas (Patterns.EMAIL_ADDRESS es nulo)
+            val isValidEmail = try {
+                android.util.Patterns.EMAIL_ADDRESS?.matcher(email)?.matches() ?: 
+                    Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$").matches(email)
+            } catch (e: Exception) {
+                // Fallback para pruebas unitarias
+                Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$").matches(email)
+            }
+            
+            if (!isValidEmail) {
+                emailError = errorMessages.emailInvalid
+                isValid = false
+            } else {
+                emailError = null
+            }
         }
         
         // Validar contraseña
