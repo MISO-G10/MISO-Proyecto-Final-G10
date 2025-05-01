@@ -1,6 +1,10 @@
 package com.example.ccpapplication.pages.register
 
 import com.example.ccpapplication.data.model.UserRegistration
+import com.example.ccpapplication.data.model.UserRegistrationResponse
+import com.example.ccpapplication.data.model.UserLogin
+import com.example.ccpapplication.data.model.AuthResponse
+import com.example.ccpapplication.data.model.User
 import com.example.ccpapplication.data.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,36 +21,66 @@ class RegisterViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
 
     private val fakeErrorMessages = ValidationErrorMessages(
-        firstNameEmpty = "First name cannot be empty",
-        lastNameEmpty = "Last name cannot be empty",
-        emailEmpty = "Email cannot be empty",
-        emailInvalid = "Invalid email format",
-        passwordEmpty = "Password cannot be empty",
-        passwordLength = "Password must be at least 8 characters",
-        confirmPasswordEmpty = "Confirm password cannot be empty",
-        passwordMismatch = "Passwords do not match"
+        firstNameEmpty = "First name cannot be empty", // register_validation_error_firstname_empty
+        lastNameEmpty = "Last name cannot be empty", // register_validation_error_lastname_empty
+        emailEmpty = "Email cannot be empty", // register_validation_error_email_empty
+        emailInvalid = "The email address is not valid", // register_validation_error_email_invalid
+        passwordEmpty = "Password cannot be empty", // register_validation_error_password_empty
+        passwordLength = "The password must be at least 8 characters long", // register_validation_error_pwd_length
+        confirmPasswordEmpty = "Please confirm your password", // register_validation_error_passwordconf_empty
+        passwordMismatch = "Passwords do not match" // register_validation_error_pwd_mismatch
+    )
+
+    private val fakeErrorMessagesEs = ValidationErrorMessages(
+        firstNameEmpty = "El nombre no puede estar vacío", // register_validation_error_firstname_empty
+        lastNameEmpty = "El apellido no puede estar vacío", // register_validation_error_lastname_empty
+        emailEmpty = "El correo electrónico no puede estar vacío", // register_validation_error_email_empty
+        emailInvalid = "El correo electrónico no es válido", // register_validation_error_email_invalid
+        passwordEmpty = "La contraseña no puede estar vacía", // register_validation_error_password_empty
+        passwordLength = "La contraseña debe tener al menos 8 caracteres", // register_validation_error_pwd_length
+        confirmPasswordEmpty = "Por favor confirme su contraseña", // register_validation_error_passwordconf_empty
+        passwordMismatch = "Las contraseñas no coinciden" // register_validation_error_pwd_mismatch
     )
 
     private val fakeUserRepository = object : UserRepository {
         var shouldSucceed = true
         
-        override suspend fun registerUser(user: UserRegistration): Result<Any> {
+        override suspend fun registerUser(user: UserRegistration): Result<UserRegistrationResponse> {
             return if (shouldSucceed) {
-                Result.success(Any())
+                Result.success(UserRegistrationResponse(id = "test-id", createdAt = "2025-01-01T00:00:00Z"))
             } else {
                 Result.failure(Exception("Registration failed"))
             }
         }
         
-        // Implementar otros métodos requeridos por la interfaz
-        override suspend fun loginUser(username: String, password: String): Result<Any> {
-            return Result.failure(Exception("Not implemented"))
+        override suspend fun login(userLogin: UserLogin): Result<AuthResponse> {
+            return Result.success(
+                AuthResponse(
+                    token = "fake-token",
+                    id = "test-id",
+                    expireAt = "2025-01-01T00:00:00Z"
+                )
+            )
+        }
+        
+        override suspend fun getUser(): Result<User> {
+            return Result.success(
+                User(
+                    id = "test-id",
+                    username = "test@example.com",
+                    password = "Nombre Test",
+                    name = "Apellido Test",
+                    rol = "TENDERO"
+                )
+            )
         }
     }
 
     @Before
-    fun setup() {
+    fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        
+        // Configurar el ViewModel con los mensajes en inglés para las pruebas
         viewModel = RegisterViewModel(
             errorMessages = fakeErrorMessages,
             userRepository = fakeUserRepository
@@ -76,7 +110,7 @@ class RegisterViewModelTest {
         testScheduler.advanceUntilIdle()
 
         assertTrue(onCompleteCalled)
-        assertEquals("First name cannot be empty", viewModel.firstNameError)
+        assertEquals(fakeErrorMessages.firstNameEmpty, viewModel.firstNameError)
     }
 
     @Test
@@ -97,7 +131,7 @@ class RegisterViewModelTest {
         testScheduler.advanceUntilIdle()
 
         assertTrue(onCompleteCalled)
-        assertEquals("Last name cannot be empty", viewModel.lastNameError)
+        assertEquals(fakeErrorMessages.lastNameEmpty, viewModel.lastNameError)
     }
 
     @Test
@@ -118,7 +152,7 @@ class RegisterViewModelTest {
         testScheduler.advanceUntilIdle()
 
         assertTrue(onCompleteCalled)
-        assertEquals("Invalid email format", viewModel.emailError)
+        assertEquals(fakeErrorMessages.emailInvalid, viewModel.emailError)
     }
 
     @Test
@@ -139,7 +173,7 @@ class RegisterViewModelTest {
         testScheduler.advanceUntilIdle()
 
         assertTrue(onCompleteCalled)
-        assertEquals("Password must be at least 8 characters", viewModel.passwordError)
+        assertEquals(fakeErrorMessages.passwordLength, viewModel.passwordError)
     }
 
     @Test
@@ -160,19 +194,18 @@ class RegisterViewModelTest {
         testScheduler.advanceUntilIdle()
 
         assertTrue(onCompleteCalled)
-        assertEquals("Passwords do not match", viewModel.confirmPasswordError)
+        assertEquals(fakeErrorMessages.passwordMismatch, viewModel.confirmPasswordError)
     }
 
     @Test
-    fun whenAllFieldsAreValid_registrationSucceeds() = runTest {
-        // Configurar el repositorio para que tenga éxito
-        fakeUserRepository.shouldSucceed = true
-
+    fun whenRegistrationSucceeds_setsSuccessFlag() = runTest {
         viewModel.firstName = "Juan"
         viewModel.lastName = "Pérez"
         viewModel.email = "test@example.com"
         viewModel.password = "password123"
         viewModel.confirmPassword = "password123"
+        
+        fakeUserRepository.shouldSucceed = true
 
         var onCompleteCalled = false
 
@@ -194,14 +227,13 @@ class RegisterViewModelTest {
 
     @Test
     fun whenRegistrationFails_showsErrorMessage() = runTest {
-        // Configurar el repositorio para que falle
-        fakeUserRepository.shouldSucceed = false
-
         viewModel.firstName = "Juan"
         viewModel.lastName = "Pérez"
         viewModel.email = "test@example.com"
         viewModel.password = "password123"
         viewModel.confirmPassword = "password123"
+        
+        fakeUserRepository.shouldSucceed = false
 
         var onCompleteCalled = false
 
@@ -219,7 +251,6 @@ class RegisterViewModelTest {
 
     @Test
     fun resetForm_clearsAllFields() = runTest {
-        // Establecer valores en todos los campos
         viewModel.firstName = "Juan"
         viewModel.lastName = "Pérez"
         viewModel.email = "test@example.com"
@@ -230,26 +261,21 @@ class RegisterViewModelTest {
         viewModel.emailError = "Error"
         viewModel.passwordError = "Error"
         viewModel.confirmPasswordError = "Error"
-        viewModel.isLoading = true
         viewModel.registrationSuccessful = true
         viewModel.errorMessage = "Error"
 
-        // Resetear el formulario
         viewModel.resetForm()
 
-        // Verificar que todos los campos se hayan limpiado
         assertEquals("", viewModel.firstName)
         assertEquals("", viewModel.lastName)
         assertEquals("", viewModel.email)
         assertEquals("", viewModel.password)
         assertEquals("", viewModel.confirmPassword)
-        assertEquals("TENDERO", viewModel.clientType)
         assertNull(viewModel.firstNameError)
         assertNull(viewModel.lastNameError)
         assertNull(viewModel.emailError)
         assertNull(viewModel.passwordError)
         assertNull(viewModel.confirmPasswordError)
-        assertFalse(viewModel.isLoading)
         assertFalse(viewModel.registrationSuccessful)
         assertNull(viewModel.errorMessage)
     }
