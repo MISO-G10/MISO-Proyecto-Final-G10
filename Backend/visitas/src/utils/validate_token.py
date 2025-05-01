@@ -22,7 +22,11 @@ def token_required(f):
             response = requests.get(usuarios_path, headers={"Authorization": f"Bearer {token}"})
             if response.status_code != 200:
                 return jsonify({'message': 'Token is invalid or expired!'}), 401
-            g.current_usuario = response.json()
+            
+            # Guardar la información del usuario y el token original
+            user_info = response.json()
+            user_info['token'] = token  # Añadir el token original a la información del usuario
+            g.current_usuario = user_info
         except Exception as e:
             print(f"Error while validating token: {e}")
             return jsonify({'message': 'Token is invalid or expired!'}), 401

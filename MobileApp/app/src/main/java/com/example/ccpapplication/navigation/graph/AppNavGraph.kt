@@ -1,5 +1,6 @@
 package com.example.ccpapplication.navigation.graph
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -11,15 +12,18 @@ object Graph {
     const val AUTHENTICATION = "auth_graph"
     const val CLIENT = "client_graph"
     const val ADMIN="admin_graph"
+    const val SCHEDULE_VISIT = "schedule_visit"
+    const val CLIENTS = "clients"
 }
 
 @Composable
 fun AppNavGraph(navController: NavHostController = rememberNavController(),
-                appViewModel: AppViewModel, modifier: Modifier = Modifier) {
+                appViewModel: AppViewModel, modifier: Modifier) {
     NavHost(
         navController = navController,
         route = "root",
-        startDestination = Graph.AUTHENTICATION
+        startDestination = Graph.AUTHENTICATION ,
+        modifier = modifier
     ) {
         authNavGraph(navController = navController,appViewModel = appViewModel)
         clientNavGraph(navController = navController)

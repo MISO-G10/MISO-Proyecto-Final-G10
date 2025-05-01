@@ -44,7 +44,20 @@
     <string name="register_validation_error_passwordconf_empty">Por favor confirme su contraseña</string>
     <string name="register_saving_message">Guardando...</string>
     <string name="register_success_message">Registro exitoso</string>
-
-
+    <string name="add_visit_validation_error_comments_empty">El campo de Notas no puede estar vacio</string>
+    <string name="add_visit_success_message">La visita se agregó exitosamente</string>
+    <string name="add_visit_label_date">Fecha</string>
+    <string name="add_visit_label_hour_from">Desde</string>
+    <string name="add_visit_label_hour_to">Hasta</string>
+    <string name="add_visit_label_comments">Notas</string>
+    <string name="add_visit_validation_error_date">La fecha seleccionada no puede ser antrerior a hoy</string>
+    <string name="add_visit_validation_error_hour_from">La hora inicial no puede ser mayor a la hora final</string>
+    <string name="add_visit_validation_error_hour_to">La hora final debe ser mayor a la hora inicial</string>
+    <string name="ccp_welcome">Bienvenido a CCP</string>
+    <string name="schedule_visit_button_label">Agendar visita</string>
+    <string name="add_visit_label_button">Agendar visita</string>
+    <string name="products_not_found"> No se encontraron productos</string>
+    <string name="loading_failed_products"> No se pudo cargar los productos</string>
+    <string name="loading"> Cargando</string>
 
 </resources>

@@ -3,7 +3,6 @@ package com.example.ccpapplication.navigation
 
 import androidx.lifecycle.ViewModel
 import com.example.ccpapplication.navigation.state.NavigationUiState
-import com.example.ccpapplication.services.interceptors.TokenManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

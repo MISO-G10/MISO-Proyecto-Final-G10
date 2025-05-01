@@ -13,21 +13,28 @@ import retrofit2.Retrofit
 object RetrofitFactory {
     private val json = Json {
         ignoreUnknownKeys = true
+        coerceInputValues = true
         isLenient = true
+        allowSpecialFloatingPointValues = true
+        allowStructuredMapKeys = true
+        prettyPrint = false
+        useArrayPolymorphism = false
+        explicitNulls = false 
     }
 
     fun createRetrofit(baseUrl: String, tokenManager: TokenManager): Retrofit {
-        Log.d("UserRepository", "Trying login with: $baseUrl")
-        val okHttpClient = OkHttpClient.Builder()
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+        
+        val client = OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(tokenManager))
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
+            .addInterceptor(loggingInterceptor)
             .build()
-
+        
         return Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(okHttpClient)
+            .client(client)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
