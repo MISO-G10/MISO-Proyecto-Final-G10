@@ -217,7 +217,7 @@ def test_get_producto_location(client, valid_producto_data, session):
     response_assign1 = client.post(f'/inventarios/bodegas/{bodega1_id}/productos',
                                   json=assignment_data1,
                                   headers={'Authorization': 'Bearer 1234'})
-    assert response_assign1.status_code == 200
+    assert response_assign1.status_code == 201
     
     # For the second bodega
     assignment_data2 = {
@@ -228,7 +228,7 @@ def test_get_producto_location(client, valid_producto_data, session):
     response_assign2 = client.post(f'/inventarios/bodegas/{bodega2_id}/productos',
                                   json=assignment_data2,
                                   headers={'Authorization': 'Bearer 1234'})
-    assert response_assign2.status_code == 200
+    assert response_assign2.status_code == 201
     
     # 5. Now query for the product's location by SKU
     response = client.get(f'/inventarios/productos/ubicacion?producto={sku}', 

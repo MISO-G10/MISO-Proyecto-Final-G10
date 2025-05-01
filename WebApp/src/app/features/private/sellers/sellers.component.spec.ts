@@ -55,6 +55,36 @@ describe('SellersComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
+  it('should load and filter sellers by role VENDEDOR', () => {
+    const sellers = component.sellers();
+    expect(sellers.length).toBe(1); // Solo uno tiene rol VENDEDOR
+    expect(sellers[0].rol).toBe('VENDEDOR');
+    expect(sellers[0].nombre).toBe('Tendero');
+  });
+
+  it('should filter sellers by search term', () => {
+    component.searchTerm.set('ten');
+    component.filterSellers();
+    const filtered = component.filteredSellers();
+    expect(filtered.length).toBe(1);
+    expect(filtered[0].username).toContain('tendero');
+  });
+
+  it('should return all sellers if search term is empty', () => {
+    component.searchTerm.set('');
+    component.filterSellers();
+    const filtered = component.filteredSellers();
+    expect(filtered.length).toBe(1); // Solo hay 1 con rol VENDEDOR
+  });
+
+  it('should update filtered sellers when searchTerm changes', () => {
+    component.searchTerm.set('123456789');
+    component.filterSellers();
+    const filtered = component.filteredSellers();
+    expect(filtered.length).toBe(1);
+    expect(filtered[0].telefono).toBe('123456789');
+  });
 });
 
 

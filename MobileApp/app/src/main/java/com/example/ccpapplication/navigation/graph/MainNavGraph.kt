@@ -1,6 +1,7 @@
 package com.example.ccpapplication.navigation.graph
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -12,6 +13,8 @@ import com.example.ccpapplication.navigation.graph.Graph.SCHEDULE_VISIT
 import com.example.ccpapplication.pages.clients.ClientsPage
 import com.example.ccpapplication.pages.clients.ScheduleVisitPage
 import com.example.ccpapplication.pages.home.HomePage
+import com.example.ccpapplication.pages.products.ProductPage
+import com.example.ccpapplication.pages.products.ProductViewModel
 
 fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
     navigation(
@@ -44,6 +47,14 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
             )
 
             ScheduleVisitPage(navController = navController, client = client)
+        }
+        composable(BottomNavItem.Catalog.route){
+            val productViewModel:ProductViewModel=
+                viewModel(factory=ProductViewModel.Factory)
+            ProductPage(
+                productUiState=productViewModel.productUiState ,
+                showAddToShopping=false
+            )
         }
 
     }
