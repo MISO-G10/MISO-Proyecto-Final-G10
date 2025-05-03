@@ -59,4 +59,5 @@
     <string name="products_not_found"> No se encontraron productos</string>
     <string name="loading_failed_products"> No se pudo cargar los productos</string>
     <string name="loading"> Cargando</string>
+    <string name="visits_title">Mis Visitas</string>
 </resources>

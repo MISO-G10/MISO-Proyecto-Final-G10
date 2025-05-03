@@ -10,7 +10,7 @@ data class Visit(
     @SerialName("horaDesde") val hourFrom: String,
     @SerialName("horaHasta") val hourTo: String,
     @SerialName("comentarios") val comments: String,
-    @SerialName("idUsuario") val idUser: String
+    @SerialName("cancelada") val canceled: Boolean
 )
 
 @Serializable
