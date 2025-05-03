@@ -54,10 +54,9 @@
     <string name="add_visit_validation_error_hour_from">La hora inicial no puede ser mayor a la hora final</string>
     <string name="add_visit_validation_error_hour_to">La hora final debe ser mayor a la hora inicial</string>
     <string name="ccp_welcome">Bienvenido a CCP</string>
-    <string name="schedule_visit_button_label">Agendar visita</string>
-    <string name="add_visit_label_button">Agendar visita</string>
+    <string name="schedule_visit_label_button">Agendar visita</string>
+    <string name="cancel_visit_label_button">Cancelar</string>
     <string name="products_not_found"> No se encontraron productos</string>
     <string name="loading_failed_products"> No se pudo cargar los productos</string>
     <string name="loading"> Cargando</string>
-
 </resources>

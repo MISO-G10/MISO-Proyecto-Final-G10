@@ -1,4 +1,4 @@
-package com.example.ccpapplication.pages.clients
+package com.example.ccpapplication.pages.visits
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -49,9 +49,9 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ClientsPage(
+fun VisitsPage(
     navController: NavHostController = rememberNavController(),
-    viewModel: ClientsViewModel = viewModel(factory = ClientsViewModel.Factory)
+    viewModel: VisitsViewModel = viewModel(factory = VisitsViewModel.Factory)
 ) {
     val clients by viewModel.clients.collectAsState()
 
@@ -173,7 +173,7 @@ fun ClientItem(
                         text = "${client.name} ${client.lastName}".trim(),
                         style = MaterialTheme.typography.titleMedium
                     )
-                    
+
                     // Ubicación del negocio
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -191,7 +191,7 @@ fun ClientItem(
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
-                    
+
                     // Teléfono
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -209,7 +209,7 @@ fun ClientItem(
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
-                    
+
                     // Fecha de última visita
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -227,7 +227,7 @@ fun ClientItem(
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
-                    
+
                     // Número de visitas
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -253,7 +253,7 @@ fun ClientItem(
                 onClick = onSchedule,
                 modifier = Modifier.align(Alignment.TopEnd)
             ) {
-                Text(text = stringResource(R.string.schedule_visit_label_button))
+                Text(stringResource(R.string.cancel_visit_label_button))
             }
         }
     }

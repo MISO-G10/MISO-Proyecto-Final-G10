@@ -54,9 +54,8 @@
     <string name="add_visit_validation_error_hour_from">Start time must be before end time</string>
     <string name="add_visit_validation_error_hour_to">End time must be after start time</string>
     <string name="ccp_welcome">Welcome to CCP</string>
-    <string name="schedule_visit_button_label">Schedule visit</string>
-    <string name="add_visit_label_button">Schedule visit</string>
-
+    <string name="schedule_visit_label_button">Schedule visit</string>
+    <string name="cancel_visit_label_button">Cancel</string>
     <string name="products_not_found"> Products not found</string>
     <string name="loading_failed_products"> Unable to load products</string>
     <string name="loading"> Loading</string>

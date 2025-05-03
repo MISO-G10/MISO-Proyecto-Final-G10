@@ -11,6 +11,7 @@ import com.example.ccpapplication.navigation.BottomDrawer
 import com.example.ccpapplication.navigation.BottomNavItem
 import com.example.ccpapplication.navigation.graph.Graph.SCHEDULE_VISIT
 import com.example.ccpapplication.pages.clients.ClientsPage
+import com.example.ccpapplication.pages.visits.VisitsPage
 import com.example.ccpapplication.pages.clients.ScheduleVisitPage
 import com.example.ccpapplication.pages.home.HomePage
 import com.example.ccpapplication.pages.products.ProductPage
@@ -27,6 +28,9 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
 
         composable(BottomNavItem.Clients.route) {
             ClientsPage(navController = navController)
+        }
+        composable(BottomNavItem.Visits.route) {
+            VisitsPage(navController = navController)
         }
 
         composable(

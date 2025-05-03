@@ -252,7 +252,7 @@ fun ScheduleVisitPage(
         Spacer(modifier = Modifier.weight(1f))
 
         GenericButton(
-            label = stringResource(R.string.add_visit_label_button),
+            label = stringResource(R.string.schedule_visit_label_button),
             onClick = {
                 viewModel.addVisit { _ ->
                     // La navegación se maneja en el LaunchedEffect

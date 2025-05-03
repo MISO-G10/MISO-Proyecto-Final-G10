@@ -1,5 +1,6 @@
 from src.db.session import SessionLocal
 from src.models.asignacion import AsignacionClienteTendero
+from src.models.visita import Visita
 from .base_command import BaseCommand
 
 
@@ -31,7 +32,7 @@ class ListAsignacion(BaseCommand):
         
         asignaciones = query.all()
         
-        # Se muestran los resultados
+        # Convertir asignaciones a diccionario
         result = []
         for asignacion in asignaciones:
             result.append({
@@ -43,4 +44,32 @@ class ListAsignacion(BaseCommand):
                 "updatedAt": asignacion.updatedAt.isoformat()
             })
         
+        # Si se solicita, agregar visitas activas
+        if 'mostrarVisitas' in self.data:
+            tendero_ids = [asignacion.idTendero for asignacion in asignaciones]
+
+            visitas_query = db.query(Visita).filter(
+                Visita.idUsuario.in_(tendero_ids),
+                Visita.cancelada == False
+            )
+
+            visitas = visitas_query.all()
+
+            visitas_por_tendero = {}
+            for visita in visitas:
+                visitas_por_tendero.setdefault(visita.idUsuario, []).append({
+                    "id": visita.id,
+                    "fecha": visita.fecha,
+                    "horaDesde": visita.horaDesde,
+                    "horaHasta": visita.horaHasta,
+                    "comentarios": visita.comentarios,
+                    "cancelada": visita.cancelada,
+                    "createdAt": visita.createdAt.isoformat(),
+                    "updatedAt": visita.updatedAt.isoformat()
+                })
+
+            # Asociar visitas a las asignaciones
+            for asignacion in result:
+                asignacion["visitas"] = visitas_por_tendero.get(asignacion["idTendero"], [])
+
         return result

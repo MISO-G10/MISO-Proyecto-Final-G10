@@ -18,15 +18,11 @@ class List(BaseCommand):
     def execute(self):
         db = SessionLocal()
         payload = self.safe_payload()
-        conditions = []
-        query = db.query(Visita)
-        print(payload.get('fecha'))
-        
-        if payload.get('fecha'):
-            conditions.append(Visita.fecha == payload['fecha'])
 
-        if conditions:
-            query = query.filter(*conditions)
+        query = db.query(Visita).filter(Visita.cancelada == False)
+
+        if payload.get('fecha'):
+            query = query.filter(Visita.fecha == payload['fecha'])
 
         return serialize_sqlalchemy(query.all())
 
