@@ -59,6 +59,7 @@ class ListAsignacion(BaseCommand):
             for visita in visitas:
                 visitas_por_tendero.setdefault(visita.idUsuario, []).append({
                     "id": visita.id,
+                    "ïdUsuario": visita.idUsuario,
                     "fecha": visita.fecha,
                     "horaDesde": visita.horaDesde,
                     "horaHasta": visita.horaHasta,

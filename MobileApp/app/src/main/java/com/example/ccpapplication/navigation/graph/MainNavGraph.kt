@@ -30,7 +30,7 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
             ClientsPage(navController = navController)
         }
         composable(BottomNavItem.Visits.route) {
-            VisitsPage(navController = navController)
+            VisitsPage()
         }
 
         composable(

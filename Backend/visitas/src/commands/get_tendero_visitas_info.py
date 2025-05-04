@@ -38,6 +38,7 @@ class GetTenderoVisitasInfo(BaseCommand):
             for visita in visitas:
                 visitas_serializadas.append({
                     "id": visita.id,
+                    "idUsuario": visita.idUsuario,
                     "fecha": visita.fecha,
                     "horaDesde": visita.horaDesde,
                     "horaHasta": visita.horaHasta,

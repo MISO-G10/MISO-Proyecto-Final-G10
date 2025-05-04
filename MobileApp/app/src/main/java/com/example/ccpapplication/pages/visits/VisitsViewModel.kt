@@ -9,16 +9,19 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.ccpapplication.App
+import com.example.ccpapplication.data.model.Visit
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.example.ccpapplication.data.repository.ClientRepository
+import com.example.ccpapplication.data.repository.VisitRepository
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
 open class VisitsViewModel(
-    private val clientRepository: ClientRepository
+    private val clientRepository: ClientRepository,
+    private val visitRepository: VisitRepository
 ) : ViewModel() {
 
     private val _clients = MutableStateFlow<List<Client>>(emptyList())
@@ -56,6 +59,27 @@ open class VisitsViewModel(
         }
     }
 
+    fun cancelVisit(visit: Visit) {
+        viewModelScope.launch {
+            try {
+                // Crear una copia de la visita con el estado "cancelada" actualizado
+                val updatedVisit = visit.copy(canceled = true)
+
+                // Llamar al repositorio para actualizar la visita
+                val result = visitRepository.updateVisit(updatedVisit)
+
+                if (result.isSuccess) {
+                    // Si la actualización fue exitosa, recargar los clientes
+                    loadClients()
+                } else {
+                    handleError(Exception("Error al cancelar la visita: ${result.exceptionOrNull()?.message}"))
+                }
+            } catch (e: Exception) {
+                handleError(e)
+            }
+        }
+    }
+
     // Método protegido para manejar errores, que puede ser sobrescrito en pruebas
     protected open fun handleError(e: Exception) {
         Log.e("VisitsViewModel", "Error al cargar tenderos y sus visitas: ${e.message}")
@@ -67,7 +91,8 @@ open class VisitsViewModel(
             initializer {
                 val application = (this[APPLICATION_KEY] as App)
                 val clientRepository = application.container.clientRepository
-                VisitsViewModel(clientRepository)
+                val visitRepository = application.container.visitRepository
+                VisitsViewModel(clientRepository, visitRepository)
             }
         }
     }

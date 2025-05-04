@@ -1,5 +1,6 @@
 from flask import jsonify, request, Blueprint, g
 from ..commands.create import Create
+from ..commands.update import Update
 from ..commands.clean import Clean
 from src.utils.validate_token import token_required
 
@@ -10,6 +11,7 @@ from ..commands.create_asignacion import CreateAsignacion
 from ..commands.list_asignacion import ListAsignacion
 from ..commands.update_asignacion import UpdateAsignacion
 from ..commands.get_vendedor_tenderos import GetVendedorTenderos
+
 
 operations_blueprint = Blueprint('visitas', __name__)
 
@@ -22,6 +24,16 @@ def create_visita():
     result = Create(current_usuario, json).execute()
 
     return jsonify(result), 201
+
+@operations_blueprint.route('/<string:id>', methods=['PUT'])
+@token_required
+def update_visita(id):
+    json = request.get_json()
+    current_usuario = g.current_usuario
+
+    result = Update(id, json).execute()
+
+    return jsonify(result), 200
 
 
 @operations_blueprint.route('', methods=['GET'])
