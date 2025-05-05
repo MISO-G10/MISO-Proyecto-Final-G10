@@ -24,6 +24,7 @@ engine = create_engine(
 def get_inspector(engine):
     return inspect(engine)
 
+
 # Crear el sessionmaker y el scoped_session
 session_factory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 SessionLocal = scoped_session(session_factory)
