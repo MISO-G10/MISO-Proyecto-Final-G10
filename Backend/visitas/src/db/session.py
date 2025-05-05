@@ -18,8 +18,6 @@ print(f"Connecting to database: {DATABASE_URL}")
 engine = create_engine(
     DATABASE_URL,
     pool_size=10,        # Aumenta tamaño del pool
-    max_overflow=20,     # Permite hasta 20 conexiones adicionales temporales
-    pool_timeout=30,     # Espera hasta 30 segundos antes de lanzar TimeoutError
     pool_recycle=1800    # Recicla conexiones para evitar expiración (opcional pero recomendado)
 )
 
