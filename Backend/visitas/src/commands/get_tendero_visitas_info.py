@@ -27,10 +27,30 @@ class GetTenderoVisitasInfo(BaseCommand):
                 Visita.idUsuario == self.id_tendero
             ).order_by(desc(Visita.fecha), desc(Visita.horaDesde)).first()
             
+            # obtener todas las visitas asignadas para el tendero
+            visitas = db.query(Visita).filter(
+                Visita.idUsuario == self.id_tendero
+            ).all()
+            
+            visitas_serializadas = []
+            
+            # Serializar las visitas
+            for visita in visitas:
+                visitas_serializadas.append({
+                    "id": visita.id,
+                    "idUsuario": visita.idUsuario,
+                    "fecha": visita.fecha,
+                    "horaDesde": visita.horaDesde,
+                    "horaHasta": visita.horaHasta,
+                    "comentarios": visita.comentarios,
+                    "cancelada": visita.cancelada,
+                })
+            
             # Formatear la respuesta
             result = {
                 "numero_visitas": visitas_count,
-                "ultima_visita": None
+                "ultima_visita": None,
+                "visitas": visitas_serializadas
             }
             
             # Si hay una última visita, incluir su fecha
@@ -42,7 +62,8 @@ class GetTenderoVisitasInfo(BaseCommand):
             print(f"Error al obtener información de visitas para tendero {self.id_tendero}: {str(e)}")
             return {
                 "numero_visitas": 0,
-                "ultima_visita": None
+                "ultima_visita": None,
+                "visitas": []
             }
         finally:
             db.close()

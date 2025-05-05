@@ -37,6 +37,7 @@ class GetVendedorTenderos(BaseCommand):
                 visitas_info = GetTenderoVisitasInfo(tendero['id']).execute()
                 tendero['ultima_visita'] = visitas_info['ultima_visita']
                 tendero['numero_visitas'] = visitas_info['numero_visitas']
+                tendero['visitas'] = visitas_info['visitas']
             
             # Ordenar por fecha de última visita (descendente)
             tenderos_info.sort(
