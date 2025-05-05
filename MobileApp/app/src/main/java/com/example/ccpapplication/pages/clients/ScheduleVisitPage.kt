@@ -39,11 +39,11 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
-
+import android.view.ContextThemeWrapper
 
 private val DefaultDate: LocalDate = LocalDate.now()
-private val DefaultHourFrom: LocalTime = LocalTime.of(9, 0)
-private val DefaultHourTo: LocalTime = LocalTime.of(10, 0)
+private val DefaultHourFrom: LocalTime = LocalTime.of(8, 0)
+private val DefaultHourTo: LocalTime = LocalTime.of(14, 0)
 private val TimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
 @Composable
@@ -100,7 +100,7 @@ fun ScheduleVisitPage(
     }
 
     val datePickerDialog = DatePickerDialog(
-        context,
+        ContextThemeWrapper(context, R.style.CustomPickerDialog),
         { _, year, month, day ->
             val selectedDate = LocalDate.of(year, month + 1, day)
             if (selectedDate.isBefore(LocalDate.now())) {
@@ -116,7 +116,7 @@ fun ScheduleVisitPage(
     )
 
     val fromTimeDialog = TimePickerDialog(
-        context,
+        ContextThemeWrapper(context, R.style.CustomPickerDialog),
         { _, hour, minute ->
             val selectedTime = LocalTime.of(hour, minute)
             if (!selectedTime.isBefore(selectedToTime)) {
@@ -132,7 +132,7 @@ fun ScheduleVisitPage(
     )
 
     val toTimeDialog = TimePickerDialog(
-        context,
+        ContextThemeWrapper(context, R.style.CustomPickerDialog),
         { _, hour, minute ->
             val selectedTime = LocalTime.of(hour, minute)
             if (!selectedTime.isAfter(selectedFromTime)) {

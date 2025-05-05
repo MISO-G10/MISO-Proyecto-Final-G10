@@ -70,12 +70,12 @@ def seed_all_users():
     
     # Create tendero user
     tendero_id = create_test_user(
-        "tendero@gmail.com", 
+        "tendero1@gmail.com", 
         "tendero123", 
-        "Tendero", 
-        "Prueba", 
+        "Tienda", 
+        "Don Jose", 
         UsuarioRol.TENDERO,
-        telefono="+(311) 205-34897",
+        telefono="+(300) 221-5843",
         direccion="Bossque II 10-20"
     )
     
@@ -83,8 +83,8 @@ def seed_all_users():
     tendero_id2 = create_test_user(
         "tendero2@gmail.com", 
         "tendero123", 
-        "Tendero", 
-        "Prueba", 
+        "Tienda", 
+        "Surtimax", 
         UsuarioRol.TENDERO,
         telefono="+(311) 205-34897",
         direccion="Calle 124 St"
@@ -94,19 +94,30 @@ def seed_all_users():
     tendero_id3 = create_test_user(
         "tendero3@gmail.com", 
         "tendero123", 
-        "Tendero", 
-        "Prueba", 
+        "Tienda", 
+        "Calleja", 
         UsuarioRol.TENDERO,
-        telefono="+(311) 205-3487",
-        direccion="Calle 123 5-40"
+        telefono="+(312) 225-3544",
+        direccion="Calle 5A 25-21"
+    )
+    
+    # Create tendero user
+    tendero_id4 = create_test_user(
+        "tendero4@gmail.com", 
+        "tendero123", 
+        "Tienda", 
+        "Alameda", 
+        UsuarioRol.TENDERO,
+        telefono="+(318) 205-2160",
+        direccion="Carrera 4 20-16"
     )
     
     # Create vendedor user
     vendedor_id = create_test_user(
         "vendedor@gmail.com", 
         "vendedor123", 
-        "Vendedor", 
-        "Prueba", 
+        "Camilo", 
+        "Triana", 
         UsuarioRol.VENDEDOR
     )
     

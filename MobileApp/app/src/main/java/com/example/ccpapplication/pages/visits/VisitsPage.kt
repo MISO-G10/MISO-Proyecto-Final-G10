@@ -15,8 +15,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.LocationOn
@@ -29,6 +31,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -54,18 +58,69 @@ import java.time.format.DateTimeFormatter
 fun VisitsPage(
     viewModel: VisitsViewModel = viewModel(factory = VisitsViewModel.Factory)
 ) {
-    val clients by viewModel.clients.collectAsState()
+    val clients by viewModel.filteredClients.collectAsState()
+    val currentFilter by viewModel.currentFilter.collectAsState()
 
     Scaffold(
         topBar = {
             ClientsTopBar()
         }
     ) { innerPadding ->
-        ClientsList(
-            clients = clients,
-            contentPadding = innerPadding,
-            viewModel = viewModel
-        )
+        Column(
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            FilterBar(
+                currentFilter = currentFilter,
+                onFilterSelected = { viewModel.setFilter(it) }
+            )
+
+            ClientsList(
+                clients = clients,
+                contentPadding = PaddingValues(0.dp),
+                viewModel = viewModel
+            )
+        }
+    }
+}
+
+@Composable
+fun FilterBar(
+    currentFilter: VisitFilter,
+    onFilterSelected: (VisitFilter) -> Unit
+) {
+    val filters = listOf(
+        VisitFilter.ALL,
+        VisitFilter.COMPLETED,
+        VisitFilter.IN_PROGRESS,
+        VisitFilter.CANCELED
+    )
+
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(filters) { filter ->
+            FilterChip(
+                selected = currentFilter == filter,
+                onClick = { onFilterSelected(filter) },
+                label = { Text(filter.label) },
+                leadingIcon = if (currentFilter == filter) {
+                    {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                } else null,
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                    selectedLabelColor = MaterialTheme.colorScheme.primary
+                )
+            )
+        }
     }
 }
 
@@ -102,8 +157,9 @@ fun ClientsList(
         item {
             Spacer(modifier = Modifier.height(8.dp))
         }
+        val totalVisitsCount = clients.sumOf { it.visits.size }
 
-        if (clients.isEmpty()) {
+        if (totalVisitsCount == 0) {
             item {
                 Box(
                     modifier = Modifier
@@ -111,11 +167,11 @@ fun ClientsList(
                         .padding(vertical = 32.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("No hay tenderos asignados")
+                    Text("No hay visitas asignadas")
                 }
             }
         } else {
-            items(clients) { client ->
+            items(clients.filter { it.visitCount > 0 }) { client ->
                 ClientItem(
                     client = client,
                     viewModel = viewModel
@@ -157,7 +213,7 @@ fun VisitItem(
                 }
             }
 
-            if (!visit.canceled) {
+            if (!visit.canceled && !visit.isCompleted()) {
                 Button(
                     onClick = onCancelVisit,
                     modifier = Modifier.align(Alignment.CenterVertically),
@@ -338,3 +394,15 @@ private fun formatDate(isoDate: String): String {
         "Fecha desconocida"
     }
 }
+
+// Función para verificar si la visita está completada
+private fun Visit.isCompleted(): Boolean {
+    val visitDateTime = try {
+        LocalDateTime.parse("${this.date}T${this.hourTo}")
+    } catch (e: Exception) {
+        return false
+    }
+    return visitDateTime.isBefore(LocalDateTime.now())
+}
+
+
