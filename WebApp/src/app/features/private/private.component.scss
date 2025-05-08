@@ -4,15 +4,15 @@
 
 .mat-toolbar {
   padding: 0 10px;
-  background-color: map-get(my-theme.$primary-palette, 100); // Usando tono 90
-  color: map-get(my-theme.$primary-palette, 20); // Tono 30 del color primario
+  background-color: map.get(my-theme.$primary-palette, 100); // Usando tono 90
+  color: map.get(my-theme.$primary-palette, 20); // Tono 30 del color primario
   display: flex;
   align-items: center;
-  border-bottom: 1px solid map-get(my-theme.$primary-palette, 40);
+  border-bottom: 1px solid map.get(my-theme.$primary-palette, 40);
 
   .mdc-icon-button {
-    background-color: map-get(my-theme.$primary-palette, 100);
-    color: map-get(my-theme.$primary-palette, 40); // Tono 30 del color primario
+    background-color: map.get(my-theme.$primary-palette, 100);
+    color: map.get(my-theme.$primary-palette, 40); // Tono 30 del color primario
   }
 
   .user-button {
@@ -20,8 +20,8 @@
   }
 }
 .mat-toolbar-row {
-  background-color: map-get(my-theme.$primary-palette, 90); // Usando tono 90 (d9e2ff)
-  color: map-get(my-theme.$primary-palette, 20); // Tono 30 del color primario
+  background-color: map.get(my-theme.$primary-palette, 90); // Usando tono 90 (d9e2ff)
+  color: map.get(my-theme.$primary-palette, 20); // Tono 30 del color primario
 }
 
 .site-title {
@@ -54,7 +54,7 @@
   overflow: hidden;
   user-select: none;  
   border-radius: 0;
-  background-color: map-get(my-theme.$primary-palette, 90); // Usando tono 90 (d9e2ff)
+  background-color: map.get(my-theme.$primary-palette, 90); // Usando tono 90 (d9e2ff)
   
   // Contenedor personalizado para los elementos del menú
   .menu-item-container {
@@ -67,7 +67,7 @@
     mat-icon {
       margin-right: 10px;
       flex-shrink: 0;
-      color: map-get(my-theme.$primary-palette, 40); // Tono 40 del color primario
+      color: map.get(my-theme.$primary-palette, 40); // Tono 40 del color primario
     }
     
     .menu-text {
@@ -75,7 +75,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: map-get(my-theme.$primary-palette, 20); // Tono 30 del color primario
+      color: map.get(my-theme.$primary-palette, 20); // Tono 30 del color primario
     }
   }
   
@@ -84,7 +84,7 @@
   .active-link {
     .menu-text {
       font-weight: 500;
-      color: map-get(my-theme.$primary-palette, 20); // Tono 30 del color primario
+      color: map.get(my-theme.$primary-palette, 20); // Tono 30 del color primario
     }
   }
 }
