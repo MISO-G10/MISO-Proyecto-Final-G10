@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a5260bed0fe0889ecb70ba04b70d86ac46b1ece50fd2e655db7d52d41cef2bef"
+            "sha256": "b31a78aebc45d7ddd35973a59047af8211fbdc938a44fa1ad4680296049138a9"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -664,6 +664,15 @@
             "markers": "python_version >= '3.8'",
             "version": "==1.8.14"
         },
+        "faker": {
+            "hashes": [
+                "sha256:ad9dc66a3b84888b837ca729e85299a96b58fdaef0323ed0baace93c9614af06",
+                "sha256:dc2f730be71cb770e9c715b13374d80dbcee879675121ab51f9683d262ae9a1c"
+            ],
+            "index": "visitas",
+            "markers": "python_version >= '3.9'",
+            "version": "==37.1.0"
+        },
         "flask": {
             "hashes": [
                 "sha256:5f873c5184c897c8d9d1b05df1e3d01b14910ce69607a117bd3277098a5836ac",
@@ -824,6 +833,14 @@
             "index": "visitas",
             "markers": "python_version >= '3.8'",
             "version": "==3.14.0"
+        },
+        "tzdata": {
+            "hashes": [
+                "sha256:1a403fada01ff9221ca8044d701868fa132215d84beb92242d9acd2147f667a8",
+                "sha256:b60a638fcc0daffadf82fe0f57e53d06bdec2f36c4df66280ae79bce6bd6f2b9"
+            ],
+            "markers": "python_version >= '2'",
+            "version": "==2025.2"
         },
         "werkzeug": {
             "hashes": [

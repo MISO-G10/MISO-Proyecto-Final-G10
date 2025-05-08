@@ -12,5 +12,6 @@ data class Client(
     @SerialName("username") val email: String,
     @SerialName("apellido") val lastName: String = "",
     @SerialName("ultima_visita") val lastVisitDate: String? = null,
-    @SerialName("numero_visitas") val visitCount: Int = 0
+    @SerialName("numero_visitas") val visitCount: Int = 0,
+    @SerialName("visitas") val visits: List<Visit> = emptyList(),
 )

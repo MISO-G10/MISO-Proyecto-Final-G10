@@ -1,17 +1,17 @@
 import pytest
+from faker import Faker
 
 from src.db.session import SessionLocal
 from src.models.fabricante import Fabricante
 
 
 @pytest.fixture
-def valid_fabricante_data():
+def valid_fabricante_data(faker: Faker):
     return {
-        "nombre": "Alpina",
-        "numeroTel": "3211466",
-        "representante": "Andres Garcia",
+        "nombre": faker.company(),
+        "numeroTel": faker.phone_number(),
+        "representante": faker.name(),
     }
-
 
 # before each
 @pytest.fixture

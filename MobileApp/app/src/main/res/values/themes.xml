@@ -2,6 +2,8 @@
 <resources>
 
     <style name="Theme.CCPApplication" parent="Theme.AppCompat.Light.NoActionBar" />
-
+    <style name="CustomPickerDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
 
 </resources>

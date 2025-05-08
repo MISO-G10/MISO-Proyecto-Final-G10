@@ -45,19 +45,32 @@ export class CreateFabricanteComponent {
   private readonly fabricantesService = inject(FabricantesService);
   getErrorMessages = getErrorMessages;
 
+  // Traducciones
+  readonly translations = {
+    title: $localize`:@@private.manufacturer.create.title:Registro de Fabricante`,
+    field_name: $localize`:@@private.manufacturer.create.field.name:Nombre`,
+    field_name_placeholder: $localize`:@@private.manufacturer.create.field.name.placeholder:Ej: Industrias XYZ`,
+    field_legal_representative: $localize`:@@private.manufacturer.create.field.legalRepresentative:Representante Legal`,
+    field_legal_representative_placeholder: $localize`:@@private.manufacturer.create.field.legalRepresentative.placeholder:Ej: Juan Pérez`,
+    field_phone: $localize`:@@private.manufacturer.create.field.phone:Teléfono`,
+    field_phone_placeholder: $localize`:@@private.manufacturer.create.field.phone.placeholder:Ej: +(57) 311 205-4567`,
+    button_submit: $localize`:@@private.manufacturer.create.button.submit:Registrar Fabricante`,
+    button_cancel: $localize`:@@private.manufacturer.create.button.cancel:Cancelar`
+  };
+
   // Validaciones para los mensajes de error
   validaciones: ValidationMessages = {
     name: {
-      required: 'El nombre es requerido',
-      maxlength: 'El nombre no puede exceder 50 caracteres'
+      required: $localize`:@@private.manufacturer.create.validation.name.required:El nombre es requerido`,
+      maxlength: $localize`:@@private.manufacturer.create.validation.name.maxlength:El nombre no puede exceder 50 caracteres`
     },
     legalRepresentative: {
-      required: 'El representante legal es requerido',
-      maxlength: 'El nombre no puede exceder 50 caracteres'
+      required: $localize`:@@private.manufacturer.create.validation.legalRepresentative.required:El representante legal es requerido`,
+      maxlength: $localize`:@@private.manufacturer.create.validation.legalRepresentative.maxlength:El nombre no puede exceder 50 caracteres`
     },
     phone: {
-      required: 'El número de teléfono es requerido',
-      pattern: 'El formato debe ser +(xx) xxx xxx-xxxx'
+      required: $localize`:@@private.manufacturer.create.validation.phone.required:El número de teléfono es requerido`,
+      pattern: $localize`:@@private.manufacturer.create.validation.phone.pattern:El formato debe ser +(xx) xxx xxx-xxxx`
     }
   };
 

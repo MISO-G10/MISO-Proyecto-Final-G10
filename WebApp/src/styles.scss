@@ -21,6 +21,10 @@ html {
   }
 }
 
+body {
+  margin: 0;
+}
+
 .success-snackbar {
   --mdc-snackbar-container-color: var(--mat-sys-primary);  
   --mat-mdc-snack-bar-button-color: var(--mat-sys-on-primary);
