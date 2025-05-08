@@ -1,15 +1,15 @@
 <div class="fabricante-container">
   <mat-card class="fabricante-card">
     <mat-card-header>
-      <mat-card-title class="fabricante-title">Registro de Fabricante</mat-card-title>
+      <mat-card-title class="fabricante-title">{{ translations.title }}</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
       <form [formGroup]="fabricanteForm" (ngSubmit)="onCreateFabricante()" class="fabricante-form">
         <!-- Nombre -->
         <mat-form-field appearance="outline" floatLabel="always">
-          <mat-label>Nombre</mat-label>
-          <input matInput formControlName="name" placeholder="Ej: Industrias XYZ">
+          <mat-label>{{ translations.field_name }}</mat-label>
+          <input matInput formControlName="name" [placeholder]="translations.field_name_placeholder">
           <mat-icon matPrefix>business</mat-icon>
           <button *ngIf="fabricanteForm.get('name')?.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearField('name')">
             <mat-icon>close</mat-icon>
@@ -21,8 +21,8 @@
 
         <!-- Representante Legal -->
         <mat-form-field appearance="outline" floatLabel="always">
-          <mat-label>Representante Legal</mat-label>
-          <input matInput formControlName="legalRepresentative" placeholder="Ej: Juan Pérez">
+          <mat-label>{{ translations.field_legal_representative }}</mat-label>
+          <input matInput formControlName="legalRepresentative" [placeholder]="translations.field_legal_representative_placeholder">
           <mat-icon matPrefix>person</mat-icon>
           <button *ngIf="fabricanteForm.get('legalRepresentative')?.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearField('legalRepresentative')">
             <mat-icon>clear</mat-icon>
@@ -34,8 +34,8 @@
 
         <!-- Teléfono -->
         <mat-form-field appearance="outline" floatLabel="always">
-          <mat-label>Teléfono</mat-label>
-          <input matInput formControlName="phone" placeholder="Ej: +(57) 311 205-4567" appPhoneFormat>
+          <mat-label>{{ translations.field_phone }}</mat-label>
+          <input matInput formControlName="phone" [placeholder]="translations.field_phone_placeholder" appPhoneFormat>
           <mat-icon matPrefix>phone</mat-icon>
           <button *ngIf="fabricanteForm.get('phone')?.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearField('phone')">
             <mat-icon>close</mat-icon>
@@ -46,11 +46,11 @@
         </mat-form-field>
 
           <button mat-flat-button color="primary" type="submit" [disabled]="fabricanteForm.invalid" class="submit-button">
-            Registrar Fabricante
+            {{ translations.button_submit }}
           </button>
 
           <button mat-stroked-button type="button" (click)="onCancelCreate()" class="cancel-button">
-            Cancelar
+            {{ translations.button_cancel }}
           </button>
       </form>
     </mat-card-content>

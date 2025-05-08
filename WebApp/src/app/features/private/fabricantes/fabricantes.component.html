@@ -1,12 +1,12 @@
 <div class="fabricante-container">
     <div class="fabricante-header">
       <mat-form-field appearance="outline" class="search-field">
-        <mat-label>Buscar fabricantes</mat-label>
+        <mat-label>{{ translations.search_label }}</mat-label>
         <input
           matInput
           [(ngModel)]="searchTerm"
           (ngModelChange)="filterFabricantes()"
-          placeholder="Nombre, teléfono o representante legal">
+          [placeholder]="translations.search_placeholder">
         <mat-icon matPrefix>search</mat-icon>
       </mat-form-field>
 
@@ -16,7 +16,7 @@
         class="add-button"
         (click)="navigateToCreateFabricante()">
         <mat-icon>business</mat-icon>
-        Nuevo fabricante
+        {{ translations.button_new }}
       </button>
     </div>
 
@@ -24,41 +24,41 @@
       <table mat-table [dataSource]="filteredFabricantes()" class="fabricante-table">
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <th mat-header-cell *matHeaderCellDef>{{ translations.col_name }}</th>
           <td mat-cell *matCellDef="let fabricante">{{ fabricante.name }}</td>
         </ng-container>
 
         <!-- Phone Column -->
         <ng-container matColumnDef="phone">
-          <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+          <th mat-header-cell *matHeaderCellDef>{{ translations.col_phone }}</th>
           <td mat-cell *matCellDef="let fabricante">{{ fabricante.phone }}</td>
         </ng-container>
 
         <!-- Products Column -->
         <ng-container matColumnDef="products">
-          <th mat-header-cell *matHeaderCellDef>Productos</th>
+          <th mat-header-cell *matHeaderCellDef>{{ translations.col_products }}</th>
           <td mat-cell *matCellDef="let fabricante">
             <button mat-raised-button color="accent" (click)="navigateToAddProduct(fabricante.id)">
               <mat-icon>add_shopping_cart</mat-icon>
-              Agregar producto
+              {{ translations.button_addProduct }}
             </button>
           </td>
         </ng-container>
 
         <!-- Legal Representative Column -->
         <ng-container matColumnDef="legalRepresentative">
-          <th mat-header-cell *matHeaderCellDef>Representante Legal</th>
+          <th mat-header-cell *matHeaderCellDef>{{ translations.col_legalRepresentative }}</th>
           <td mat-cell *matCellDef="let fabricante">{{ fabricante.legalRepresentative }}</td>
         </ng-container>
 
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <th mat-header-cell *matHeaderCellDef>{{ translations.col_actions }}</th>
           <td mat-cell *matCellDef="let fabricante">
-            <button mat-icon-button color="primary" matTooltip="Editar">
+            <button mat-icon-button color="primary" [matTooltip]="translations.tooltip_edit">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" matTooltip="Eliminar">
+            <button mat-icon-button color="warn" [matTooltip]="translations.tooltip_delete">
               <mat-icon>delete</mat-icon>
             </button>
           </td>
