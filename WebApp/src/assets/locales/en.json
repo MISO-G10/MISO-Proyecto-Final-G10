@@ -21,9 +21,19 @@
     "private.navicon.sellers":"Sellers",
     "private.navicon.sales":"Sales",
     "private.navicon.manufacturer":"Manufacturer",
+    "private.navicon.routes":"Routes",
 
     "private.seller.search.placeholder":"Names, email, phone ",
     "private.seller.search.tittle":"Search seller",
+
+    "delivery.routes.title":"Delivery Routes",
+    "delivery.routes.date_selector":"Select a date",
+    "delivery.routes.no_routes":"There are no deliveries today",
+    "delivery.routes.route_name":"Route name",
+    "delivery.routes.truck_plate":"Truck plate",
+    "delivery.routes.driver_name":"Driver name",
+    "delivery.routes.route_map":"Route map",
+    "delivery.routes.view_map":"Navigate route",
     "private.seller.button.new_seller":"Create seller",
     "private.seller.table.col1":"Name",
     "private.seller.table.col2":"Email",
@@ -85,6 +95,14 @@
     "private.manufacturer.list.table.col.actions":"Actions",
     "private.manufacturer.list.button.addProduct":"Add product",
     "private.manufacturer.list.tooltip.edit":"Edit",
-    "private.manufacturer.list.tooltip.delete":"Delete"
+    "private.manufacturer.list.tooltip.delete":"Delete",
+
+    "private.seller.sales.report.button":"Sales Report",
+    "private.seller.sales.report.tooltip":"View sales report",
+    "private.seller.sales.report.title":"Sales Report for {0}",
+    "private.seller.sales.report.table.col.date":"Date",
+    "private.seller.sales.report.table.col.amount":"Amount",
+    "private.seller.sales.report.total":"Total Sales",
+    "private.seller.sales.report.back":"Back to Sellers"
   }
 }
