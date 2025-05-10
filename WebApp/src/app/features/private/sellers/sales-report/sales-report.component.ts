@@ -15,7 +15,7 @@ interface SaleReport {
   amount: number;
 }
 
-// Registrar el locale para español de Colombia
+// Registrar el locale para español
 registerLocaleData(localeEs);
 
 @Component({
@@ -75,7 +75,7 @@ export class SalesReportComponent implements OnInit {
   }
 
   loadSalesData() {
-    // Por ahora usaremos datos de ejemplo
+    // Ejemplo mock de datos de ventas
     const mockSales: SaleReport[] = [
       { id: 'sale1', date: new Date(2025, 3, 15), amount: 1200000 },
       { id: 'sale2', date: new Date(2025, 3, 20), amount: 850000 },
@@ -83,9 +83,9 @@ export class SalesReportComponent implements OnInit {
       { id: 'sale4', date: new Date(2025, 4, 10), amount: 920000 },
       { id: 'sale5', date: new Date(2025, 4, 18), amount: 1350000 }
     ];
-    
-    this.salesData.set(mockSales);
-    this.calculateTotal();
+   // Simulamos una llamada a un servicio que devuelve los datos de ventas
+   this.salesData.set(mockSales);
+   this.calculateTotal();
   }
 
   calculateTotal() {

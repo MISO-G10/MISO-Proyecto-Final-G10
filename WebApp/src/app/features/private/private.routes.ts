@@ -53,6 +53,12 @@ export const PRIVATE_ROUTES: Routes = [
         canActivate: [RoleGuard],
         data: { roles: ['ADMINISTRADOR', 'ENCARGADO_COMPRAS_PROVEEDORES'] }
       },
+      { 
+        path: 'routes', 
+        loadComponent: () => import('./routes/delivery-routes.component').then(m => m.DeliveryRoutesComponent),
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMINISTRADOR', 'LOGISTICA'] }
+      },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   }
