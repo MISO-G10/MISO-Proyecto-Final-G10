@@ -1,0 +1,33 @@
+<div class="sales-report-container">
+  <div class="header">
+    <h1>{{ getFormattedTitle() }}</h1>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      {{ translations.back }}
+    </button>
+  </div>
+  
+  <div class="table-container">
+    <table mat-table [dataSource]="salesData()">
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>{{ translations.date }}</th>
+        <td mat-cell *matCellDef="let sale">{{ sale.date | date: 'dd/MM/yyyy' }}</td>
+      </ng-container>
+      
+      <!-- Amount Column -->
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>{{ translations.amount }}</th>
+        <td mat-cell *matCellDef="let sale">{{ sale.amount | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
+      </ng-container>
+      
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  
+  <div class="total-row">
+    <div class="label">{{ translations.total }}:</div>
+    <div class="value">{{ totalSales() | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</div>
+  </div>
+</div>
