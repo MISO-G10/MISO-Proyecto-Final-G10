@@ -9,7 +9,6 @@ from ..commands.assign_producto_bodega import AssignProductoBodega
 
 import os
 
-
 operations_blueprint = Blueprint('inventarios', __name__)
 
 
@@ -26,6 +25,7 @@ def reset_fabricante_database():
 
     return jsonify(result), 200
 
+
 # Crear productos asociados a un fabricante
 @operations_blueprint.route("/createproduct", methods=['POST'])
 @token_required
@@ -33,16 +33,16 @@ def create_producto():
     json_data = request.get_json()
     if not json_data:
         return jsonify({"error": "El cuerpo de la solicitud no puede estar vacío"}), 400
-    
+
     if "fabricante_id" not in json_data:
         return jsonify({"error": "Requerido valor fabricante_id para crear un producto"}), 400
     current_usuario = g.current_usuario
     result = Create(current_usuario, json_data).execute()
-    
+
     # Verificar si el resultado es una tupla (respuesta, código)
     if isinstance(result, tuple) and len(result) == 2:
         return jsonify(result[0]), result[1]
-    
+
     # Si no es una tupla, es una respuesta exitosa
     return jsonify(result), 201
 
@@ -68,6 +68,7 @@ def get_producto_ubicacion():
 @token_required
 def create_bodega():
     json_data = request.get_json()
+
     if not json_data:
         return jsonify({"error": "El cuerpo de la solicitud no puede estar vacío"}), 400
 
@@ -102,7 +103,20 @@ def add_producto_to_bodega(bodega_id):
 
     # The result is already a dictionary from the command
     return jsonify(result), 201
-    
+
+
+@operations_blueprint.route("/bodegas/<bodega_id>/productos/<producto_id>", methods=['GET'])
+@token_required
+def get_producto_from_bodega(bodega_id, producto_id):
+    result = GetProductoUbicacion(producto_id, bodega_id).execute()
+
+    # Check if we got an error response (tuple with response and status code)
+    if isinstance(result, tuple) and len(result) == 2:
+        return jsonify(result[0]), result[1]
+
+    return jsonify(result), 200
+
+
 # Listar todos los productos
 @operations_blueprint.route("/productos", methods=['GET'])
 @token_required

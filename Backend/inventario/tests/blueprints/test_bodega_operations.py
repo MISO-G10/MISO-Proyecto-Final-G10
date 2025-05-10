@@ -11,7 +11,9 @@ from src.models import Bodega, InventarioBodega, Producto, Categoria
 def valid_bodega_data():
     return {
         "nombre": "Bodega Principal",
-        "direccion": "Calle 123 #45-67, Bogotá"
+        "direccion": "Calle 123 #45-67",
+        "ciudad": "Bogota",
+        "pais": "CO"
     }
 
 
@@ -43,11 +45,25 @@ def test_create_bodega_success(client, valid_bodega_data):
     assert json_response.get("id") is not None
     assert json_response.get("nombre") == valid_bodega_data["nombre"]
     assert json_response.get("direccion") == valid_bodega_data["direccion"]
+    assert json_response.get("ciudad") == valid_bodega_data["ciudad"]
+    assert json_response.get("pais") == valid_bodega_data["pais"]
 
 
 def test_cannot_create_bodega_without_token(client, valid_bodega_data):
     response = client.post('/inventarios/bodegas', json=valid_bodega_data)
     assert response.status_code == 403
+
+
+def test_cannot_create_bodega_with_invalid_country_code(client, valid_bodega_data):
+    # Test with an invalid country code
+    invalid_data = valid_bodega_data.copy()
+    invalid_data["pais"] = "INVALID"
+
+    response = client.post('/inventarios/bodegas',
+                           json=invalid_data,
+                           headers={'Authorization': 'Bearer 1234'})
+
+    assert response.status_code == 400
 
 
 def test_cannot_create_bodega_with_missing_fields(client, valid_bodega_data):
@@ -88,7 +104,9 @@ def test_assign_producto_to_bodega(client, session):
     # Create a bodega
     bodega_data = {
         "nombre": "Bodega Asignación",
-        "direccion": "Calle Principal #123"
+        "direccion": "Calle Principal #123",
+        "ciudad": "Bogota",
+        "pais": "CO"
     }
 
     response = client.post('/inventarios/bodegas',
@@ -156,7 +174,9 @@ def test_update_producto_cantidad_in_bodega(client, session):
     # Create a bodega and assign a product first
     bodega_data = {
         "nombre": "Bodega Actualización",
-        "direccion": "Av. Actualización #456"
+        "direccion": "Av. Actualización #456",
+        "ciudad": "Medellin",
+        "pais": "CO"
     }
 
     response = client.post('/inventarios/bodegas',
