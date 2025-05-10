@@ -28,7 +28,7 @@
 
     "delivery.routes.title":"Delivery Routes",
     "delivery.routes.date_selector":"Select a date",
-    "delivery.routes.no_routes":"There are no deliveries today",
+    "delivery.routes.no_routes":"There are no deliveries in this date",
     "delivery.routes.route_name":"Route name",
     "delivery.routes.truck_plate":"Truck plate",
     "delivery.routes.driver_name":"Driver name",
