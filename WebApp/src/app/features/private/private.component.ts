@@ -14,7 +14,7 @@ import { AuthService } from '../../core/auth/auth.service';
     imports: [RouterModule,
         CommonModule,
          MatToolbarModule,
-          MatButtonModule, 
+          MatButtonModule,
           MatIconModule,
           MatSidenavModule,
           MatListModule,
@@ -36,31 +36,32 @@ export class PrivateComponent {
       navicon_sellers: $localize`:@@private.navicon.sellers:Vendedores`,
       navicon_sales: $localize`:@@private.navicon.sales:Ventas`,
       navicon_manufacturer: $localize`:@@private.navicon.manufacturer:Fabricantes`,
+      navicon_products: $localize`:@@private.navicon.products:Productos`,
       navicon_routes: $localize`:@@private.navicon.routes:Rutas`,
     };
-    
+
     isClickExpanded = false;
     isHoverExpanded = false;
     expandedWidth = 200;
     collapsedWidth = 60;
-  
+
     toggleByClick() {
       this.isClickExpanded = !this.isClickExpanded;
       this.isHoverExpanded = false; // Reset hover state when clicking
     }
-  
+
     expandByHover() {
       if (!this.isClickExpanded) {
         this.isHoverExpanded = true;
       }
     }
-  
+
     collapseByHover() {
       if (!this.isClickExpanded) {
         this.isHoverExpanded = false;
       }
     }
-  
+
     getSidenavWidth(): number {
       if (this.isClickExpanded || this.isHoverExpanded) return this.expandedWidth;
       return this.collapsedWidth;
