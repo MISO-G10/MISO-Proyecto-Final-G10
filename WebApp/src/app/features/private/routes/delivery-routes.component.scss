@@ -1,0 +1,98 @@
+.routes-container {
+  padding: 20px;
+
+  .routes-card {
+    max-width: 1200px;
+    margin: 0 auto;
+    
+    mat-card-header {
+      margin-bottom: 20px;
+    }
+  }
+  
+  .header-divider {
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.12);
+    margin-bottom: 24px;
+  }
+
+  .date-picker-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    
+    mat-form-field {
+      width: 200px;
+    }
+  }
+
+  .no-routes-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    color: #757575;
+    
+    mat-icon {
+      font-size: 48px;
+      height: 48px;
+      width: 48px;
+      margin-bottom: 16px;
+    }
+    
+    p {
+      font-size: 18px;
+    }
+  }
+
+  .routes-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    
+    .route-item {
+      .route-card {
+        height: 100%;
+        
+        .route-details {
+          margin: 16px 0;
+          
+          .detail-row {
+            display: flex;
+            margin-bottom: 8px;
+            
+            .detail-label {
+              font-weight: 500;
+              min-width: 150px;
+            }
+            
+            .detail-value {
+              flex: 1;
+            }
+          }
+        }
+        
+        .map-container {
+          margin-top: 16px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          
+          .route-map {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+          }
+          
+          button {
+            min-width: 120px;
+          }
+        }
+      }
+    }
+  }
+}

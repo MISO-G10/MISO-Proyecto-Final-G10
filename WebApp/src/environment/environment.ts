@@ -3,6 +3,6 @@ export const environment = {
     endpointUsers: "3000/usuarios",
     endpointFabricantes: "3001/fabricantes",
     endpointVentas: "3002/planes",
-    endpointInventario: "3003/inventarios"
-
+    endpointInventario: "3003/inventarios",
+    googleMapsApiKey: "AIzaSyAwhcQ3koddiPAhu3nFiXDwxWqmlYIJQss"
 }
