@@ -14,7 +14,7 @@ class CreateProductoSchema(Schema):
     nombre = fields.Str(required=True)
     descripcion = fields.Str(required=True)
     perecedero = fields.Bool(required=True)
-    fechaVencimiento = fields.DateTime(required=False)
+    fechaVencimiento = fields.DateTime(required=False, allow_none=True)
     valorUnidad = fields.Float(required=True)
     tiempoEntrega = fields.DateTime(required=True)
     condicionAlmacenamiento = fields.Str(required=True)
