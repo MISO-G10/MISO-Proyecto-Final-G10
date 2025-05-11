@@ -1,0 +1,6 @@
+nombre,valorunidad,fechavencimiento,tiempoentrega,descripcion,condicionalmacenamiento,reglascomerciales,reglastributarias,perecedero,categoria,reglaslegales
+Leche Entera,3500,2025-12-31,2025-05-20,Leche entera pasteurizada,Mantener refrigerado entre 2°C y 8°C,"Venta por unidad, descuento por docena",IVA 19%,true,ALIMENTOS_BEBIDAS,Registro INVIMA 123456
+Jabón de Manos,4200,2026-06-30,2025-05-25,Jabón líquido antibacterial,Mantener en lugar fresco y seco,Venta por unidad,IVA 19%,false,CUIDADO_PERSONAL,Registro INVIMA 789012
+Detergente en Polvo,12000,2027-01-01,2025-05-18,Detergente multiusos para ropa,Mantener en lugar seco,Descuento por volumen,IVA 19%,false,LIMPIEZA_HOGAR,Registro EPA 345678
+Pañales Desechables,45000,2026-12-31,2025-05-15,"Pañales talla M, paquete x30",Mantener en lugar seco,Promoción 2x1,IVA 19%,false,BEBES,Registro sanitario 901234
+Alimento para Gatos,28000,2025-08-31,2025-05-22,Alimento premium para gatos adultos,Mantener en lugar fresco y seco,Programa de puntos,IVA 19%,true,MASCOTAS,Registro ICA 567890
