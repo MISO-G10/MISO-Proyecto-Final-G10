@@ -33,16 +33,16 @@ export class RegistroMasivoComponent implements OnInit {
   // Campos requeridos para validación del csv
   requiredFields = [
     'nombre', 
-    'valorUnidad', 
-    'fechaVencimiento', 
-    'tiempoEntrega', 
+    'valorunidad', 
+    'fechavencimiento', 
+    'tiempoentrega', 
     'descripcion', 
-    'condicionAlmacenamiento', 
-    'reglasComerciales', 
-    'reglasTributarias',
+    'condicionalmacenamiento', 
+    'reglascomerciales', 
+    'reglastributarias',
     'perecedero',
     'categoria',
-    'reglasLegales'
+    'reglaslegales'
   ];
 
   constructor(
@@ -133,6 +133,8 @@ export class RegistroMasivoComponent implements OnInit {
 
     // Se obtienen los encabezados y valida que estén los campos requeridos
     const headers = lines[0].split(',').map(header => header.trim().toLowerCase());
+    console.log('Headers encontrados:', headers);
+    console.log('Headers requeridos:', this.requiredFields);
     for (const field of this.requiredFields) {
       if (!headers.includes(field)) {
         throw new Error(`El archivo CSV no contiene el campo requerido: ${field}`);
