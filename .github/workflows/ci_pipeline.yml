@@ -15,13 +15,14 @@ jobs:
     outputs:
       rama_web: ${{ startsWith(github.head_ref, 'feature/huw') || startsWith(github.head_ref, 'feature/HUW') }}
       rama_mobile: ${{ startsWith(github.head_ref, 'feature/hum') || startsWith(github.head_ref, 'feature/HUM') }}
+      rama_ci_cd: ${{ startsWith(github.head_ref, 'chore/ci-cd-pipeline') }}
     steps:
       - name: Check branch name
         run: echo "Pull request desde ${{ github.head_ref }}"
 
   web-tests:
     needs: check-branch-name
-    if: needs.check-branch-name.outputs.rama_web == 'true'
+    if: needs.check-branch-name.outputs.rama_web == 'true' || needs.check-branch-name.outputs.rama_ci_cd == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -68,6 +69,7 @@ jobs:
 
   backend-tests:
     runs-on: ubuntu-latest
+    if: always() || needs.check-branch-name.outputs.rama_ci_cd == 'true'
     defaults:
       run:
         working-directory: ./Backend
@@ -159,7 +161,7 @@ jobs:
 
   mobile-tests:
     needs: check-branch-name
-    if: needs.check-branch-name.outputs.rama_mobile == 'true'
+    if: needs.check-branch-name.outputs.rama_mobile == 'true' || needs.check-branch-name.outputs.rama_ci_cd == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -201,7 +203,7 @@ jobs:
 
   approve-pr:
     needs: [check-branch-name, backend-tests, web-tests, mobile-tests]
-    if: always() && ((needs.check-branch-name.outputs.rama_web == 'true' && (needs.web-tests.result == 'success' || needs.web-tests.result == 'skipped')) || (needs.check-branch-name.outputs.rama_mobile == 'true' && (needs.mobile-tests.result == 'success' || needs.mobile-tests.result == 'skipped')) || (needs.check-branch-name.outputs.rama_web == 'false' && needs.check-branch-name.outputs.rama_mobile == 'false')) && needs.backend-tests.result == 'success'
+    if: always() && ((needs.check-branch-name.outputs.rama_web == 'true' && (needs.web-tests.result == 'success' || needs.web-tests.result == 'skipped')) || (needs.check-branch-name.outputs.rama_mobile == 'true' && (needs.mobile-tests.result == 'success' || needs.mobile-tests.result == 'skipped')) || (needs.check-branch-name.outputs.rama_web == 'false' && needs.check-branch-name.outputs.rama_mobile == 'false') || needs.check-branch-name.outputs.rama_ci_cd == 'true') && needs.backend-tests.result == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Approve PR
