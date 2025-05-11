@@ -44,3 +44,7 @@ class InvalidBodegaData(ApiError):
 class ResourceNotFound(ApiError):
     code = 404
     description = "Recurso no encontrado"
+
+class InvalidPedidoData(ApiError):
+    code = 400
+    description = "Datos del pedido no válidos"

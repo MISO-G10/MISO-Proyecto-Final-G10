@@ -29,6 +29,7 @@ class Producto(Base, Model):
     fabricante_id = Column(String, nullable=False)  # Almacena el id del Fabricante asociado
 
     bodega_productos = None
+    pedido_productos = None
 
     @property
     def bodegas(self):
