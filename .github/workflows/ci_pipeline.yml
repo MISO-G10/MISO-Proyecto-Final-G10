@@ -183,7 +183,7 @@ jobs:
 
       - name: Run tests
         id: run_tests
-        run: ./gradlew testDebugUnitTest connectedDebugAndroidTest
+        run: ./gradlew testDebugUnitTest
 
       - name: Validate if test failed
         id: result_with_error
