@@ -29,8 +29,7 @@ android {
     buildTypes {
         debug {
             isDebuggable = true
-            buildConfigField("String", "API_URL", "\"http://104.154.111.167\"")
-
+            buildConfigField("String", "API_URL", "\"http://10.0.2.2\"")
             buildConfigField("String", "ENDPOINT_VISITAS", "\":3004/\"")
             buildConfigField("String", "ENDPOINT_USUARIOS", "\":3000/\"")
             buildConfigField("String", "ENDPOINT_INVENTARIOS", "\":3003/\"")
