@@ -1,14 +1,47 @@
 // private.component.scss
+@use '../../../theming/_theme-colors' as my-theme;
+@use 'sass:map';
+
+.mat-toolbar {
+  padding: 0 10px;
+  background-color: map.get(my-theme.$primary-palette, 100); // Usando tono 90
+  color: map.get(my-theme.$primary-palette, 20); // Tono 30 del color primario
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid map.get(my-theme.$primary-palette, 40);
+
+  .mdc-icon-button {
+    background-color: map.get(my-theme.$primary-palette, 100);
+    color: map.get(my-theme.$primary-palette, 40); // Tono 30 del color primario
+  }
+
+  .user-button {
+    margin-right: 8px; // Espacio específico entre botón de usuario y logout
+  }
+}
+.mat-toolbar-row {
+  background-color: map.get(my-theme.$primary-palette, 90); // Usando tono 90 (d9e2ff)
+  color: map.get(my-theme.$primary-palette, 20); // Tono 30 del color primario
+}
+
+.site-title {
+  padding-top: 5px;
+}
+
+.logo-image {
+  height: 40px;
+  margin-left: 12px;
+}
+
 .sidenav-container {
   height: calc(100vh - 64px); // Resta la altura del toolbar
-  
+
   &.overlay-mode {
     .app-sidenav {
       position: absolute;
       z-index: 2;
       box-shadow: 3px 0 6px rgba(0,0,0,0.16);
     }
-
     
     .main-content {
       margin-left: 60px !important; // Mantiene el margen para el ícono
@@ -20,24 +53,38 @@
   transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   overflow: hidden;
   user-select: none;  
-.mat-list-item {
-    // Fuerza la estructura flex correcta
-    .mat-list-item-content {
-      display: flex !important;
-      align-items: center !important;
-      width: 100%;
+  border-radius: 0;
+  background-color: map.get(my-theme.$primary-palette, 90); // Usando tono 90 (d9e2ff)
+  
+  // Contenedor personalizado para los elementos del menú
+  .menu-item-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    
+    mat-icon {
+      margin-right: 10px;
+      flex-shrink: 0;
+      color: map.get(my-theme.$primary-palette, 40); // Tono 40 del color primario
     }
-
-    mat-icon[mat-list-icon] {
-      margin-right: 16px;
-      flex-shrink: 0; // Evita que el icono se reduzca
-    }
-
+    
     .menu-text {
-      flex: 1;
+      display: inline-block;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      color: map.get(my-theme.$primary-palette, 20); // Tono 30 del color primario
+    }
+  }
+  
+  
+  // Estilo para el ítem activo
+  .active-link {
+    .menu-text {
+      font-weight: 500;
+      color: map.get(my-theme.$primary-palette, 20); // Tono 30 del color primario
     }
   }
 }

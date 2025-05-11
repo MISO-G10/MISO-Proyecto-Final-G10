@@ -1,6 +1,8 @@
 package com.example.ccpapplication.pages.clients
 
 import com.example.ccpapplication.data.model.AddVisitResponse
+import com.example.ccpapplication.data.model.UpdateVisitResponse
+import com.example.ccpapplication.data.model.Visit
 import com.example.ccpapplication.data.model.VisitAdd
 import com.example.ccpapplication.data.repository.VisitRepository
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +27,12 @@ class ScheduleVisitViewModelTest {
         override suspend fun addVisit(visit: VisitAdd): Result<AddVisitResponse> {
             return Result.success(
                 AddVisitResponse(id = "12345", createdAt = "2025-10-01T00:00:00Z")
+            )
+        }
+
+        override suspend fun updateVisit(visit: Visit): Result<UpdateVisitResponse> {
+            return Result.success(
+                UpdateVisitResponse(id = "12345", message="visita actualizada", updatedAt = "2025-10-01T00:00:00Z")
             )
         }
     }

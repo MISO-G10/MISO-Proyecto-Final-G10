@@ -18,7 +18,7 @@ class Producto(Base, Model):
     nombre = Column(String, nullable=False)
     descripcion = Column(String, nullable=False)
     perecedero = Column(Boolean, nullable=False)
-    fechaVencimiento = Column(DateTime, nullable=False)
+    fechaVencimiento = Column(DateTime, nullable=True)
     valorUnidad = Column(Float, nullable=False)
     tiempoEntrega = Column(DateTime, nullable=False)
     condicionAlmacenamiento = Column(String, nullable=False)

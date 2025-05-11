@@ -1,17 +1,17 @@
 import pytest
+from faker import Faker
 
 from src.db.session import SessionLocal
 from src.models.fabricante import Fabricante
 
 
 @pytest.fixture
-def valid_fabricante_data():
+def valid_fabricante_data(faker: Faker):
     return {
-        "nombre": "Alpina",
-        "numeroTel": "3211466",
-        "representante": "Andres Garcia",
+        "nombre": faker.company(),
+        "numeroTel": faker.phone_number(),
+        "representante": faker.name(),
     }
-
 
 # before each
 @pytest.fixture
@@ -33,10 +33,10 @@ def test_reset_database(client):
     response = client.post('/fabricantes/reset')
     assert response.status_code == 200
 
-'''
+
 def test_create_fabricante_success(client, valid_fabricante_data):
     response = client.post('/fabricantes', json=valid_fabricante_data, headers={'Authorization': 'Bearer 1234'})
-    assert response.status_code == 201'''
+    assert response.status_code == 201
     
 
 

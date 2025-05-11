@@ -1,17 +1,17 @@
 import pytest
-
+from faker import Faker
 from src.db.session import SessionLocal
 from src.models.visita import Visita
 
 
 @pytest.fixture
-def valid_visita_data():
+def valid_visita_data(faker: Faker):
     return {
-        "fecha": "2025-04-12",
-        "horaDesde": "10:00",
-        "horaHasta": "11:00",
-        "comentarios": "Visita de pruebas",
-        "idUsuario": "1909723c-3337-494b-932e-84fb6d8dbd9c"
+        "fecha": faker.date(),
+        "horaDesde": faker.time(pattern="%H:%M"),
+        "horaHasta": faker.time(pattern="%H:%M"),
+        "comentarios": faker.text(),
+        "idUsuario": faker.uuid4()
     }
 
 @pytest.fixture(autouse=True)

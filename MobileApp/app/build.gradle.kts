@@ -30,6 +30,7 @@ android {
         debug {
             isDebuggable = true
             buildConfigField("String", "API_URL", "\"http://10.0.2.2\"")
+
             buildConfigField("String", "ENDPOINT_VISITAS", "\":3004/\"")
             buildConfigField("String", "ENDPOINT_USUARIOS", "\":3000/\"")
             buildConfigField("String", "ENDPOINT_INVENTARIOS", "\":3003/\"")
@@ -41,10 +42,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "API_URL", "\"http://104.154.111.167\"")
-            buildConfigField("String", "ENDPOINT_USUARIOS", "\":3004/\"")
-            buildConfigField("String", "ENDPOINT_VISITAS", "\":3000/\"")
-            buildConfigField("String", "ENDPOINT_INVENTARIOS", "\":3003/\"")
+            buildConfigField("String", "API_URL", "\"__API_URL__\"")
+            buildConfigField("String", "ENDPOINT_USUARIOS", "\"__ENDPOINT_USERS__\"")
+            buildConfigField("String", "ENDPOINT_VISITAS", "\"__ENDPOINT_USERS__\"")
+            buildConfigField("String", "ENDPOINT_INVENTARIOS", "\"__ENDPOINT_INVENTARIOS__\"")
         }
     }
     compileOptions {
@@ -99,5 +100,4 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     implementation("androidx.compose.material:material-icons-extended:1.7.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
-    testImplementation(kotlin("test"))
 }

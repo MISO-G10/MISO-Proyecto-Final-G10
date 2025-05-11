@@ -23,6 +23,7 @@ pytest-mock = "*"
 pytest-cov = "*"
 pytest-env = "*"
 debugpy = "*"
+faker = "*"
 
 [requires]
 python_version = "3.11"

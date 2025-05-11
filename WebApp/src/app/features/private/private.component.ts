@@ -31,10 +31,12 @@ export class PrivateComponent {
     readonly translations = {
       tooltip_user: $localize`:@@private.tooltip.user:Ver usuario`,
       tooltip_logout: $localize`:@@private.tooltip.logout:Salir`,
+      logo_alt: $localize`:@@private.logo.alt:CCP Gestión`,
       navicon_home: $localize`:@@private.navicon.home:Inicio`,
       navicon_sellers: $localize`:@@private.navicon.sellers:Vendedores`,
       navicon_sales: $localize`:@@private.navicon.sales:Ventas`,
       navicon_manufacturer: $localize`:@@private.navicon.manufacturer:Fabricantes`,
+      navicon_routes: $localize`:@@private.navicon.routes:Rutas`,
     };
     
     isClickExpanded = false;

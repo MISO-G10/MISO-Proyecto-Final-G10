@@ -38,6 +38,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -252,7 +253,7 @@ fun ClientItem(
                 onClick = onSchedule,
                 modifier = Modifier.align(Alignment.TopEnd)
             ) {
-                Text("Agendar")
+                Text(text = stringResource(R.string.schedule_visit_label_button))
             }
         }
     }

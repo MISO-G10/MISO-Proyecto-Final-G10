@@ -35,6 +35,21 @@ export class FabricantesComponent {
         { id: 'fab-003', name: 'Manufacturas DEF', phone: '0976543210', legalRepresentative: 'Pedro Ramirez' },
     ]);
 
+    // Traducciones
+    readonly translations = {
+        search_label: $localize`:@@private.manufacturer.list.search.label:Buscar fabricantes`,
+        search_placeholder: $localize`:@@private.manufacturer.list.search.placeholder:Nombre, teléfono o representante legal`,
+        button_new: $localize`:@@private.manufacturer.list.button.new:Nuevo fabricante`,
+        col_name: $localize`:@@private.manufacturer.list.table.col.name:Nombre`,
+        col_phone: $localize`:@@private.manufacturer.list.table.col.phone:Teléfono`,
+        col_products: $localize`:@@private.manufacturer.list.table.col.products:Productos`,
+        col_legalRepresentative: $localize`:@@private.manufacturer.list.table.col.legalRepresentative:Representante Legal`,
+        col_actions: $localize`:@@private.manufacturer.list.table.col.actions:Acciones`,
+        button_addProduct: $localize`:@@private.manufacturer.list.button.addProduct:Agregar producto`,
+        tooltip_edit: $localize`:@@private.manufacturer.list.tooltip.edit:Editar`,
+        tooltip_delete: $localize`:@@private.manufacturer.list.tooltip.delete:Eliminar`
+    };
+
     searchTerm = '';
     filteredFabricantes = signal<Fabricante[]>([]);
 

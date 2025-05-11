@@ -18,6 +18,27 @@ section {
     margin: 8px 8px 8px 0;
   }
   
+  // Estilos para centrar el mensaje de bienvenida
+  .welcome-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 150px); // Altura total menos un espacio para el encabezado
+    width: 100%;
+    padding: 0 20px;
+  }
+  
+  .welcome-text {
+    max-width: 800px;
+    text-align: center;
+    line-height: 1.6;
+    font-size: 1.2rem;
+    padding: 30px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
   .example-flex-container {
     display: flex;
     justify-content: space-between;
