@@ -14,7 +14,7 @@ class CreateProductoSchema(Schema):
     nombre = fields.Str(required=True)
     descripcion = fields.Str(required=True)
     perecedero = fields.Bool(required=True)
-    fechaVencimiento = fields.DateTime(required=True)
+    fechaVencimiento = fields.DateTime(required=False)
     valorUnidad = fields.Float(required=True)
     tiempoEntrega = fields.DateTime(required=True)
     condicionAlmacenamiento = fields.Str(required=True)
@@ -31,6 +31,13 @@ class CreateProductoSchema(Schema):
             Categoria[categoria_str]
         except KeyError:
             raise ValidationError(f"Categoría inválida. Opciones válidas: {', '.join([c.name for c in Categoria])}")
+            
+    @validates_schema
+    def validate_fecha_vencimiento(self, data, **kwargs):
+        # Se valida que si se tiene sleccionado que el producto es perecedero se solicite la fecha
+        if data.get("perecedero") and "fechaVencimiento" not in data:
+            raise ValidationError({"fechaVencimiento": ["La fecha de vencimiento es requerida para productos perecederos"]})
+    
 
 
 class Create(BaseCommand):
@@ -52,12 +59,14 @@ class Create(BaseCommand):
                 return {"error": "El producto ya existe para este fabricante"}, 400
 
             # Se instancia un nuevo producto
+            fecha_vencimiento = schema.get('fechaVencimiento') if schema.get('perecedero') else None
+            
             nuevo_producto = Producto(
                 sku=sku,
                 nombre=schema['nombre'],
                 descripcion=schema['descripcion'],
                 perecedero=schema['perecedero'],
-                fechaVencimiento=schema['fechaVencimiento'],
+                fechaVencimiento=fecha_vencimiento,
                 valorUnidad=schema['valorUnidad'],
                 tiempoEntrega=schema['tiempoEntrega'],
                 condicionAlmacenamiento=schema['condicionAlmacenamiento'],
