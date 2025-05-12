@@ -48,7 +48,7 @@ jobs:
             grep -A 1 "FRONTEND_URL:" docker-compose.yml
             
             # Se detienen y se reconstruyen los contenedores
-            docker-compose down
+            docker-compose down -v
             docker-compose up -d --build
             
             # Limpiar archivos temporales

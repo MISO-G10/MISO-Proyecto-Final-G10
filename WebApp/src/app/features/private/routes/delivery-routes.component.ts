@@ -43,7 +43,7 @@ export class DeliveryRoutesComponent implements OnInit {
   readonly translations = {
     title: $localize`:@@delivery.routes.title:Rutas de Entrega`,
     date_selector: $localize`:@@delivery.routes.date_selector:Seleccione una fecha`,
-    no_routes: $localize`:@@delivery.routes.no_routes:No hay entregas el día de hoy`,
+    no_routes: $localize`:@@delivery.routes.no_routes:No hay entregas en esta fecha`,
     route_name: $localize`:@@delivery.routes.route_name:Nombre de la ruta`,
     truck_plate: $localize`:@@delivery.routes.truck_plate:Placa del camión`,
     driver_name: $localize`:@@delivery.routes.driver_name:Nombre del conductor`,
@@ -175,7 +175,7 @@ export class DeliveryRoutesComponent implements OnInit {
   }
   
   // Método para generar la URL del mapa estático a partir de los waypoints
-  private generateStaticMapUrl(waypoints: string[], zoom: number = 11, size: string = '400x200'): string {
+  private generateStaticMapUrl(waypoints: string[], zoom: number = 12, size: string = '400x200'): string {
     if (!waypoints || waypoints.length === 0) {
       return '';
     }

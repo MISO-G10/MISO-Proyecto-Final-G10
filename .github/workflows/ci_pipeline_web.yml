@@ -17,6 +17,7 @@ jobs:
       ENDPOINT_VENTAS: ${{ vars.ENDPOINT_VENTAS }}
       ENDPOINT_INVENTARIO: ${{ vars.ENDPOINT_INVENTARIO }}
       ENDPOINT_VISITAS: ${{ vars.ENDPOINT_VISITAS }}
+      GOOGLE_MAPS_API_KEY: ${{ vars.GOOGLE_MAPS_API_KEY }}
 
     steps:
       - name: Checkout code
@@ -36,6 +37,7 @@ jobs:
           sed -i 's|__ENDPOINT_VENTAS__|'"$ENDPOINT_VENTAS"'|g' WebApp/src/environment/environment.prod.ts
           sed -i 's|__ENDPOINT_INVENTARIO__|'"$ENDPOINT_INVENTARIO"'|g' WebApp/src/environment/environment.prod.ts
           sed -i 's|__ENDPOINT_VISITAS__|'"$ENDPOINT_VISITAS"'|g' WebApp/src/environment/environment.prod.ts
+          sed -i 's|__GOOGLE_MAPS_API_KEY__|'"$GOOGLE_MAPS_API_KEY"'|g' WebApp/src/environment/environment.prod.ts
           
           echo "Preview environment.prod.ts:"
           cat WebApp/src/environment/environment.prod.ts
