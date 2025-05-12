@@ -54,18 +54,6 @@ def test_cannot_create_bodega_without_token(client, valid_bodega_data):
     assert response.status_code == 403
 
 
-def test_cannot_create_bodega_with_invalid_country_code(client, valid_bodega_data):
-    # Test with an invalid country code
-    invalid_data = valid_bodega_data.copy()
-    invalid_data["pais"] = "INVALID"
-
-    response = client.post('/inventarios/bodegas',
-                           json=invalid_data,
-                           headers={'Authorization': 'Bearer 1234'})
-
-    assert response.status_code == 400
-
-
 def test_cannot_create_bodega_with_missing_fields(client, valid_bodega_data):
     # Test missing nombre
     invalid_data = valid_bodega_data.copy()

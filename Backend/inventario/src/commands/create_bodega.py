@@ -12,14 +12,6 @@ class CreateBodegaSchema(Schema):
     ciudad = fields.Str(required=True)
     pais = fields.Str(required=True)
 
-    @validates("pais")
-    def validate_pais(self, value):
-        allowed_countries = ["CL", "AR", "CO", "PE", "BR"]
-
-        if value not in allowed_countries:
-            raise ValidationError(f"País inválido. Opciones válidas: {', '.join(allowed_countries)}")
-
-
 class CreateBodega(BaseCommand):
     def __init__(self, data):
         self.data = data

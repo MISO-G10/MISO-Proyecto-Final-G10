@@ -22,6 +22,7 @@
     "private.navicon.sales":"Sales",
     "private.navicon.manufacturer":"Manufacturer",
     "private.navicon.routes":"Routes",
+    "private.navicon.products":"Products",
 
     "private.seller.search.placeholder":"Names, email, phone ",
     "private.seller.search.tittle":"Search seller",
