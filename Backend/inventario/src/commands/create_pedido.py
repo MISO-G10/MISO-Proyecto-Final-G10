@@ -54,9 +54,7 @@ class CreatePedido(BaseCommand):
                 pedido_productos.append(pedido_producto)
 
             nuevo_pedido = Pedido(
-                usuario_id=self.usuario["id"],
-                fechaEntrega=None,
-                fechaSalida=None,
+                usuario_id=self.usuario["id"],                
                 estado=EstadoPedido.PENDIENTE,
                 valor=total_valor
             )
@@ -74,7 +72,8 @@ class CreatePedido(BaseCommand):
                 "id": nuevo_pedido.id,
                 "estado": nuevo_pedido.estado.value,
                 "valorTotal": nuevo_pedido.valor,
-                "fechaSalida": nuevo_pedido.fechaSalida.isoformat(),
+                "fechaSalida": nuevo_pedido.fechaSalida,
+                "fechaEntrega": nuevo_pedido.fechaEntrega,
                 "productos": [
                     {
                         "producto_id": pp.producto_id,
