@@ -13,7 +13,7 @@ class CreateBodegaSchema(Schema):
     pais = fields.Str(required=True)
 
     @validates("pais")
-    def validate_pais(self, value):
+    def validate_pais(self, value, data_key):
         allowed_countries = ["CL", "AR", "CO", "PE", "BR"]
 
         if value not in allowed_countries:

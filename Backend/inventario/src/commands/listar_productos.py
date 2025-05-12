@@ -2,6 +2,7 @@ from src.db.session import SessionLocal
 from src.models.producto import Producto
 from .base_command import BaseCommand
 
+
 class ListProductos(BaseCommand):
     def __init__(self):
         pass
@@ -14,6 +15,7 @@ class ListProductos(BaseCommand):
             productos_list = []
             for producto in productos:
                 productos_list.append({
+                    "id": producto.id,
                     "sku": producto.sku,
                     "nombre": producto.nombre,
                     "descripcion": producto.descripcion,

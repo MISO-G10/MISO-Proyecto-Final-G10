@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, Blueprint, g
 from ..commands.create_producto import Create
+from ..commands.get_producto import GetProducto
 from ..commands.listar_productos import ListProductos
 from ..commands.clean import Clean
 from src.utils.validate_token import token_required
@@ -115,6 +116,35 @@ def get_producto_from_bodega(bodega_id, producto_id):
         return jsonify(result[0]), result[1]
 
     return jsonify(result), 200
+
+
+@operations_blueprint.route("/productos/<producto_id>", methods=['GET'])
+@token_required
+def get_producto(producto_id):
+    result = GetProducto(producto_id).execute()
+    ubicaciones = GetProductoUbicacion(producto_id).execute()
+
+    if isinstance(result, tuple) and len(result) == 2:
+        return jsonify(result[0]), result[1]
+
+    return jsonify({
+        "id": result.id,
+        "sku": result.sku,
+        "nombre": result.nombre,
+        "descripcion": result.descripcion,
+        "perecedero": result.perecedero,
+        "fechaVencimiento": result.fechaVencimiento.isoformat() if result.fechaVencimiento else None,
+        "valorUnidad": result.valorUnidad,
+        "tiempoEntrega": result.tiempoEntrega.isoformat() if result.tiempoEntrega else None,
+        "condicionAlmacenamiento": result.condicionAlmacenamiento,
+        "reglasLegales": result.reglasLegales,
+        "reglasComerciales": result.reglasComerciales,
+        "reglasTributarias": result.reglasTributarias,
+        "categoria": result.categoria.name if result.categoria else None,
+        "fabricante_id": result.fabricante_id,
+        "createdAt": result.createdAt.isoformat() if result.createdAt else None,
+        "ubicaciones": ubicaciones["ubicaciones"] if "ubicaciones" in ubicaciones else []
+    }), 200
 
 
 # Listar todos los productos
