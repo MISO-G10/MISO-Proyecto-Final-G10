@@ -163,11 +163,11 @@ def test_cannot_create_duplicate_producto(client, valid_producto_data, monkeypat
 
 def test_get_producto_location(client, valid_producto_data, session):
     import uuid
-    
+
     # Create a copy and use a different product name to avoid duplicates
     unique_data = valid_producto_data.copy()
     unique_data["nombre"] = "Queso Campesino Especial"
-    
+
     # 1. Create the product
     response = client.post('/inventarios/createproduct',
                            json=unique_data,
@@ -176,88 +176,92 @@ def test_get_producto_location(client, valid_producto_data, session):
     assert response.status_code == 201
     json_response = response.get_json()
     sku = json_response["sku"]
-    
+
     # 2. Create two bodegas to test multiple locations
     bodega1_data = {
         "nombre": "Bodega Norte",
-        "direccion": "Calle Norte #123"
+        "direccion": "Calle Norte #123",
+        "ciudad": "Bogota",
+        "pais": "CO"
     }
-    
+
     bodega2_data = {
         "nombre": "Bodega Sur",
-        "direccion": "Calle Sur #456"
+        "direccion": "Calle Sur #456",
+        "ciudad": "Medellin",
+        "pais": "CO"
     }
-    
+
     response1 = client.post('/inventarios/bodegas',
                            json=bodega1_data,
                            headers={'Authorization': 'Bearer 1234'})
     assert response1.status_code == 201
     bodega1 = response1.get_json()
     bodega1_id = bodega1.get("id")
-    
+
     response2 = client.post('/inventarios/bodegas',
                            json=bodega2_data,
                            headers={'Authorization': 'Bearer 1234'})
     assert response2.status_code == 201
     bodega2 = response2.get_json()
     bodega2_id = bodega2.get("id")
-    
+
     # 3. Get the created product from the database
     db = session
     producto = db.query(Producto).filter(Producto.sku == sku).first()
     assert producto is not None
-    
+
     # 4. Assign the product to both bodegas with different quantities using the API
     # For the first bodega
     assignment_data1 = {
         "producto_id": sku,  # Using SKU for product identification
         "cantidad": 10
     }
-    
+
     response_assign1 = client.post(f'/inventarios/bodegas/{bodega1_id}/productos',
                                   json=assignment_data1,
                                   headers={'Authorization': 'Bearer 1234'})
     assert response_assign1.status_code == 201
-    
+
     # For the second bodega
     assignment_data2 = {
         "producto_id": sku,  # Using SKU for product identification
         "cantidad": 20
     }
-    
+
     response_assign2 = client.post(f'/inventarios/bodegas/{bodega2_id}/productos',
                                   json=assignment_data2,
                                   headers={'Authorization': 'Bearer 1234'})
     assert response_assign2.status_code == 201
-    
+
     # 5. Now query for the product's location by SKU
-    response = client.get(f'/inventarios/productos/ubicacion?producto={sku}', 
+    response = client.get(f'/inventarios/productos/ubicacion?producto={sku}',
                          headers={'Authorization': 'Bearer 1234'})
     assert response.status_code == 200
-    
+
     # 6. Verify the response data
     ubicacion_data = response.get_json()
     assert ubicacion_data.get("sku") == sku
     assert ubicacion_data.get("nombre") == "Queso Campesino Especial"
-    
+
     # Should have 2 locations
     ubicaciones = ubicacion_data.get("ubicaciones")
     assert len(ubicaciones) == 2
-    
+
     # Check that we have both bodegas with correct quantities
     bodega_ids = [ubicacion.get("bodega_id") for ubicacion in ubicaciones]
     assert bodega1_id in bodega_ids
     assert bodega2_id in bodega_ids
-    
+
     # Verify the quantities
     for ubicacion in ubicaciones:
         if ubicacion.get("bodega_id") == bodega1_id:
             assert ubicacion.get("cantidad") == 10
         elif ubicacion.get("bodega_id") == bodega2_id:
             assert ubicacion.get("cantidad") == 20
-            
+
     # 7. Test finding by name (partial match)
-    response = client.get('/inventarios/productos/ubicacion?producto=Queso Campesino', 
+    response = client.get('/inventarios/productos/ubicacion?producto=Queso Campesino',
                          headers={'Authorization': 'Bearer 1234'})
     assert response.status_code == 200
     ubicacion_data = response.get_json()
