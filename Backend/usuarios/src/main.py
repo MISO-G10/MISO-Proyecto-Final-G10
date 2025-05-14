@@ -21,7 +21,9 @@ def create_app(env_name='development'):
         resources={
             r"*": {
                 "origins": [
-                    os.environ.get("FRONTEND_URL")
+                    os.environ.get("FRONTEND_URL"),
+                    "http://localhost:5000",
+                    "localhost:5000"
                 ],  # Solo permite tu frontend Angular
                 "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
                 "allow_headers": ["Content-Type", "Authorization"],
