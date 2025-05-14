@@ -9,11 +9,12 @@ from datetime import datetime
 import uuid
 
 
-class PedidoProductoInputSchema(Schema):
+class PedidoProductoInputSchema(Schema):    
     producto_id = fields.UUID(required=True)
     cantidad = fields.Float(required=True)
 
 class CreatePedidoSchema(Schema):
+    usuario_id= fields.UUID(required=False)
     fechaEntrega = fields.DateTime(required=False)
     productos = fields.List(fields.Nested(PedidoProductoInputSchema), required=True)
 
@@ -24,8 +25,8 @@ class CreatePedidoSchema(Schema):
 
 
 class CreatePedido(BaseCommand):
-    def __init__(self, usuario, data):
-        self.usuario = usuario
+    def __init__(self, vendedor, data):
+        self.vendedor = vendedor
         self.data = data
 
     def execute(self):
@@ -54,7 +55,8 @@ class CreatePedido(BaseCommand):
                 pedido_productos.append(pedido_producto)
 
             nuevo_pedido = Pedido(
-                usuario_id=self.usuario["id"],                
+                usuario_id = self.vendedor["id"] if not self.data.get("usuario_id") else self.data["usuario_id"],
+                vendedor_id=self.vendedor["id"],                
                 estado=EstadoPedido.PENDIENTE,
                 valor=total_valor
             )
@@ -74,6 +76,8 @@ class CreatePedido(BaseCommand):
                 "valorTotal": nuevo_pedido.valor,
                 "fechaSalida": nuevo_pedido.fechaSalida,
                 "fechaEntrega": nuevo_pedido.fechaEntrega,
+                "vendedor_id": nuevo_pedido.vendedor_id,
+                "usuario_id": nuevo_pedido.usuario_id,
                 "productos": [
                     {
                         "producto_id": pp.producto_id,

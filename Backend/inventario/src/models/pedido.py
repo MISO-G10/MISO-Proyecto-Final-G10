@@ -13,7 +13,8 @@ class EstadoPedido(enum.Enum):
 
 class Pedido(Base, Model):
     __tablename__ = 'Pedido'
-    usuario_id = Column(UUID(as_uuid=True), nullable=False)    
+    vendedor_id = Column(UUID(as_uuid=True), nullable=False)
+    usuario_id = Column(UUID(as_uuid=True), nullable=True)    
     fechaEntrega = Column(DateTime, nullable=True)
     fechaSalida = Column(DateTime, nullable=True)    
     estado = Column(Enum(EstadoPedido), nullable=False)
