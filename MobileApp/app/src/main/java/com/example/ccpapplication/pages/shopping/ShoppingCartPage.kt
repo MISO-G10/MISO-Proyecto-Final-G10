@@ -2,7 +2,9 @@ package com.example.ccpapplication.pages.shopping
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,33 +16,121 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.example.ccpapplication.data.model.CartItem
 
 @Composable
 fun ShoppingCartPage(cartViewModel: ShoppingCartViewModel) {
     val cart = cartViewModel.cart.value
+    var itemToRemove by remember { mutableStateOf<CartItem?>(null) }
+
+    itemToRemove?.let { item ->
+        RemoveFromCartDialog(
+            product = item.producto,
+            currentQuantity = item.cantidad,
+            onDismiss = { itemToRemove = null },
+            onRemove = { cantidad ->
+                cartViewModel.removeFromCart(item.producto, cantidad)
+            }
+        )
+    }
 
     Column(Modifier.padding(16.dp)) {
         Text("Mi carrito", style = MaterialTheme.typography.headlineSmall)
 
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            items(cart) { item ->
-                Card {
-                    Column(Modifier.padding(12.dp)) {
-                        Text(item.producto.nombre, style = MaterialTheme.typography.titleMedium)
-                        Text("Cantidad: ${item.cantidad}")
-                        Text("Subtotal: \$${item.cantidad * item.producto.valorUnidad}")
-                    }
+        if (cart.isNotEmpty()) {
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                items(cart) { item ->
+                    CartItemCard(
+                        item = item,
+                        onRemove = { itemToRemove = item }
+                    )
                 }
             }
+
+            Spacer(Modifier.height(16.dp))
+
+            Button(onClick = {
+                cartViewModel.clearCart()
+                // Aquí podrías lanzar una petición real si es necesario
+            }) {
+                Text("Confirmar pedido")
+            }
+        } else {
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text("Aún no tienes nada en el carrito.", style = MaterialTheme.typography.bodyLarge)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedButton(onClick = {
+                // Redirige al catálogo
+            }) {
+                Text("Ir al catálogo")
+            }
         }
+    }
+}
 
-        Spacer(Modifier.height(16.dp))
+@Composable
+fun CartItemCard(
+    item: CartItem,
+    onRemove: () -> Unit
+) {
+    ElevatedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = item.producto.nombre,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary
+                )
 
-        Button(onClick = {
-            cartViewModel.clearCart()
-            // aquí podrías lanzar una petición real si es necesario
-        }) {
-            Text("Confirmar pedido")
+                Text(
+                    text = "Cantidad: ${item.cantidad}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                Text(
+                    text = "Subtotal: \$${item.cantidad * item.producto.valorUnidad}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
+
+            IconButton(onClick = onRemove) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Eliminar del carrito",
+                    tint = MaterialTheme.colorScheme.error
+                )
+            }
         }
     }
 }

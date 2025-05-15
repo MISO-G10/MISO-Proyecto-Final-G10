@@ -175,13 +175,14 @@ fun ProductCardWithDialog(
     showAddToShopping: Boolean
 ) {
     var showDialog by remember { mutableStateOf(false) }
+    val puedeAgregar = cartViewModel.couldAddProduct(product)
 
     ProductCard(
         product = product,
         onClick = onClick,
         onAddToCart = { showDialog = true },
         onViewDetail = onViewDetail,
-        showAddToShopping = showAddToShopping
+        showAddToShopping = showAddToShopping && puedeAgregar
     )
 
     if (showDialog) {

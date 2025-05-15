@@ -1,4 +1,4 @@
-package com.example.ccpapplication.pages.products
+package com.example.ccpapplication.pages.shopping
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
@@ -6,64 +6,52 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+
 import com.example.ccpapplication.data.model.Producto
 
 @Composable
-fun AddToCartDialog(
+fun RemoveFromCartDialog(
     product: Producto,
-    maxQuantity: Int,
+    currentQuantity: Int,
     onDismiss: () -> Unit,
-    onAdd: (cantidad: Int) -> Boolean // <- Ahora devuelve un booleano
+    onRemove: (cantidad: Int) -> Unit
 ) {
     var quantityText by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
-    var stockError by remember { mutableStateOf(false) }
 
     AlertDialog(
-        onDismissRequest = { onDismiss() },
-        title = { Text(text = "Agregar al carrito") },
+        onDismissRequest = onDismiss,
+        title = { Text("Quitar del carrito") },
         text = {
             Column {
-                Text("Ingrese la cantidad (máx: $maxQuantity)")
+                Text("Cantidad actual en el carrito: $currentQuantity")
                 OutlinedTextField(
                     value = quantityText,
                     onValueChange = {
                         if (it.all { char -> char.isDigit() }) quantityText = it
                         error = false
-                        stockError = false
                     },
-                    isError = error || stockError,
-                    label = { Text("Cantidad") },
+                    isError = error,
+                    label = { Text("Cantidad a quitar") },
                     singleLine = true
                 )
                 if (error) {
                     Text("Cantidad inválida", color = MaterialTheme.colorScheme.error)
-                }
-                if (stockError) {
-                    Text("No hay suficiente stock disponible", color = MaterialTheme.colorScheme.error)
                 }
             }
         },
         confirmButton = {
             TextButton(onClick = {
                 val cantidad = quantityText.toIntOrNull()
-                if (cantidad == null || cantidad <= 0 || cantidad > maxQuantity) {
+                if (cantidad == null || cantidad <= 0 || cantidad > currentQuantity) {
                     error = true
                 } else {
-                    val success = onAdd(cantidad)
-                    if (success) {
-                        onDismiss()
-                    } else {
-                        stockError = true
-                    }
+                    onRemove(cantidad)
+                    onDismiss()
                 }
             }) {
-                Text("Agregar")
+                Text("Quitar")
             }
         },
         dismissButton = {
@@ -73,4 +61,3 @@ fun AddToCartDialog(
         }
     )
 }
-

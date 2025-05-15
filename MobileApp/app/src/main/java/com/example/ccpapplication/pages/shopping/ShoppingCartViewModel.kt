@@ -21,15 +21,31 @@ class ShoppingCartViewModel(private val userId: String, context: Context) : View
         loadCartFromPrefs()
     }
 
-    fun addToCart(producto: Producto, cantidad: Int) {
+    fun addToCart(producto: Producto, cantidad: Int):Boolean {
         val existing = _cart.value.toMutableList()
         val index = existing.indexOfFirst { it.producto.id == producto.id }
 
         if (index != -1) {
             val current = existing[index]
-            existing[index] = current.copy(cantidad = current.cantidad + cantidad)
+            val nuevaCantidad = current.cantidad + cantidad
+
+            return if (nuevaCantidad <= producto.cantidadTotal) {
+                existing[index] = current.copy(cantidad = nuevaCantidad)
+                _cart.value = existing
+                saveCartToPrefs()
+                true
+            } else {
+                false // no se puede añadir más que el stock disponible
+            }
         } else {
-            existing.add(CartItem(producto, cantidad))
+            return if (cantidad <= producto.cantidadTotal) {
+                existing.add(CartItem(producto, cantidad))
+                _cart.value = existing
+                saveCartToPrefs()
+                true
+            } else {
+                false
+            }
         }
 
         _cart.value = existing
@@ -57,6 +73,34 @@ class ShoppingCartViewModel(private val userId: String, context: Context) : View
             _cart.value = list
         }
     }
+    fun couldAddProduct(producto: Producto): Boolean {
+        val existente = _cart.value.find { it.producto.id == producto.id }
+        val cantidadActual = existente?.cantidad ?: 0
+        return cantidadActual < producto.cantidadTotal
+    }
+
+    fun removeFromCart(producto: Producto, cantidad: Int = 1) {
+        val existing = _cart.value.toMutableList()
+        val index = existing.indexOfFirst { it.producto.id == producto.id }
+
+        if (index != -1) {
+            val currentItem = existing[index]
+            val nuevaCantidad = currentItem.cantidad - cantidad
+
+            if (nuevaCantidad > 0) {
+                // Actualiza la cantidad
+                existing[index] = currentItem.copy(cantidad = nuevaCantidad)
+            } else {
+                // Quita el producto del carrito
+                existing.removeAt(index)
+            }
+
+            _cart.value = existing
+            saveCartToPrefs()
+        }
+    }
+
+
 
     companion object {
         fun provideFactory(userId: String, context: Context) = object : ViewModelProvider.Factory {
