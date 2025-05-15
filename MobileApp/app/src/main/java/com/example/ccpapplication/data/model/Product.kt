@@ -6,12 +6,13 @@ import java.time.LocalDateTime
 
 @Serializable
 data class Producto(
+    @SerialName("id") val id: String,
     @SerialName("categoria") val categoria: Categoria,
     @SerialName("condicionAlmacenamiento") val condicionAlmacenamiento: String,
     @SerialName("createdAt") val createdAt: String, // Puedes usar String o un tipo especial si parseas fechas
     @SerialName("descripcion") val descripcion: String,
     @SerialName("fabricante_id") val fabricanteId: String,
-    @SerialName("fechaVencimiento") val fechaVencimiento: String,
+    @SerialName("fechaVencimiento") val fechaVencimiento: String?,
     @SerialName("nombre") val nombre: String,
     @SerialName("perecedero") val perecedero: Boolean,
     @SerialName("reglasComerciales") val reglasComerciales: String,
@@ -19,7 +20,8 @@ data class Producto(
     @SerialName("reglasTributarias") val reglasTributarias: String,
     @SerialName("sku") val sku: String,
     @SerialName("tiempoEntrega") val tiempoEntrega: String,
-    @SerialName("valorUnidad") val valorUnidad: Float
+    @SerialName("valorUnidad") val valorUnidad: Float,
+    @SerialName("cantidad_total") val cantidadTotal: Int
 )
 
 @Serializable

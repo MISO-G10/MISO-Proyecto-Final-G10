@@ -27,10 +27,7 @@ fun NavGraphBuilder.clientNavGraph(navController: NavHostController) {
         composable(BottomNavItem.Home.route) {
             HomePage()
         }
-        composable(BottomNavItem.Orders.route) {
-            Order()
-        }
-        composable(BottomNavItem.Shopping.route){
+        composable(BottomNavItem.Catalog.route){
             val productViewModel:ProductViewModel=
                 viewModel(factory=ProductViewModel.Factory)
             ProductPage(
@@ -38,6 +35,13 @@ fun NavGraphBuilder.clientNavGraph(navController: NavHostController) {
                 showAddToShopping=true
             )
         }
+        composable(BottomNavItem.Shopping.route){
+
+        }
+        composable(BottomNavItem.Orders.route) {
+
+        }
+
 
 
     }
@@ -50,8 +54,10 @@ fun ClientNavigationDrawer(
     val scope = rememberCoroutineScope()
     val menus = listOf(
         BottomNavItem.Home,
-        BottomNavItem.Orders,
-        BottomNavItem.Shopping
+        BottomNavItem.Catalog,
+        BottomNavItem.Shopping,
+        BottomNavItem.Orders
+
     )
     BottomDrawer(navController,menus)
 }
