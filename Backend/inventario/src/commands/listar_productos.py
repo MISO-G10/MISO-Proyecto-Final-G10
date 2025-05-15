@@ -15,6 +15,7 @@ class ListProductos(BaseCommand):
             productos = (
                 db.query(Producto)
                 .join(InventarioBodega, Producto.id == InventarioBodega.producto_id)
+                .filter(InventarioBodega.cantidad > 0)
                 .options(joinedload(Producto.bodega_productos))
                 .group_by(Producto.id)
                 .all()
