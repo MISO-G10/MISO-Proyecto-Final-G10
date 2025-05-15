@@ -27,12 +27,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.navigation.NavController
 import com.example.ccpapplication.data.model.CartItem
 
 @Composable
-fun ShoppingCartPage(cartViewModel: ShoppingCartViewModel) {
+fun ShoppingCartPage(cartViewModel: ShoppingCartViewModel,navController : NavController,) {
     val cart = cartViewModel.cart.value
     var itemToRemove by remember { mutableStateOf<CartItem?>(null) }
+    val total = cart.sumOf { it.cantidad * it.producto.valorUnidad.toDouble() }
 
     itemToRemove?.let { item ->
         RemoveFromCartDialog(
@@ -57,7 +60,9 @@ fun ShoppingCartPage(cartViewModel: ShoppingCartViewModel) {
                     )
                 }
             }
+            Spacer(Modifier.height(16.dp))
 
+            TotalCard(total = total)
             Spacer(Modifier.height(16.dp))
 
             Button(onClick = {
@@ -74,7 +79,7 @@ fun ShoppingCartPage(cartViewModel: ShoppingCartViewModel) {
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedButton(onClick = {
-                // Redirige al catálogo
+                navController.navigate("catalog")
             }) {
                 Text("Ir al catálogo")
             }
@@ -131,6 +136,38 @@ fun CartItemCard(
                     tint = MaterialTheme.colorScheme.error
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun TotalCard(total: Double) {
+    ElevatedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Total:",
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = "$$total",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }

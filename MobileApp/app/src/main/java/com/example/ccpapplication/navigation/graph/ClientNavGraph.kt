@@ -48,7 +48,8 @@ fun NavGraphBuilder.clientNavGraph(navController: NavHostController,tokenManager
                 factory = ShoppingCartViewModel.provideFactory(tokenManager.getUser()?.id ?: "", LocalContext.current)
             )
             ShoppingCartPage(
-                cartViewModel = cartViewModel
+                cartViewModel = cartViewModel,
+                navController = navController,
             )
         }
         composable(BottomNavItem.Orders.route) {
