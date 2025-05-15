@@ -7,7 +7,7 @@ from src.utils.validate_token import token_required
 from ..commands.create_bodega import CreateBodega
 from ..commands.get_producto_ubicacion import GetProductoUbicacion
 from ..commands.assign_producto_bodega import AssignProductoBodega
-
+from ..commands.create_pedido import CreatePedido
 import os
 
 operations_blueprint = Blueprint('inventarios', __name__)
@@ -153,3 +153,18 @@ def get_producto(producto_id):
 def list_productos():
     result = ListProductos().execute()
     return jsonify(result), 200
+
+@operations_blueprint.route("/pedidos", methods=['POST'])
+@token_required
+def create_pedido():
+    json_data = request.get_json()
+    if not json_data:
+        return jsonify({"error": "El cuerpo de la solicitud no puede estar vacío"}), 400
+
+    current_usuario = g.current_usuario
+    result = CreatePedido(current_usuario, json_data).execute()
+
+    if isinstance(result, tuple) and len(result) == 2:
+        return jsonify(result[0]), result[1]
+
+    return jsonify(result), 201

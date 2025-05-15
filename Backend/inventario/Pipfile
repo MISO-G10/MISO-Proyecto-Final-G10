@@ -15,6 +15,9 @@ sqlalchemy-serializer = "*"
 python-dateutil = "*"
 pytz = "*"
 flask-cors = "*"
+colorama = "*"
+pytest = "*"
+flask-migrate = "*"
 
 [dev-packages]
 pytest = "*"
