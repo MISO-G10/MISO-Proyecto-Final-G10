@@ -193,15 +193,15 @@ def test_get_producto_location(client, valid_producto_data, session):
     }
 
     response1 = client.post('/inventarios/bodegas',
-                           json=bodega1_data,
-                           headers={'Authorization': 'Bearer 1234'})
+                            json=bodega1_data,
+                            headers={'Authorization': 'Bearer 1234'})
     assert response1.status_code == 201
     bodega1 = response1.get_json()
     bodega1_id = bodega1.get("id")
 
     response2 = client.post('/inventarios/bodegas',
-                           json=bodega2_data,
-                           headers={'Authorization': 'Bearer 1234'})
+                            json=bodega2_data,
+                            headers={'Authorization': 'Bearer 1234'})
     assert response2.status_code == 201
     bodega2 = response2.get_json()
     bodega2_id = bodega2.get("id")
@@ -219,8 +219,8 @@ def test_get_producto_location(client, valid_producto_data, session):
     }
 
     response_assign1 = client.post(f'/inventarios/bodegas/{bodega1_id}/productos',
-                                  json=assignment_data1,
-                                  headers={'Authorization': 'Bearer 1234'})
+                                   json=assignment_data1,
+                                   headers={'Authorization': 'Bearer 1234'})
     assert response_assign1.status_code == 201
 
     # For the second bodega
@@ -230,13 +230,13 @@ def test_get_producto_location(client, valid_producto_data, session):
     }
 
     response_assign2 = client.post(f'/inventarios/bodegas/{bodega2_id}/productos',
-                                  json=assignment_data2,
-                                  headers={'Authorization': 'Bearer 1234'})
+                                   json=assignment_data2,
+                                   headers={'Authorization': 'Bearer 1234'})
     assert response_assign2.status_code == 201
 
     # 5. Now query for the product's location by SKU
     response = client.get(f'/inventarios/productos/ubicacion?producto={sku}',
-                         headers={'Authorization': 'Bearer 1234'})
+                          headers={'Authorization': 'Bearer 1234'})
     assert response.status_code == 200
 
     # 6. Verify the response data
@@ -262,7 +262,86 @@ def test_get_producto_location(client, valid_producto_data, session):
 
     # 7. Test finding by name (partial match)
     response = client.get('/inventarios/productos/ubicacion?producto=Queso Campesino',
-                         headers={'Authorization': 'Bearer 1234'})
+                          headers={'Authorization': 'Bearer 1234'})
     assert response.status_code == 200
     ubicacion_data = response.get_json()
     assert ubicacion_data.get("sku") == sku
+
+
+def test_list_productos_empty(client):
+    """Test listing products when there are no products in the database"""
+
+    # Reset the database to ensure it's empty
+    client.post('/inventarios/reset')
+
+    # Make the API call to list products
+    response = client.get('/inventarios/productos',
+                          headers={'Authorization': 'Bearer 1234'})
+
+    # Verify the response
+    assert response.status_code == 200
+    json_response = response.get_json()
+    assert isinstance(json_response, list)
+    assert len(json_response) == 0
+
+
+def test_list_productos_with_data(client, valid_producto_data):
+    """Test listing products with actual database items"""
+
+    # Reset the database to start with a clean state
+    client.post('/inventarios/reset')
+
+    # Create first product
+    producto1_data = valid_producto_data.copy()
+    producto1_data["nombre"] = "Producto Test 1"
+
+    response1 = client.post('/inventarios/createproduct',
+                            json=producto1_data,
+                            headers={'Authorization': 'Bearer 1234'})
+    assert response1.status_code == 201
+
+    # Create second product with different name
+    producto2_data = valid_producto_data.copy()
+    producto2_data["nombre"] = "Producto Test 2"
+    producto2_data["categoria"] = "CUIDADO_PERSONAL"
+
+    response2 = client.post('/inventarios/createproduct',
+                            json=producto2_data,
+                            headers={'Authorization': 'Bearer 1234'})
+    assert response2.status_code == 201
+
+    # Now list all products
+    response = client.get('/inventarios/productos',
+                          headers={'Authorization': 'Bearer 1234'})
+
+    # Verify the response
+    assert response.status_code == 200
+    productos = response.get_json()
+    assert isinstance(productos, list)
+    assert len(productos) == 2
+
+    # Verify that our products are in the response
+    product_names = [p["nombre"] for p in productos]
+    assert "Producto Test 1" in product_names
+    assert "Producto Test 2" in product_names
+
+    # Verify fields of one product
+    for producto in productos:
+        if producto["nombre"] == "Producto Test 1":
+            assert producto["descripcion"] == valid_producto_data["descripcion"]
+            assert producto["valorUnidad"] == valid_producto_data["valorUnidad"]
+            assert producto["categoria"] == "ALIMENTOS_BEBIDAS"
+            assert "sku" in producto
+            assert "createdAt" in producto
+        elif producto["nombre"] == "Producto Test 2":
+            assert producto["categoria"] == "CUIDADO_PERSONAL"
+
+
+def test_list_productos_authorization_required(client):
+    """Test that authorization is required to list products"""
+
+    # Make the API call without the authorization header
+    response = client.get('/inventarios/productos')
+
+    # Verify that the request is not authorized
+    assert response.status_code == 403
