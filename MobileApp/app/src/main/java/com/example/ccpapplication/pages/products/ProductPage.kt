@@ -4,12 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddShoppingCart
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.outlined.AddShoppingCart
-import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +20,7 @@ import com.example.ccpapplication.navigation.state.DataUiState
 import com.example.ccpapplication.ui.components.DataFetchStates
 import com.example.ccpapplication.ui.components.EmptyItemsScreen
 import com.example.ccpapplication.R
+import com.example.ccpapplication.pages.shopping.ShoppingCartViewModel
 import kotlin.Boolean
 
 @Composable
@@ -93,7 +90,7 @@ fun ProductCard(
                 if (showAddToShopping) {
                     IconButton(onClick = onAddToCart) {
                         Icon(
-                            imageVector = Icons.Filled.AddShoppingCart, // mejor ícono para "añadir al carrito"
+                            imageVector = Icons.Filled.AddShoppingCart,
                             contentDescription = "Agregar al carrito",
                             tint = MaterialTheme.colorScheme.primary
                         )
@@ -109,7 +106,7 @@ fun ProductCard(
 fun ProductPage(
     productUiState: DataUiState<List<Producto>>,
     onProductClick: (id: String) -> Unit = {},
-    onAddToCartClick: (id: String) -> Unit = {},
+    cartViewModel: ShoppingCartViewModel,
     onViewDetailProduct:(id: String) -> Unit = {},
     showAddToShopping: Boolean = true
 ) {
@@ -154,10 +151,10 @@ fun ProductPage(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(filteredProducts) { producto ->
-                    ProductCard(
+                    ProductCardWithDialog(
                         product = producto,
                         onClick = { onProductClick(producto.id) },
-                        onAddToCart = { onAddToCartClick(producto.id) },
+                        cartViewModel = cartViewModel,
                         onViewDetail = { onViewDetailProduct(producto.id) },
                         showAddToShopping = showAddToShopping
                     )
@@ -167,4 +164,36 @@ fun ProductPage(
         }
     }
 }
+
+
+@Composable
+fun ProductCardWithDialog(
+    product: Producto,
+    cartViewModel: ShoppingCartViewModel,
+    onClick: () -> Unit,
+    onViewDetail: () -> Unit,
+    showAddToShopping: Boolean
+) {
+    var showDialog by remember { mutableStateOf(false) }
+
+    ProductCard(
+        product = product,
+        onClick = onClick,
+        onAddToCart = { showDialog = true },
+        onViewDetail = onViewDetail,
+        showAddToShopping = showAddToShopping
+    )
+
+    if (showDialog) {
+        AddToCartDialog(
+            product = product,
+            maxQuantity = product.cantidadTotal,
+            onDismiss = { showDialog = false },
+            onAdd = { cantidad ->
+                cartViewModel.addToCart(product, cantidad)
+            }
+        )
+    }
+}
+
 

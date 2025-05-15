@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -18,8 +19,11 @@ import com.example.ccpapplication.pages.home.HomePage
 import com.example.ccpapplication.pages.orders.Order
 import com.example.ccpapplication.pages.products.ProductPage
 import com.example.ccpapplication.pages.products.ProductViewModel
+import com.example.ccpapplication.pages.shopping.ShoppingCartPage
+import com.example.ccpapplication.pages.shopping.ShoppingCartViewModel
+import com.example.ccpapplication.services.interceptors.TokenManager
 
-fun NavGraphBuilder.clientNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.clientNavGraph(navController: NavHostController,tokenManager: TokenManager) {
     navigation(
         route = Graph.CLIENT,
         startDestination = BottomNavItem.Home.route
@@ -30,13 +34,22 @@ fun NavGraphBuilder.clientNavGraph(navController: NavHostController) {
         composable(BottomNavItem.Catalog.route){
             val productViewModel:ProductViewModel=
                 viewModel(factory=ProductViewModel.Factory)
+            val cartViewModel: ShoppingCartViewModel = viewModel(
+                factory = ShoppingCartViewModel.provideFactory(tokenManager.getUser()?.id ?: "", LocalContext.current)
+            )
             ProductPage(
                 productUiState=productViewModel.productUiState ,
-                showAddToShopping=true
+                showAddToShopping=true,
+                cartViewModel = cartViewModel
             )
         }
         composable(BottomNavItem.Shopping.route){
-
+            val cartViewModel: ShoppingCartViewModel = viewModel(
+                factory = ShoppingCartViewModel.provideFactory(tokenManager.getUser()?.id ?: "", LocalContext.current)
+            )
+            ShoppingCartPage(
+                cartViewModel = cartViewModel
+            )
         }
         composable(BottomNavItem.Orders.route) {
 
