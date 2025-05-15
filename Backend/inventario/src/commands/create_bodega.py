@@ -12,6 +12,7 @@ class CreateBodegaSchema(Schema):
     ciudad = fields.Str(required=True)
     pais = fields.Str(required=True)
 
+
 class CreateBodega(BaseCommand):
     def __init__(self, data):
         self.data = data
