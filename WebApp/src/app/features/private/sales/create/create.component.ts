@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
@@ -15,6 +15,8 @@ import { SalesPlanSeller } from '../models/sales';
 import { map, Observable, startWith } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
+import { User } from '../../../auth/login/models/user';
+import { CreateService } from './create.service';
 
 const validaciones = {
   'nombre': [
@@ -69,17 +71,24 @@ export class CreateComponent {
     { id: 2, seller_id: 2, nombre: 'Vendedor 2' }
   ];
 
-  filteredVendors: Observable<SalesPlanSeller[]> | undefined;
+  vendedores = signal<User[]>([]);
+
+  filteredVendors: Observable<User[]> | undefined;
 
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly salesService = inject(SalesService);
+  private readonly createService = inject(CreateService);
 
   getErrorMessages = getErrorMessages;
   validaciones: { [key: string]: { type: string; message: string }[] } = validaciones;
 
   ngOnInit(): void {
     this.initForm();
+
+    this.createService.getVendedores().subscribe((vendedores) => {
+      this.vendedores.set(vendedores.filter(user => user.rol === 'VENDEDOR'));
+    });
   }
 
   initForm() {
@@ -111,9 +120,9 @@ export class CreateComponent {
   }
 
 
-  private _filterVendors(value: string): SalesPlanSeller[] {
+  private _filterVendors(value: string): User[] {
     const filterValue = value.toLowerCase();
-    return this.vendors.filter(vendor =>
+    return this.vendedores().filter(vendor =>
       vendor.nombre.toLowerCase().includes(filterValue));
   }
 
@@ -121,9 +130,9 @@ export class CreateComponent {
     return this.createForm.get('seller_ids') as FormArray;
   }
 
-  addSeller(vendor: SalesPlanSeller): void {
+  addSeller(vendor: User): void {
     // Check if vendor is already selected
-    const existingIndex = this.getSellerIdIndex(vendor.id);
+    const existingIndex = this.getSellerIdIndex(vendor.id!);
     if (existingIndex === -1) {
       this.sellerIds.push(this.fb.control(vendor.id));
     }
@@ -135,18 +144,18 @@ export class CreateComponent {
     this.sellerIds.removeAt(index);
   }
 
-  getSellerIdIndex(id: number): number {
+  getSellerIdIndex(id: string): number {
     return this.sellerIds.controls.findIndex(control => control.value === id);
   }
 
-  isVendorSelected(id: number): boolean {
+  isVendorSelected(id: string): boolean {
     return this.getSellerIdIndex(id) !== -1;
   }
 
-  getVendorName(id: number) {
-    const vendor = this.vendors.find(v => v.id === id);
+  getVendorName(id: string) {
+    const vendor = this.vendedores().find(v => v.id === id);
 
-return vendor ? vendor.nombre : id;
+    return vendor ? `${vendor.nombre} ${vendor.apellido}` : id;
   }
 
   // Format date to YYYY-MM-DD string when date is changed

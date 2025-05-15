@@ -26,8 +26,8 @@
           <mat-option *ngFor="let vendor of filteredVendors | async"
                       [value]="vendor.nombre"
                       (onSelectionChange)="addSeller(vendor)"
-                      [disabled]="isVendorSelected(vendor.id)">
-            {{ vendor.nombre }}
+                      [disabled]="isVendorSelected(vendor.id!)">
+            {{ vendor.nombre }} {{ vendor.apellido}}
           </mat-option>
         </mat-autocomplete>
         <button mat-icon-button matSuffix type="button"
