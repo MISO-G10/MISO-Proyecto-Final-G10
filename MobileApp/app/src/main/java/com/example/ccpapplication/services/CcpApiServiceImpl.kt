@@ -4,6 +4,8 @@ import com.example.ccpapplication.data.model.AddVisitResponse
 import com.example.ccpapplication.data.model.AuthResponse
 import com.example.ccpapplication.data.model.Producto
 import com.example.ccpapplication.data.model.Client
+import com.example.ccpapplication.data.model.PedidoRequest
+import com.example.ccpapplication.data.model.PedidoResponse
 import com.example.ccpapplication.data.model.UpdateVisitResponse
 import com.example.ccpapplication.data.model.User
 import com.example.ccpapplication.data.model.UserLogin
@@ -35,4 +37,6 @@ interface CcpApiServiceImpl:CcpApiServiceAdapter {
     @GET("/visitas/asignaciones/mis-tenderos")
     @Headers("Content-Type: application/json")
     override suspend fun getAssignedClients(): Response<List<Client>>
+    @POST("/inventarios/pedidos")
+    override suspend fun createPedido(@Body request: PedidoRequest):Response<PedidoResponse>
 }

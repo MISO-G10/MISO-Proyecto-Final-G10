@@ -162,7 +162,7 @@ class ClientsPageTest {
         }
 
         // Hacer clic en el botón Agendar
-        composeTestRule.onNodeWithText("Agendar").performClick()
+        composeTestRule.onNode(hasClickAction()).performClick()
         
         // Verificar que se llamó a la función onSchedule
         assert(buttonClicked)

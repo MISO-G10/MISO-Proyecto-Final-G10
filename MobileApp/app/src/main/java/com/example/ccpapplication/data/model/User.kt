@@ -10,6 +10,8 @@ data class User(
     @SerialName("nombre") val password: String,
     @SerialName("apellido") val name: String,
     @SerialName("rol") val rol: String,
+    @SerialName("direccion") val direccion: String?,
+    @SerialName("telefono") val telefono: String?
 
 )
 
