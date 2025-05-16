@@ -1,6 +1,7 @@
 package com.example.ccpapplication.navigation.graph
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -16,8 +17,10 @@ import com.example.ccpapplication.pages.clients.ScheduleVisitPage
 import com.example.ccpapplication.pages.home.HomePage
 import com.example.ccpapplication.pages.products.ProductPage
 import com.example.ccpapplication.pages.products.ProductViewModel
+import com.example.ccpapplication.pages.shopping.ShoppingCartViewModel
+import com.example.ccpapplication.services.interceptors.TokenManager
 
-fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.mainNavGraph(navController: NavHostController,tokenManager:TokenManager) {
     navigation(
         route = Graph.ADMIN,
         startDestination = BottomNavItem.Home.route
@@ -55,9 +58,13 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
         composable(BottomNavItem.Catalog.route){
             val productViewModel:ProductViewModel=
                 viewModel(factory=ProductViewModel.Factory)
+            val cartViewModel: ShoppingCartViewModel = viewModel(
+                factory = ShoppingCartViewModel.provideFactory(tokenManager.getUser()?.id ?: "", LocalContext.current)
+            )
             ProductPage(
                 productUiState=productViewModel.productUiState ,
-                showAddToShopping=false
+                showAddToShopping=false,
+                cartViewModel = cartViewModel
             )
         }
 

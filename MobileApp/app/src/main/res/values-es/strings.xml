@@ -60,4 +60,8 @@
     <string name="loading_failed_products"> No se pudo cargar los productos</string>
     <string name="loading"> Cargando</string>
     <string name="visits_title">Mis Visitas</string>
+    <string name="pedido_exitoso">Pedido creado Exitosamente</string>
+    <string name="error_crear_pedido">Error al crear pedido</string>
+    <string name="confirm_order">Confirmar pedido</string>
+    <string name="clean_cart">Limpiar Carrito</string>
 </resources>

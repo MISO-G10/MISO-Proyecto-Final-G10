@@ -50,6 +50,13 @@
           <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_manufacturer'] }}</span>
         </div>
       </a>
+
+      <a mat-list-item routerLink="routes" routerLinkActive="active-link" *ngIf="canRenderRole(['ADMINISTRADOR','LOGISTICA'])">
+        <div class="menu-item-container">
+          <mat-icon mat-list-icon>explore</mat-icon>
+          <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_routes'] }}</span>
+        </div>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
 

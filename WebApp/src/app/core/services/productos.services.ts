@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable,inject } from "@angular/core";
 import { environment } from '../../../environment/environment';
-import { Producto } from "../../features/private/productos/models/producto";
+import { Producto, Categoria } from "../../features/private/productos/models/producto";
 interface ProductoResponse {
   createdAt: string;
   sku: string;
@@ -29,11 +29,26 @@ export class ProductoService{
     const fechaVencimiento = producto.perecedero ? new Date(producto.fechaVencimiento).toISOString() : null;
     const tiempoEntrega = new Date(producto.tiempoEntrega).toISOString();
     
+    // Transformar el valor de la categoría al formato que espera el backend
+    // Necesitamos enviar el nombre del enum, no el valor
+    let categoriaTransformada = producto.categoria;
+    
+    // Mapeo de valores de categoría a las claves de enum esperadas por el backend
+    const categoriasMap: Record<string, Categoria> = {
+      'ALIMENTOS Y BEBIDAS': Categoria.ALIMENTOS_BEBIDAS,
+      'CUIDADO PERSONAL': Categoria.CUIDADO_PERSONAL,
+      'LIMPIEZA Y HOGAR': Categoria.LIMPIEZA_HOGAR,
+      'BEBÉS': Categoria.BEBES,
+      'MASCOTAS': Categoria.MASCOTAS
+    };
+    
     const productoData = {
       ...rest,
       fechaVencimiento: fechaVencimiento,
       tiempoEntrega: tiempoEntrega,
-      fabricante_id: fabricanteId
+      fabricante_id: fabricanteId,
+      // Enviar el nombre del enum para que haga match de la manera en que está en el backend
+      categoria: Object.keys(Categoria).find(key => Categoria[key as keyof typeof Categoria] === producto.categoria) || producto.categoria
     };
     
     console.log('Datos enviados al backend:', productoData);

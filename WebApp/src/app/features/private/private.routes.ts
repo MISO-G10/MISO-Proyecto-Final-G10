@@ -19,6 +19,12 @@ export const PRIVATE_ROUTES: Routes = [
           canActivate: [RoleGuard],
           data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
       },
+      { 
+        path: 'sellers/sales-report/:id', 
+        loadComponent: () => import('./sellers/sales-report/sales-report.component').then(m => m.SalesReportComponent),
+        canActivate: [RoleGuard],
+        data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
+      },
 
       {
         path: 'sales', loadComponent: () => import('./sales/sales.component').then(m => m.SalesComponent),
@@ -46,6 +52,12 @@ export const PRIVATE_ROUTES: Routes = [
       { path: 'crear-producto/:fabricanteId', loadComponent: () => import('./productos/crear-producto/crear-producto.component').then(m => m.CrearProductoComponent),
         canActivate: [RoleGuard],
         data: { roles: ['ADMINISTRADOR', 'ENCARGADO_COMPRAS_PROVEEDORES'] }
+      },
+      { 
+        path: 'routes', 
+        loadComponent: () => import('./routes/delivery-routes.component').then(m => m.DeliveryRoutesComponent),
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMINISTRADOR', 'LOGISTICA'] }
       },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]

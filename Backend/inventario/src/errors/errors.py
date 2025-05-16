@@ -44,3 +44,17 @@ class InvalidBodegaData(ApiError):
 class ResourceNotFound(ApiError):
     code = 404
     description = "Recurso no encontrado"
+
+class InvalidPedidoData(ApiError):
+    code = 400
+    description = "Datos del pedido no válidos"
+
+class InvalidStockPedido(ApiError):
+    code = 400
+
+    def __init__(self, producto_id, inventario_total, cantidad_solicitada):
+        description = (
+            f"No hay suficiente stock para el producto con ID {producto_id}. "
+            f"Disponible: {inventario_total}, Solicitado: {cantidad_solicitada}"
+        )
+        super().__init__(description=description, code=self.code)

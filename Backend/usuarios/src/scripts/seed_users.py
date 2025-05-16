@@ -116,9 +116,33 @@ def seed_all_users():
     vendedor_id = create_test_user(
         "vendedor@gmail.com", 
         "vendedor123", 
+        "Andres Garcia", 
+        "Triana", 
+        UsuarioRol.VENDEDOR,
+        telefono="+(314) 235-2199",
+        direccion="Carrera 20 21-22 Apt 206"
+    )
+
+    # Create vendedor user
+    vendedor_id2 = create_test_user(
+        "vendedor2@gmail.com", 
+        "vendedor123", 
+        "Juan", 
+        "Perez", 
+        UsuarioRol.VENDEDOR,
+        telefono="+(314) 235-2199",
+        direccion="Carrera 20 21-22 Apt 206"
+    )
+
+    # Create vendedor user
+    vendedor_id3 = create_test_user(
+        "vendedor3@gmail.com", 
+        "vendedor123", 
         "Camilo", 
         "Triana", 
-        UsuarioRol.VENDEDOR
+        UsuarioRol.VENDEDOR,
+        telefono="+(311) 344-9987",
+        direccion="Calle 18 134-22"
     )
     
     # Create logistica user
@@ -127,16 +151,20 @@ def seed_all_users():
         "logistica123", 
         "Logistica", 
         "Prueba", 
-        UsuarioRol.LOGISTICA
+        UsuarioRol.LOGISTICA,
+        telefono="+(314) 344-9987",
+        direccion="Calle 18 134-20"
     )
-    
+
     # Create director ventas user
     director_ventas_id = create_test_user(
         "directorventas@gmail.com", 
         "directorventas123", 
         "Director", 
         "Ventas", 
-        UsuarioRol.DIRECTOR_VENTAS
+        UsuarioRol.DIRECTOR_VENTAS,
+        telefono="+(314) 344-1822",
+        direccion="Calle 18 134-20"
     )
 
     # Create comprasproveedores user
@@ -145,7 +173,9 @@ def seed_all_users():
         "encargadoproveedores123", 
         "Encargado", 
         "ComprasProveedores", 
-        UsuarioRol.ENCARGADO_COMPRAS_PROVEEDORES
+        UsuarioRol.ENCARGADO_COMPRAS_PROVEEDORES,
+        telefono="+(300) 211-9944",
+        direccion="Carrera 18 114-60"
     )
     
     print("Proceso de creación de usuarios de prueba completado.")

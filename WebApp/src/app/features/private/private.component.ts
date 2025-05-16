@@ -36,6 +36,7 @@ export class PrivateComponent {
       navicon_sellers: $localize`:@@private.navicon.sellers:Vendedores`,
       navicon_sales: $localize`:@@private.navicon.sales:Ventas`,
       navicon_manufacturer: $localize`:@@private.navicon.manufacturer:Fabricantes`,
+      navicon_routes: $localize`:@@private.navicon.routes:Rutas`,
     };
     
     isClickExpanded = false;

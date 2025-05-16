@@ -24,11 +24,7 @@ class CreateProductoSchema(Schema):
     categoria = fields.Str(required=True)
     fabricante_id = fields.Str(required=True)
     
-    @validates_schema
-    def validate_fecha_vencimiento(self, data, **kwargs):
-        if data.get('perecedero') and not data.get('fechaVencimiento'):
-            raise ValidationError({'fechaVencimiento': ['Se requiere fecha de vencimiento para productos perecederos']})
-
+   
     @validates_schema
     def validate_categoria(self, data, **kwargs):
         try:
@@ -46,7 +42,14 @@ class CreateProductoSchema(Schema):
                         data["categoria"] = c.name
                         break
         except KeyError:
-            raise ValidationError(f"Categoría inválida. Opciones válidas: {', '.join([c.value for c in Categoria])}")
+            raise ValidationError(f"Categoría inválida. Opciones válidas: {', '.join([c.name for c in Categoria])}")
+            
+    @validates_schema
+    def validate_fecha_vencimiento(self, data, **kwargs):
+        # Se valida que si se tiene sleccionado que el producto es perecedero se solicite la fecha
+        if data.get("perecedero") and "fechaVencimiento" not in data:
+            raise ValidationError({"fechaVencimiento": ["La fecha de vencimiento es requerida para productos perecederos"]})
+    
 
 
 class Create(BaseCommand):
@@ -68,12 +71,14 @@ class Create(BaseCommand):
                 return {"error": "El producto ya existe para este fabricante"}, 400
 
             # Se instancia un nuevo producto
+            fecha_vencimiento = schema.get('fechaVencimiento') if schema.get('perecedero') else None
+            
             nuevo_producto = Producto(
                 sku=sku,
                 nombre=schema['nombre'],
                 descripcion=schema['descripcion'],
                 perecedero=schema['perecedero'],
-                fechaVencimiento=schema['fechaVencimiento'],
+                fechaVencimiento=fecha_vencimiento,
                 valorUnidad=schema['valorUnidad'],
                 tiempoEntrega=schema['tiempoEntrega'],
                 condicionAlmacenamiento=schema['condicionAlmacenamiento'],
