@@ -4,20 +4,6 @@
   <mat-dialog-content>
     <div class="instructions">
       <p>Seleccione un archivo CSV con la información de los productos a registrar.</p>
-      <p>El archivo debe contener los siguientes campos:</p>
-      <ul>
-        <li>Nombre</li>
-        <li>Precio por unidad (valorUnidad)</li>
-        <li>Fecha de vencimiento (fechaVencimiento)</li>
-        <li>Tiempo de entrega (tiempoEntrega)</li>
-        <li>Descripción</li>
-        <li>Condición de almacenamiento (condicionAlmacenamiento)</li>
-        <li>Reglas comerciales (reglasComerciales)</li>
-        <li>Reglas tributarias (reglasTributarias)</li>
-        <li>Perecedero (true/false)</li>
-        <li>Categoría</li>
-        <li>Reglas legales (reglasLegales)</li>
-      </ul>
     </div>
 
     <div class="file-upload-container">
@@ -61,7 +47,7 @@
       (click)="uploadFile()" 
       [disabled]="!selectedFile || isUploading"
     >
-      <mat-icon>cloud_upload</mat-icon>
+      
       Cargar productos
     </button>
   </mat-dialog-actions>
