@@ -7,6 +7,7 @@ from src.utils.validate_token import token_required
 from ..commands.create_bodega import CreateBodega
 from ..commands.get_producto_ubicacion import GetProductoUbicacion
 from ..commands.assign_producto_bodega import AssignProductoBodega
+from ..commands.listar_bodegas import ListBodegas
 
 import os
 
@@ -152,4 +153,12 @@ def get_producto(producto_id):
 @token_required
 def list_productos():
     result = ListProductos().execute()
+    return jsonify(result), 200
+
+
+# Listar todas las bodegas
+@operations_blueprint.route("/bodegas", methods=['GET'])
+@token_required
+def list_bodegas():
+    result = ListBodegas().execute()
     return jsonify(result), 200
