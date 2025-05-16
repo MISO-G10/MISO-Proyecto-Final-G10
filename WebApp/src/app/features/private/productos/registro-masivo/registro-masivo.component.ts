@@ -109,6 +109,42 @@ export class RegistroMasivoComponent implements OnInit {
 
         console.log('Productos a registrar:', productos);
         
+        // Servicio registro masivo
+        this.productoService.crearProductosMasivo(productos).subscribe({
+          next: (response) => {
+            console.log('Respuesta del servidor:', response);
+            
+            if (response.error) {
+              
+              if (response.details) {
+                const errorMessages = response.details
+                  .map(detail => `Línea ${detail.index + 2}: ${JSON.stringify(detail.error)}`)
+                  .join('\n');
+                this.showError(`Errores de validación:\n${errorMessages}`);
+              } else {
+                this.showError(response.error);
+              }
+              this.isUploading = false;
+              return;
+            }
+            
+            // Mensaje de éxito si se crearon los producots en el back
+            if (response.products && response.products.length > 0) {
+              this.showSuccess(`Se han creado ${response.products.length} productos exitosamente`);
+              this.dialogRef.close(true);
+            } else {
+              this.showError('No se recibió confirmación de productos creados');
+            }
+            
+            this.isUploading = false;
+          },
+          error: (error) => {
+            console.error('Error al registrar productos:', error);
+            this.showError('Error al registrar productos: ' + 
+              (error.error?.error || error.error?.message || error.message || 'Error desconocido'));
+            this.isUploading = false;
+          }
+        });
         
       } catch (error) {
         console.error('Error al procesar el archivo CSV:', error);

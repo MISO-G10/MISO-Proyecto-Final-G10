@@ -14,7 +14,7 @@ class CreateProductoSchema(Schema):
     nombre = fields.Str(required=True)
     descripcion = fields.Str(required=True)
     perecedero = fields.Bool(required=True)
-    fechaVencimiento = fields.DateTime(required=True)
+    fechaVencimiento = fields.DateTime(required=False, allow_none=True)
     valorUnidad = fields.Float(required=True)
     tiempoEntrega = fields.DateTime(required=True)
     condicionAlmacenamiento = fields.Str(required=True)
@@ -23,14 +23,30 @@ class CreateProductoSchema(Schema):
     reglasTributarias = fields.Str(required=True)
     categoria = fields.Str(required=True)
     fabricante_id = fields.Str(required=True)
+    
+    @validates_schema
+    def validate_fecha_vencimiento(self, data, **kwargs):
+        if data.get('perecedero') and not data.get('fechaVencimiento'):
+            raise ValidationError({'fechaVencimiento': ['Se requiere fecha de vencimiento para productos perecederos']})
 
     @validates_schema
     def validate_categoria(self, data, **kwargs):
         try:
             categoria_str = data["categoria"]
-            Categoria[categoria_str]
+            # Intentar encontrar la categoría por nombre o por valor
+            try:
+                Categoria[categoria_str]  # Buscar por nombre (ALIMENTOS_BEBIDAS)
+            except KeyError:
+                # Si no se encuentra por nombre, buscar por valor
+                if not any(c.value == categoria_str for c in Categoria):
+                    raise KeyError
+                # Si se encuentra por valor, convertir al nombre
+                for c in Categoria:
+                    if c.value == categoria_str:
+                        data["categoria"] = c.name
+                        break
         except KeyError:
-            raise ValidationError(f"Categoría inválida. Opciones válidas: {', '.join([c.name for c in Categoria])}")
+            raise ValidationError(f"Categoría inválida. Opciones válidas: {', '.join([c.value for c in Categoria])}")
 
 
 class Create(BaseCommand):

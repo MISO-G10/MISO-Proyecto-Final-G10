@@ -126,7 +126,12 @@ def create_productos_bulk():
         command = CreateProductoBulkCommand(current_usuario, productos)
         result = command.execute()
         
-        return jsonify(result), 202  
+        # Si el resultado es una tupla, contiene un código de estado
+        if isinstance(result, tuple):
+            return jsonify(result[0]), result[1]
+            
+        # Si no es una tupla, es una respuesta exitosa
+        return jsonify(result), 201
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

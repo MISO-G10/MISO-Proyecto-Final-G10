@@ -1,7 +1,7 @@
-from google.cloud import pubsub_v1
 from flask import jsonify
 from marshmallow import ValidationError, Schema, fields
 import json
+from .create_producto import Create, CreateProductoSchema
 
 from .create_producto import CreateProductoSchema
 from .base_command import BaseCommand
@@ -10,38 +10,39 @@ class CreateProductoBulkCommand(BaseCommand):
     def __init__(self, usuario, productos):
         self.usuario = usuario
         self.productos = productos
-        self.publisher = pubsub_v1.PublisherClient()
-        self.topic_path = self.publisher.topic_path('your-project-id', 'producto-registro')
 
     def execute(self):
         try:
             # Validar cada producto
             validated_products = []
-            for producto in self.productos:
-                schema = CreateProductoSchema().load(producto)
-                validated_products.append(schema)
+            errors = []
+            
+            for i, producto in enumerate(self.productos):
+                try:
+                    schema = CreateProductoSchema().load(producto)
+                    validated_products.append(schema)
+                except ValidationError as e:
+                    errors.append({"index": i, "error": e.messages})
 
-            # Publicar cada producto validado al topic
+            if errors:
+                return {"error": "Errores de validación", "details": errors}, 400
+
+            # Procesar cada producto validado
+            created_products = []
             for producto in validated_products:
-                # Añadir información del usuario que realiza el registro
-                mensaje = {
-                    "usuario_id": self.usuario.id,
-                    "producto": producto
-                }
-                
-                # Convertir el mensaje a string
-                message_data = json.dumps(mensaje).encode('utf-8')
-                
-                # Publicar al topic
-                future = self.publisher.publish(
-                    self.topic_path,
-                    message_data
-                )
-                future.result()  # Esperar confirmación
+                try:
+                    command = Create(self.usuario, producto)
+                    result = command.execute()
+                    if isinstance(result, tuple):
+                        return result  # Propagar error si ocurre
+                    created_products.append(result)
+                except Exception as e:
+                    return {"error": str(e)}, 500
 
             return {
-                "message": f"Se han enviado {len(validated_products)} productos para procesamiento",
-                "total": len(validated_products)
+                "message": f"Se han creado {len(created_products)} productos exitosamente",
+                "total": len(created_products),
+                "products": created_products
             }
 
         except ValidationError as e:
