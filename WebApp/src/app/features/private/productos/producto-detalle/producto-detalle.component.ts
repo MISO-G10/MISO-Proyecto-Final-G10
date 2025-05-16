@@ -1,6 +1,5 @@
 import { Component, inject, LOCALE_ID, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { ProductosService } from '../productos.service';
 import { ProductoConUbicaciones } from '../models/producto';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -14,6 +13,7 @@ import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MY_DATE_FORMATS } from '../productos.component';
+import { ProductoService } from '../../../../core/services/productos.services';
 
 // Define the interfaces to match the actual API response
 
@@ -55,7 +55,7 @@ interface MovimientoInventario {
 })
 export class ProductoDetalleComponent implements OnInit {
   private readonly router = inject(Router);
-  private readonly productosService = inject(ProductosService);
+  private readonly productosService = inject(ProductoService);
   private readonly route = inject(ActivatedRoute);
 
   producto = signal<ProductoConUbicaciones | null>(null);

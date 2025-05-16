@@ -17,10 +17,12 @@ export interface Producto {
   fabricante_id: string;
 }
 
-export type ProductoEnBodega = Producto & {
-  bodega_id: string
-  nombre_bodega: string
+export type Bodega = {
+  id: string
+  nombre: string
   direccion: string
+  ciudad: string;
+  pais: string;
   cantidad: number
 };
 

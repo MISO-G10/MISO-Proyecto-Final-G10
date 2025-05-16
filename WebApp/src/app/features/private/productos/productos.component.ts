@@ -11,7 +11,7 @@ import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterModule } from '@angular/router';
-import { Categoria, Producto } from './models/producto';
+import { Producto } from './models/producto';
 import localeEs from '@angular/common/locales/es';
 import {
   MatCell,
@@ -19,11 +19,14 @@ import {
   MatColumnDef,
   MatHeaderCell,
   MatHeaderCellDef,
-  MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
   MatTable
 } from '@angular/material/table';
 import { MatTooltip } from '@angular/material/tooltip';
-import { ProductosService } from './productos.service';
+import { ProductoService } from '../../../core/services/productos.services';
 
 // Registrar el locale español
 registerLocaleData(localeEs);
@@ -79,7 +82,7 @@ export const MY_DATE_FORMATS = {
 })
 export class ProductosComponent implements OnInit {
   private readonly router = inject(Router);
-  private readonly productosService = inject(ProductosService);
+  private readonly productosService = inject(ProductoService);
 
   filteredProductos = signal<Producto[]>([]);
   productos = signal<Producto[]>([]);

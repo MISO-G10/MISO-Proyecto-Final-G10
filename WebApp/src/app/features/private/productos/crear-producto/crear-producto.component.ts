@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, LOCALE_ID } from '@angular/core';
+import { Component, OnInit, inject, LOCALE_ID, signal } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,11 +8,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core'; 
+import { MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Producto, Categoria } from '../models/producto';
+import { Producto, Categoria, Bodega } from '../models/producto';
 import { getErrorMessages } from '../../../../shared/validators/error-messages';
 import { validaciones } from '../../../../shared/validators/error_validators/producto-validator';
 import localeEs from '@angular/common/locales/es';
@@ -24,14 +24,14 @@ registerLocaleData(localeEs);
 // Formato de fecha personalizado
 export const MY_DATE_FORMATS = {
   parse: {
-    dateInput: 'DDMMYYYY',
+    dateInput: 'DDMMYYYY'
   },
   display: {
     dateInput: 'DDMMYYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
+    monthYearA11yLabel: 'MMMM YYYY'
+  }
 };
 
 @Component({
@@ -65,27 +65,28 @@ export class CrearProductoComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
   private productoService = inject(ProductoService);
   getErrorMessages = getErrorMessages;
-  validaciones=validaciones;
+  validaciones = validaciones;
   productoForm!: FormGroup;
   fabricanteId!: string;
-  
+
   // Exponer el enum Categoria para usar en la plantilla
   Categoria = Categoria;
   // Obtener los valores del enum para el select
   categorias = Object.values(Categoria);
+  bodegas = signal<Bodega[]>([]);
 
   // Función para validar que la fecha sea posterior a hoy
   fechaPosteriorValidator() {
     return (control: any) => {
       if (!control.value) return null;
-      
+
       const fechaSeleccionada = new Date(control.value);
       const hoy = new Date();
-      
+
       // Resetear las horas para comparar solo las fechas
       hoy.setHours(0, 0, 0, 0);
       fechaSeleccionada.setHours(0, 0, 0, 0);
-      
+
       return fechaSeleccionada > hoy ? null : { 'fechaInvalida': true };
     };
   }
@@ -93,12 +94,21 @@ export class CrearProductoComponent implements OnInit {
   ngOnInit(): void {
     this.fabricanteId = this.route.snapshot.paramMap.get('fabricanteId') || '';
     console.log('Fabricante ID recibido:', this.fabricanteId);
-    
+
     if (!this.fabricanteId) {
       this.showError('ID de fabricante no válido');
       this.router.navigate(['/private/fabricantes']);
       return;
     }
+
+    this.productoService.getBodegas().subscribe({
+      next: (response) => {
+        this.bodegas.set(response);
+      },
+      error: (error) => {
+        console.error('Error fetching bodegas:', error);
+      }
+    });
 
     this.initForm();
     this.setupPerecederoDependency();
@@ -110,11 +120,13 @@ export class CrearProductoComponent implements OnInit {
       descripcion: ['', [Validators.required, Validators.minLength(5)]],
       valorUnidad: [0, [Validators.required, Validators.min(0.01)]],
       perecedero: [false, [Validators.required]],
-      fechaVencimiento: [{value: new Date(), disabled: true}, [Validators.required, this.fechaPosteriorValidator()]],
+      fechaVencimiento: [{ value: new Date(), disabled: true }, [Validators.required, this.fechaPosteriorValidator()]],
       reglasLegales: ['', [Validators.required]],
       tiempoEntrega: [new Date(), [Validators.required]],
       condicionAlmacenamiento: ['', [Validators.required]],
       categoria: ['', [Validators.required]],
+      bodega: ['', [Validators.required]],
+      cantidad: [0, [Validators.required, Validators.min(1)]],
       reglasComerciales: ['', [Validators.required]],
       reglasTributarias: ['', [Validators.required]]
     });
@@ -124,7 +136,7 @@ export class CrearProductoComponent implements OnInit {
     // Observar cambios en el campo perecedero
     this.productoForm.get('perecedero')?.valueChanges.subscribe(esPerecedero => {
       const fechaVencimientoControl = this.productoForm.get('fechaVencimiento');
-      
+
       if (esPerecedero) {
         fechaVencimientoControl?.enable();
         fechaVencimientoControl?.updateValueAndValidity();
@@ -142,7 +154,7 @@ export class CrearProductoComponent implements OnInit {
 
     // Asegurarse de incluir los valores de los controles deshabilitados
     const formValues = this.productoForm.getRawValue();
-    
+
     const producto: Producto = {
       ...formValues,
       fabricanteId: this.fabricanteId

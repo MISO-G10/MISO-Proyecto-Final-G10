@@ -17,10 +17,19 @@
   width: 100%;
 }
 
+.one-column {
+  display: flex;
+  flex-direction: column;
+
+  mat-form-field {
+    margin-bottom: 16px;
+  }
+}
+
 .two-columns {
   display: flex;
   gap: 16px;
-  
+
   mat-form-field {
     flex: 1;
   }
@@ -33,11 +42,11 @@
   flex: 1;
   padding: 0 12px;
   margin-top: 4px;
-  
+
   mat-checkbox {
     margin-bottom: 8px;
   }
-  
+
   mat-error {
     font-size: 12px;
     color: #f44336;
