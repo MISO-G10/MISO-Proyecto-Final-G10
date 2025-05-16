@@ -8,6 +8,7 @@ from ..commands.create_bodega import CreateBodega
 from ..commands.get_producto_ubicacion import GetProductoUbicacion
 from ..commands.assign_producto_bodega import AssignProductoBodega
 from ..commands.create_pedido import CreatePedido
+from ..commands.get_pedido import GetPedido
 import os
 
 
@@ -149,3 +150,13 @@ def create_pedido():
         return jsonify(result[0]), result[1]
 
     return jsonify(result), 201
+
+@operations_blueprint.route("/pedidos/<pedido_id>", methods=['GET'])
+@token_required
+def get_pedido(pedido_id):
+    result = GetPedido(pedido_id).execute()
+    
+    if isinstance(result, tuple) and len(result) == 2:
+        return jsonify(result[0]), result[1]
+
+    return jsonify(result), 200
