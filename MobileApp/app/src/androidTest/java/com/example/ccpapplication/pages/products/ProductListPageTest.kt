@@ -1,11 +1,13 @@
 package com.example.ccpapplication.pages.products
 
+import android.content.Context
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.ccpapplication.pages.shopping.ShoppingCartViewModel
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.junit.Test
@@ -17,11 +19,21 @@ class ProductListPageTest {
     @Test
     fun screen_displaysProductListCorrectly(){
         composeTestRule.setContent {
+            val context = ApplicationProvider.getApplicationContext<Context>()
             val fakeRepository = FakeInventaryRepository()
             val testViewModel = ProductViewModel(fakeRepository)
-
-            ProductPage(productUiState=testViewModel.productUiState ,
-                showAddToShopping=true)
+            val cartViewModel = ShoppingCartViewModel(
+                userId = "0c1da9e2-cd13-4cdc-ad62-00dabea7f472",
+                context = context,
+                inventaryRepository = fakeRepository
+            )
+            ProductPage(
+                productUiState = testViewModel.productUiState,
+                showAddToShopping = true,
+                onProductClick = {},
+                cartViewModel = cartViewModel,
+                onViewDetailProduct = {}
+            )
 
         }
         composeTestRule.onNodeWithText("Producto 1").assertExists()

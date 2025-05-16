@@ -71,6 +71,7 @@ fun ProductPage(
     productUiState: DataUiState<List<Producto>>,
     onProductClick: (sku: String) -> Unit = {},
     onAddToCartClick: (sku: String) -> Unit = {}, // Agregar una función para manejar el evento del carrito
+    onViewDetailClick:(id:String)->Unit={},
     showAddToShopping: Boolean=true
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -96,6 +97,7 @@ fun ProductPage(
                         product = producto,
                         onClick = { onProductClick(producto.sku) },
                         onAddToCart = { onAddToCartClick(producto.sku) }, // Llamar a la función de agregar al carrito
+                        onViewDetail = {onViewDetailClick},
                         showAddToShopping
                     )
                 }

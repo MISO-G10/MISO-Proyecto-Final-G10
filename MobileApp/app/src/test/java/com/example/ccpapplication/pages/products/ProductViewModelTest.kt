@@ -15,6 +15,8 @@ import org.junit.Test
 import org.junit.Assert.*
 import java.io.IOException
 import com.example.ccpapplication.data.model.Categoria
+import com.example.ccpapplication.data.model.PedidoRequest
+import com.example.ccpapplication.data.model.PedidoResponse
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProductViewModelTest {
@@ -35,7 +37,9 @@ class ProductViewModelTest {
         reglasTributarias = "Reglas tributarias",
         sku = "SKU12345",
         tiempoEntrega = "3 días",
-        valorUnidad = 5.99f
+        valorUnidad = 5.99,
+        id ="f17cdd2c-6014-490a-a294-234abd916e80",
+        cantidadTotal = 100
     )
 
     @Before
@@ -53,6 +57,10 @@ class ProductViewModelTest {
         val fakeRepository = object : InventaryRepository {
             override suspend fun getProductos(): Result<List<Producto>> {
                 return Result.success(listOf(sampleProduct))
+            }
+
+            override suspend fun createProducto(request: PedidoRequest): Result<PedidoResponse> {
+                TODO("Not yet implemented")
             }
         }
 
@@ -73,6 +81,10 @@ class ProductViewModelTest {
             override suspend fun getProductos(): Result<List<Producto>> {
                 return Result.failure(Exception("Error al obtener productos"))
             }
+
+            override suspend fun createProducto(request: PedidoRequest): Result<PedidoResponse> {
+                TODO("Not yet implemented")
+            }
         }
 
         viewModel = ProductViewModel(fakeRepository)
@@ -88,6 +100,10 @@ class ProductViewModelTest {
             override suspend fun getProductos(): Result<List<Producto>> {
                 throw IOException("No hay internet") as Throwable
             }
+
+            override suspend fun createProducto(request: PedidoRequest): Result<PedidoResponse> {
+                TODO("Not yet implemented")
+            }
         }
 
         viewModel = ProductViewModel(fakeRepository)
@@ -102,6 +118,10 @@ class ProductViewModelTest {
         val fakeRepository = object : InventaryRepository {
             override suspend fun getProductos(): Result<List<Producto>> {
                 throw retrofit2.HttpException(retrofit2.Response.error<String>(500, okhttp3.ResponseBody.create(null, "Error del servidor")))
+            }
+
+            override suspend fun createProducto(request: PedidoRequest): Result<PedidoResponse> {
+                TODO("Not yet implemented")
             }
         }
 
