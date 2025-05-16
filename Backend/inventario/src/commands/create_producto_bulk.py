@@ -25,7 +25,7 @@ class CreateProductoBulkCommand(BaseCommand):
                     errors.append({"index": i, "error": e.messages})
 
             if errors:
-                return {"error": "Errores de validación", "details": errors}, 400
+                return {"error": "Error de validación", "details": errors}, 400
 
             # Procesar cada producto validado
             created_products = []
@@ -37,13 +37,13 @@ class CreateProductoBulkCommand(BaseCommand):
                         return result  # Propagar error si ocurre
                     created_products.append(result)
                 except Exception as e:
-                    return {"error": str(e)}, 500
+                    return {"error": str(e)}, 400  # Error de negocio
 
             return {
                 "message": f"Se han creado {len(created_products)} productos exitosamente",
                 "total": len(created_products),
                 "products": created_products
-            }
+            }, 201  # Creado exitosamente
 
         except ValidationError as e:
             return {"error": "Error en la validación de productos", "details": e.messages}, 400
