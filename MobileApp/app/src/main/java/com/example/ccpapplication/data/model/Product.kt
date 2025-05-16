@@ -2,7 +2,6 @@ package com.example.ccpapplication.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
 
 @Serializable
 data class Producto(
@@ -20,7 +19,7 @@ data class Producto(
     @SerialName("reglasTributarias") val reglasTributarias: String,
     @SerialName("sku") val sku: String,
     @SerialName("tiempoEntrega") val tiempoEntrega: String,
-    @SerialName("valorUnidad") val valorUnidad: Float,
+    @SerialName("valorUnidad") val valorUnidad: Double,
     @SerialName("cantidad_total") val cantidadTotal: Int
 )
 
