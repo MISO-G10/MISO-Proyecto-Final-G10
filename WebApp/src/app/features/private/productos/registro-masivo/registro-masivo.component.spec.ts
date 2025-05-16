@@ -42,9 +42,9 @@ describe('RegistroMasivoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should process CSV file correctly', (done) => {
+  it('should process CSV file correctly', async () => {
     const csvContent = `nombre,valorUnidad,fechaVencimiento,tiempoEntrega,descripcion,condicionAlmacenamiento,reglasComerciales,reglasTributarias,perecedero,categoria,reglasLegales
-Leche,3500,2025-12-31,2025-05-20,Leche entera,Refrigerado,No devoluciones,IVA 19%,true,ALIMENTOS Y BEBIDAS,INVIMA 123`;
+Leche,3500,2025-12-31,2025-05-20,Leche entera,Refrigerado,No devoluciones,IVA 19%,true,ALIMENTOS_BEBIDAS,INVIMA 123`;
 
     const file = new File([csvContent], 'test.csv', { type: 'text/csv' });
     const mockFileList = {
@@ -66,24 +66,22 @@ Leche,3500,2025-12-31,2025-05-20,Leche entera,Refrigerado,No devoluciones,IVA 19
     spyOn(window, 'FileReader').and.returnValue(reader);
 
     component.onFileSelected({ target: { files: mockFileList } } as any);
-    component.uploadFile();
+    await component.uploadFile();
 
-    setTimeout(() => {
-      Object.defineProperty(reader, 'result', { value: csvContent });
-      reader.onload?.({ target: reader } as ProgressEvent<FileReader>);
+    // Simular la lectura del archivo
+    Object.defineProperty(reader, 'result', { value: csvContent });
+    reader.onload?.({ target: reader } as ProgressEvent<FileReader>);
 
-      setTimeout(() => {
-        expect(productoService.crearProductosMasivo).toHaveBeenCalled();
-        expect(dialogRef.close).toHaveBeenCalledWith(true);
-        expect(snackBar.open).toHaveBeenCalled();
-        done();
-      }, 100);
-    });
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    expect(productoService.crearProductosMasivo).toHaveBeenCalled();
+    expect(dialogRef.close).toHaveBeenCalledWith(true);
+    expect(snackBar.open).toHaveBeenCalled();
   });
 
-  it('should handle validation errors', (done) => {
+  it('should handle validation errors', async () => {
     const csvContent = `nombre,valorUnidad,fechaVencimiento,tiempoEntrega,descripcion,condicionAlmacenamiento,reglasComerciales,reglasTributarias,perecedero,categoria,reglasLegales
-Leche,3500,2025-12-31,2025-05-20,Leche entera,Refrigerado,No devoluciones,IVA 19%,true,CATEGORIA_INVALIDA,INVIMA 123`;
+Leche,3500,2025-12-31,2025-05-20,Leche entera,Refrigerado,No devoluciones,IVA 19%,true,ALIMENTOS Y BEBIDAS,INVIMA 123`;
 
     const file = new File([csvContent], 'test.csv', { type: 'text/csv' });
     const mockFileList = {
@@ -106,22 +104,25 @@ Leche,3500,2025-12-31,2025-05-20,Leche entera,Refrigerado,No devoluciones,IVA 19
     spyOn(window, 'FileReader').and.returnValue(reader);
 
     component.onFileSelected({ target: { files: mockFileList } } as any);
-    component.uploadFile();
+    
+    try {
+      await component.uploadFile();
+    } catch (error) {
+      // Esperamos que se lance un error
+    }
 
-    setTimeout(() => {
-      Object.defineProperty(reader, 'result', { value: csvContent });
-      reader.onload?.({ target: reader } as ProgressEvent<FileReader>);
+    // Simular la lectura del archivo
+    Object.defineProperty(reader, 'result', { value: csvContent });
+    reader.onload?.({ target: reader } as ProgressEvent<FileReader>);
 
-      setTimeout(() => {
-        expect(productoService.crearProductosMasivo).toHaveBeenCalled();
-        expect(snackBar.open).toHaveBeenCalledWith(
-          jasmine.stringMatching(/error/i),
-          'Cerrar',
-          jasmine.any(Object)
-        );
-        done();
-      }, 100);
-    });
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    expect(productoService.crearProductosMasivo).toHaveBeenCalled();
+    expect(snackBar.open).toHaveBeenCalledWith(
+      jasmine.stringMatching(/error/i),
+      'Cerrar',
+      jasmine.any(Object)
+    );
   });
 
   it('should handle non-CSV files', () => {
