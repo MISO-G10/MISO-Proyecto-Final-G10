@@ -16,7 +16,6 @@ import androidx.navigation.navigation
 import com.example.ccpapplication.navigation.BottomDrawer
 import com.example.ccpapplication.navigation.BottomNavItem
 import com.example.ccpapplication.pages.home.HomePage
-import com.example.ccpapplication.pages.orders.Order
 import com.example.ccpapplication.pages.products.ProductPage
 import com.example.ccpapplication.pages.products.ProductViewModel
 import com.example.ccpapplication.pages.shopping.ShoppingCartPage
@@ -50,6 +49,7 @@ fun NavGraphBuilder.clientNavGraph(navController: NavHostController,tokenManager
             ShoppingCartPage(
                 cartViewModel = cartViewModel,
                 navController = navController,
+                user = tokenManager.getUser()
             )
         }
         composable(BottomNavItem.Orders.route) {

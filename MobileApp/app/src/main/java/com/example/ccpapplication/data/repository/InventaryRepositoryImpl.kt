@@ -1,6 +1,8 @@
 package com.example.ccpapplication.data.repository
 
 import android.util.Log
+import com.example.ccpapplication.data.model.PedidoRequest
+import com.example.ccpapplication.data.model.PedidoResponse
 import com.example.ccpapplication.data.model.Producto
 import com.example.ccpapplication.services.CcpApiServiceAdapter
 
@@ -31,6 +33,28 @@ class InventaryRepositoryImpl(
             // Si ocurre una excepción, la registramos y la devolvemos como un fallo
             Log.e("InventaryRepository", "Exception during product fetch: ${e.message}", e)
             Result.failure(Exception("Failed to fetch products: ${e.message}"))
+        }
+    }
+
+    override suspend fun createProducto(request: PedidoRequest): Result<PedidoResponse> {
+        return try {
+            val response = cppApiService.createPedido(request)
+            Log.d("InventaryRepository", "Create pedido response: ${response.code()}")
+
+            if (response.isSuccessful) {
+                response.body()?.let { pedidoResponse ->
+                    Result.success(pedidoResponse)
+                } ?: run {
+                    Log.e("InventaryRepository", "No response body after creating pedido")
+                    Result.failure(Exception("Empty response body"))
+                }
+            } else {
+                Log.e("InventaryRepository", "Failed to create pedido - HTTP ${response.code()} - ${response.message()}")
+                Result.failure(Exception("HTTP ${response.code()} - ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Log.e("InventaryRepository", "Exception during pedido creation: ${e.message}", e)
+            Result.failure(Exception("Failed to create pedido: ${e.message}"))
         }
     }
 }

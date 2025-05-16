@@ -1,24 +1,47 @@
 package com.example.ccpapplication.pages.shopping
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.ccpapplication.data.model.CartItem
 import com.example.ccpapplication.data.model.Producto
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.ccpapplication.App
+import com.example.ccpapplication.data.model.PedidoRequest
+import com.example.ccpapplication.data.model.ProductoPedido
+import com.example.ccpapplication.data.repository.InventaryRepository
+import com.example.ccpapplication.navigation.state.DataUiState
+import com.example.ccpapplication.util.UiText
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import com.example.ccpapplication.R
 
-class ShoppingCartViewModel(private val userId: String, context: Context) : ViewModel() {
+class ShoppingCartViewModel(private val userId: String, context: Context,
+                            private val inventaryRepository: InventaryRepository) : ViewModel() {
 
     private val sharedPrefs = context.getSharedPreferences("cart_$userId", Context.MODE_PRIVATE)
 
     private var _cart = mutableStateOf<List<CartItem>>(emptyList())
     val cart: State<List<CartItem>> = _cart
 
+    var pedidoUiState: DataUiState<Unit> by mutableStateOf(DataUiState.Loading)
+        private set
+    private val _messageEvent = MutableSharedFlow<UiText>()
+    val messageEvent = _messageEvent.asSharedFlow()
+
     init {
         loadCartFromPrefs()
+        pedidoUiState = DataUiState.Success(Unit)
     }
 
     fun addToCart(producto: Producto, cantidad: Int):Boolean {
@@ -100,12 +123,60 @@ class ShoppingCartViewModel(private val userId: String, context: Context) : View
         }
     }
 
+    fun enviarPedido(usuarioId: String, productos: List<ProductoPedido>) {
+        viewModelScope.launch {
+            pedidoUiState = DataUiState.Loading
+
+            val pedidoRequest = PedidoRequest(
+                usuario_id = usuarioId,
+                productos = productos
+            )
+
+            val resultado = try {
+                inventaryRepository.createProducto(pedidoRequest)
+            } catch (e: Exception) {
+                null
+            }
+
+            if (resultado?.isSuccess == true) {
+                val response = resultado.getOrNull()
+                Log.d("ShoppingCartViewModel", "Pedido creado con éxito: $response")
+                pedidoUiState = DataUiState.Success(Unit)
+
+                _messageEvent.emit(UiText.StringResource(R.string.pedido_exitoso))
+                clearCart()
+            } else {
+                val error = resultado?.exceptionOrNull()?.message ?: "Error desconocido"
+                Log.e("ShoppingCartViewModel", "Error al crear pedido: $error")
+                pedidoUiState = DataUiState.Error
+
+                _messageEvent.emit(
+                    UiText.StringResource(
+                        R.string.error_crear_pedido,
+                        error
+                    )
+                )
+            }
+        }
+    }
+
+
+
 
 
     companion object {
-        fun provideFactory(userId: String, context: Context) = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return ShoppingCartViewModel(userId, context.applicationContext) as T
+        fun provideFactory(
+            userId: String,
+            context: Context
+        ): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as App)
+                val inventaryRepository = application.container.inventarioRepository
+                ShoppingCartViewModel(
+                    userId = userId,
+                    context = context.applicationContext,
+                    inventaryRepository = inventaryRepository
+                )
             }
         }
     }
