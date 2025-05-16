@@ -22,9 +22,6 @@ import { ProductoService } from '../../../../core/services/productos.services';
   styleUrls: ['./registro-masivo.component.scss']
 })
 export class RegistroMasivoComponent implements OnInit {
-  private snackBar = inject(MatSnackBar);
-  private productoService = inject(ProductoService);
-  
   fabricanteId: string;
   selectedFile: File | null = null;
   isUploading: boolean = false;
@@ -47,7 +44,9 @@ export class RegistroMasivoComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<RegistroMasivoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { fabricanteId: string }
+    @Inject(MAT_DIALOG_DATA) public data: { fabricanteId: string },
+    private snackBar: MatSnackBar,
+    private productoService: ProductoService
   ) {
     this.fabricanteId = data.fabricanteId;
   }
