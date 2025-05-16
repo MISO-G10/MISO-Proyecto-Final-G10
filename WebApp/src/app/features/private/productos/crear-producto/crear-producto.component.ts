@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, LOCALE_ID } from '@angular/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core'; 
+import { RegistroMasivoComponent } from '../registro-masivo/registro-masivo.component'; 
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -47,8 +49,10 @@ export const MY_DATE_FORMATS = {
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatDialogModule,
     MatCheckboxModule,
-    MatSelectModule
+    MatSelectModule,
+    MatIconModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
@@ -59,6 +63,21 @@ export const MY_DATE_FORMATS = {
   styleUrls: ['./crear-producto.component.scss']
 })
 export class CrearProductoComponent implements OnInit {
+  private dialog = inject(MatDialog);
+
+  abrirRegistroMasivo() {
+    const dialogRef = this.dialog.open(RegistroMasivoComponent, {
+      width: '600px',
+      data: { fabricanteId: this.fabricanteId }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Si se registraron productos exitosamente, redirigir al listado
+        this.router.navigate(['../../'], { relativeTo: this.route });
+      }
+    });
+  }
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);

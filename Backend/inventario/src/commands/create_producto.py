@@ -23,12 +23,24 @@ class CreateProductoSchema(Schema):
     reglasTributarias = fields.Str(required=True)
     categoria = fields.Str(required=True)
     fabricante_id = fields.Str(required=True)
-
+    
+   
     @validates_schema
     def validate_categoria(self, data, **kwargs):
         try:
             categoria_str = data["categoria"]
-            Categoria[categoria_str]
+            # Intentar encontrar la categoría por nombre o por valor
+            try:
+                Categoria[categoria_str]  # Buscar por nombre (ALIMENTOS_BEBIDAS)
+            except KeyError:
+                # Si no se encuentra por nombre, buscar por valor
+                if not any(c.value == categoria_str for c in Categoria):
+                    raise KeyError
+                # Si se encuentra por valor, convertir al nombre
+                for c in Categoria:
+                    if c.value == categoria_str:
+                        data["categoria"] = c.name
+                        break
         except KeyError:
             raise ValidationError(f"Categoría inválida. Opciones válidas: {', '.join([c.name for c in Categoria])}")
             

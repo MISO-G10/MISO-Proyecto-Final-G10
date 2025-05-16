@@ -5,3 +5,4 @@ python-dotenv
 psycopg2-binary
 requests
 marshmallow
+google-cloud-pubsub==2.18.0
