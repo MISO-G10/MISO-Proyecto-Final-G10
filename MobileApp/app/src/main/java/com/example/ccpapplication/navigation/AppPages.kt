@@ -6,5 +6,7 @@ sealed class AppPages (val route: String) {
     object HomePage : AppPages(route = "home")
     object ShoppingCartPage : AppPages(route = "shoppingCart")
     object clientsPage : AppPages(route = "clients")
-
+    object OrderDetailPage : AppPages(route = "order/{orderId}") {
+        fun createRoute(orderId: String) = "order/$orderId"
+    }
 }
