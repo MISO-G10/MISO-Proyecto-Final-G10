@@ -56,7 +56,7 @@ describe('ProductoService', () => {
         expect(response).toEqual(expectedResponse);
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/inventarios/productos/bulk`);
+      const req = httpMock.expectOne(`${environment.apiUrl}:${environment.endpointInventario}/productos/bulk`);
       expect(req.request.method).toBe('POST');
       
       // Verificar que los datos se transforman correctamente
@@ -93,12 +93,13 @@ describe('ProductoService', () => {
       };
 
       service.crearProductosMasivo(mockProducts as unknown as Producto[]).subscribe({
+        next: () => fail('Should have failed with validation error'),
         error: (error) => {
-          expect(error).toEqual(errorResponse);
+          expect(error.error).toEqual(errorResponse);
         }
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/inventarios/productos/bulk`);
+      const req = httpMock.expectOne(`${environment.apiUrl}:${environment.endpointInventario}/productos/bulk`);
       expect(req.request.method).toBe('POST');
       req.flush(errorResponse, { status: 400, statusText: 'Bad Request' });
     });
@@ -131,7 +132,7 @@ describe('ProductoService', () => {
         expect(response).toEqual(expectedResponse);
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/inventarios/productos/bulk`);
+      const req = httpMock.expectOne(`${environment.apiUrl}:${environment.endpointInventario}/productos/bulk`);
       expect(req.request.method).toBe('POST');
       req.flush(expectedResponse);
     });

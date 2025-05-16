@@ -59,11 +59,17 @@ export class ProductoService{
     const productosData = productos.map(producto => {
       const { fabricanteId, ...rest } = producto;
       
+      // Transformar el valor de la categoría al formato que espera el backend
+      const categoriaEnum = Object.keys(Categoria).find(key => 
+        Categoria[key as keyof typeof Categoria] === producto.categoria
+      ) || producto.categoria;
+      
       return {
         ...rest,
         fechaVencimiento: producto.perecedero ? new Date(producto.fechaVencimiento).toISOString() : null,
         tiempoEntrega: new Date(producto.tiempoEntrega).toISOString(),
-        fabricante_id: fabricanteId
+        fabricante_id: fabricanteId,
+        categoria: categoriaEnum
       };
     });
     

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RegistroMasivoComponent } from './registro-masivo.component';
 import { ProductoService } from '../../../../core/services/productos.services';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, throwError } from 'rxjs';
 
@@ -18,11 +18,12 @@ describe('RegistroMasivoComponent', () => {
     const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
 
     await TestBed.configureTestingModule({
-      declarations: [ RegistroMasivoComponent ],
+      imports: [ RegistroMasivoComponent ],
       providers: [
         { provide: ProductoService, useValue: productoServiceSpy },
         { provide: MatDialogRef, useValue: dialogRefSpy },
-        { provide: MatSnackBar, useValue: snackBarSpy }
+        { provide: MatSnackBar, useValue: snackBarSpy },
+        { provide: MAT_DIALOG_DATA, useValue: { fabricanteId: '12345' } }
       ]
     }).compileComponents();
 
@@ -41,7 +42,7 @@ describe('RegistroMasivoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should process CSV file correctly', () => {
+  it('should process CSV file correctly', (done) => {
     const csvContent = `nombre,valorUnidad,fechaVencimiento,tiempoEntrega,descripcion,condicionAlmacenamiento,reglasComerciales,reglasTributarias,perecedero,categoria,reglasLegales
 Leche,3500,2025-12-31,2025-05-20,Leche entera,Refrigerado,No devoluciones,IVA 19%,true,ALIMENTOS Y BEBIDAS,INVIMA 123`;
 
@@ -53,21 +54,34 @@ Leche,3500,2025-12-31,2025-05-20,Leche entera,Refrigerado,No devoluciones,IVA 19
     } as FileList;
 
     const successResponse = {
-      products: [{ sku: 'TEST123' }],
+      products: [{ sku: 'TEST123', createdAt: new Date().toISOString() }],
       total: 1,
       message: 'Productos creados exitosamente'
     };
 
     productoService.crearProductosMasivo.and.returnValue(of(successResponse));
 
-    component.onFileSelected({ target: { files: mockFileList } } as any);
+    // Simular la lectura del archivo
+    const reader = new FileReader();
+    spyOn(window, 'FileReader').and.returnValue(reader);
 
-    expect(productoService.crearProductosMasivo).toHaveBeenCalled();
-    expect(dialogRef.close).toHaveBeenCalledWith(true);
-    expect(snackBar.open).toHaveBeenCalled();
+    component.onFileSelected({ target: { files: mockFileList } } as any);
+    component.uploadFile();
+
+    setTimeout(() => {
+      Object.defineProperty(reader, 'result', { value: csvContent });
+      reader.onload?.({ target: reader } as ProgressEvent<FileReader>);
+
+      setTimeout(() => {
+        expect(productoService.crearProductosMasivo).toHaveBeenCalled();
+        expect(dialogRef.close).toHaveBeenCalledWith(true);
+        expect(snackBar.open).toHaveBeenCalled();
+        done();
+      }, 100);
+    });
   });
 
-  it('should handle validation errors', () => {
+  it('should handle validation errors', (done) => {
     const csvContent = `nombre,valorUnidad,fechaVencimiento,tiempoEntrega,descripcion,condicionAlmacenamiento,reglasComerciales,reglasTributarias,perecedero,categoria,reglasLegales
 Leche,3500,2025-12-31,2025-05-20,Leche entera,Refrigerado,No devoluciones,IVA 19%,true,CATEGORIA_INVALIDA,INVIMA 123`;
 
@@ -87,14 +101,27 @@ Leche,3500,2025-12-31,2025-05-20,Leche entera,Refrigerado,No devoluciones,IVA 19
 
     productoService.crearProductosMasivo.and.returnValue(throwError(() => errorResponse));
 
-    component.onFileSelected({ target: { files: mockFileList } } as any);
+    // Simular la lectura del archivo
+    const reader = new FileReader();
+    spyOn(window, 'FileReader').and.returnValue(reader);
 
-    expect(productoService.crearProductosMasivo).toHaveBeenCalled();
-    expect(snackBar.open).toHaveBeenCalledWith(
-      jasmine.stringMatching(/error/i),
-      'Cerrar',
-      jasmine.any(Object)
-    );
+    component.onFileSelected({ target: { files: mockFileList } } as any);
+    component.uploadFile();
+
+    setTimeout(() => {
+      Object.defineProperty(reader, 'result', { value: csvContent });
+      reader.onload?.({ target: reader } as ProgressEvent<FileReader>);
+
+      setTimeout(() => {
+        expect(productoService.crearProductosMasivo).toHaveBeenCalled();
+        expect(snackBar.open).toHaveBeenCalledWith(
+          jasmine.stringMatching(/error/i),
+          'Cerrar',
+          jasmine.any(Object)
+        );
+        done();
+      }, 100);
+    });
   });
 
   it('should handle non-CSV files', () => {
