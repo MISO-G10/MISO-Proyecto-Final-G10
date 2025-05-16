@@ -19,7 +19,7 @@ data class Producto(
     @SerialName("reglasTributarias") val reglasTributarias: String,
     @SerialName("sku") val sku: String,
     @SerialName("tiempoEntrega") val tiempoEntrega: String,
-    @SerialName("valorUnidad") val valorUnidad: Double,
+    @SerialName("valorUnidad") val valorUnidad: Float,
     @SerialName("cantidad_total") val cantidadTotal: Int
 )
 

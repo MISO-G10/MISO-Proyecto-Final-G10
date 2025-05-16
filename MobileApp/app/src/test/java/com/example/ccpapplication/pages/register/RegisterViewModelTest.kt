@@ -70,7 +70,9 @@ class RegisterViewModelTest {
                     username = "test@example.com",
                     password = "Nombre Test",
                     name = "Apellido Test",
-                    rol = "TENDERO"
+                    rol = "TENDERO",
+                    direccion = "Calle 1",
+                    telefono = "1234567890"
                 )
             )
         }
