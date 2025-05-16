@@ -2,12 +2,12 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable,inject } from "@angular/core";
 import { environment } from '../../../environment/environment';
 import { Producto, Categoria } from "../../features/private/productos/models/producto";
-interface ProductoResponse {
+export interface ProductoResponse {
   createdAt: string;
   sku: string;
 }
 
-interface BulkProductoResponse {
+export interface BulkProductoResponse {
   message: string;
   total: number;
   products?: ProductoResponse[];
