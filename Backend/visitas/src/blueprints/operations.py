@@ -3,7 +3,7 @@ from ..commands.create import Create
 from ..commands.update import Update
 from ..commands.clean import Clean
 from src.utils.validate_token import token_required
-
+from src.utils.get_vendedor import get_vendedor
 from ..commands.delete import Delete
 from ..commands.list import List
 from ..commands.show import Show
@@ -128,3 +128,15 @@ def get_mis_tenderos():
     tenderos = service.execute()
     
     return jsonify(tenderos), 200
+
+@operations_blueprint.route('/asignaciones/tenderos/<string:id>', methods=['GET'])
+@token_required
+def get_tenderos(id):
+    try:
+        # También puedes pasar request.headers.get("Authorization") si necesitas autenticación
+        usuario = get_vendedor(id)
+        service = GetVendedorTenderos(usuario)
+        tenderos = service.execute()
+        return jsonify(tenderos), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
