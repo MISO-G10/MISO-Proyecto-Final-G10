@@ -65,26 +65,26 @@ export class DeliveryRoutesComponent implements OnInit {
     const selectedDateStr = formatDate(date, 'yyyy-MM-dd', 'es-CO');
     const currentDateStr = formatDate(new Date(), 'yyyy-MM-dd', 'es-CO');
     
-    // Definición de waypoints para las rutas
+    // Definición de waypoints usando direcciones en lugar de coordenadas
     const centroWaypoints = [
-      '4.6097,-74.0817',
-      '4.6260,-74.0686',
-      '4.6019,-74.0947',
-      '4.5981,-74.0758'
+      'Carrera 7 # 32-16, Bogotá, Colombia', 
+      'Plaza de Bolívar, Bogotá, Colombia',
+      'Museo Nacional, Bogotá, Colombia',
+      'Parque de la 93, Bogotá, Colombia'
     ];
     
     const norteWaypoints = [
-      '4.7500,-74.0500',
-      '4.7681,-74.0430',
-      '4.7321,-74.0692',
-      '4.7612,-74.0348'
+      'Centro Comercial Santafé, Bogotá, Colombia',
+      'Parque Simón Bolívar, Bogotá, Colombia',
+      'Universidad Nacional, Bogotá, Colombia',
+      'Centro Andino, Bogotá, Colombia'
     ];
     
     const surWaypoints = [
-      '4.5700,-74.1000',
-      '4.5518,-74.1115',
-      '4.5902,-74.1213',
-      '4.5601,-74.0831'
+      'Centro Comercial El Tunal, Bogotá, Colombia',
+      'Biblioteca El Tintal, Bogotá, Colombia',
+      'Portal Sur Transmilenio, Bogotá, Colombia',
+      'Centro Comercial Ciudad Tunal, Bogotá, Colombia'
     ];
     
     // Datos de ejemplo - En una aplicación real esto vendría de un servicio
@@ -142,56 +142,53 @@ export class DeliveryRoutesComponent implements OnInit {
     
     if (route.waypoints && route.waypoints.length > 0) {
       // Origen (primera parada)
-      const origin = route.waypoints[0];
+      const origin = encodeURIComponent(route.waypoints[0]);
       mapUrl += `&origin=${origin}`;
       
       // Destino (última parada, si es diferente al origen)
-      const destination = route.waypoints[route.waypoints.length > 1 ? route.waypoints.length - 1 : 0];
+      const destination = encodeURIComponent(route.waypoints[route.waypoints.length > 1 ? route.waypoints.length - 1 : 0]);
       mapUrl += `&destination=${destination}`;
       
       // Puntos intermedios (si hay más de 2 waypoints)
       if (route.waypoints.length > 2) {
         // Google Maps espera los waypoints sin el primero y el último
-        const waypoints = route.waypoints.slice(1, -1).join('|');
-        mapUrl += `&waypoints=${waypoints}`;
+        const waypointsEncoded = route.waypoints
+          .slice(1, -1)
+          .map(wp => encodeURIComponent(wp))
+          .join('|');
+        mapUrl += `&waypoints=${waypointsEncoded}`;
       }
       
       // Modo de transporte
       mapUrl += '&travelmode=driving';
     } else {
-      // Si no hay waypoints, simplemente abrir el mapa centrado en las coordenadas
-      const center = this.getCoordinatesFromUrl(route.routeMapUrl);
-      mapUrl = `https://www.google.com/maps/search/?api=1&query=${center}`;
+      // Si no hay waypoints, abrir un mapa centrado en una ubicación predeterminada
+      mapUrl = `https://www.google.com/maps/search/?api=1&query=Bogota,Colombia`;
     }
     
     window.open(mapUrl, '_blank');
   }
-
-  // Método auxiliar para extraer las coordenadas de la URL
-  private getCoordinatesFromUrl(url: string): string {
-    const regex = /center=([^&]+)/;
-    const match = url.match(regex);
-    return match ? match[1] : '4.6097,-74.0817'; // Coordenadas predeterminadas si no se encuentra
-  }
   
-  // Método para generar la URL del mapa estático a partir de los waypoints
+  // Método para generar la URL del mapa estático a partir de los waypoints con direcciones
   private generateStaticMapUrl(waypoints: string[], zoom: number = 12, size: string = '400x200'): string {
     if (!waypoints || waypoints.length === 0) {
       return '';
     }
     
-    const center = waypoints[0]; // Usar el primer punto como centro
+    const center = encodeURIComponent(waypoints[0]); // Usar el primer punto como centro
     let url = `https://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=${zoom}&size=${size}`;
     
     // Añadir marcadores para cada waypoint
-    url += '&markers=color:red|' + waypoints.join('|');
+    const markers = waypoints.map(wp => encodeURIComponent(wp)).join('|');
+    url += '&markers=color:red|' + markers;
     
     // Añadir la ruta como una línea entre los puntos
-    url += '&path=color:0x0000ff|weight:5|' + waypoints.join('|');
+    const path = waypoints.map(wp => encodeURIComponent(wp)).join('|');
+    url += '&path=color:0x0000ff|weight:5|' + path;
     
-    // Cerrar el circuito volviendo al primer punto
+    // Cerrar el circuito volviendo al primer punto si hay más de un punto
     if (waypoints.length > 1) {
-      url += '|' + waypoints[0];
+      url += '|' + encodeURIComponent(waypoints[0]);
     }
     
     // Añadir la API key

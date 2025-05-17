@@ -8,6 +8,7 @@ from ..commands.create_bodega import CreateBodega
 from ..commands.get_producto_ubicacion import GetProductoUbicacion
 from ..commands.assign_producto_bodega import AssignProductoBodega
 from ..commands.create_pedido import CreatePedido
+from ..commands.listar_rutas import ListRutas
 import os
 
 
@@ -149,3 +150,18 @@ def create_pedido():
         return jsonify(result[0]), result[1]
 
     return jsonify(result), 201
+
+# Listar todas las rutas
+@operations_blueprint.route("/rutas", methods=['GET'])
+@token_required
+def list_rutas():
+    """
+    Endpoint para obtener todas las rutas disponibles
+    """
+    result = ListRutas().execute()
+    
+    # Verificar si el resultado es una tupla (respuesta, código)
+    if isinstance(result, tuple) and len(result) == 2:
+        return jsonify(result[0]), result[1]
+    
+    return jsonify(result), 200
