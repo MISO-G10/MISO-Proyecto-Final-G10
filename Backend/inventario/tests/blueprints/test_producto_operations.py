@@ -75,16 +75,16 @@ def test_create_producto_success(client, valid_producto_data):
     }
 
     response_bodega = client.post('/inventarios/bodegas',
-                                json=bodega_data,
-                                headers={'Authorization': 'Bearer 1234'})
+                                  json=bodega_data,
+                                  headers={'Authorization': 'Bearer 1234'})
     assert response_bodega.status_code == 201
     bodega = response_bodega.get_json()
     bodega_id = bodega.get("id")
-    
+
     # Update the producto data with the real bodega ID
     test_data = valid_producto_data.copy()
     test_data["bodega"] = bodega_id
-    
+
     response = client.post('/inventarios/createproduct',
                            json=test_data,
                            headers={'Authorization': 'Bearer 1234'})
@@ -93,6 +93,21 @@ def test_create_producto_success(client, valid_producto_data):
     json_response = response.get_json()
     assert "sku" in json_response
     assert "createdAt" in json_response
+
+
+def test_create_producto_without_bodega(client, valid_producto_data):
+    """Test para verificar que no se puede crear un producto sin bodega"""
+    request_data = valid_producto_data.copy()
+    request_data["fabricante_id"] = str(uuid.uuid4())
+    request_data.pop("bodega", None)
+    request_data.pop("cantidad", None)
+
+    # Se crea el producto sin bodega
+    response = client.post('/inventarios/createproduct',
+                           json=request_data,
+                           headers={'Authorization': 'Bearer 1234'})
+
+    assert response.status_code == 201
 
 
 """Test para verificar que no se puede crear un porducto sin token"""
@@ -150,33 +165,21 @@ def test_cannot_create_producto_without_fabricante_id(client, valid_producto_dat
     assert "fabricante_id" in str(json_response)
 
 
-"""Test para validar que no se pueda crear un producto sin bodega"""
-
-
-def test_cannot_create_producto_without_bodega(client, valid_producto_data):
-    invalid_data = valid_producto_data.copy()
-    invalid_data.pop("bodega", None)
-
-    response = client.post('/inventarios/createproduct',
-                           json=invalid_data,
-                           headers={'Authorization': 'Bearer 1234'})
-
-    assert response.status_code == 400
-    json_response = response.get_json()
-    assert "bodega" in str(json_response)
-
-
 """Test para validar que no se pueda crear un producto sin cantidad"""
 
 
-def test_cannot_create_producto_without_cantidad(client, valid_producto_data):
+def test_cannot_create_producto_without_cantidad(client, valid_producto_data, monkeypatch):
     invalid_data = valid_producto_data.copy()
+    invalid_data['fabricante_id'] = str(uuid.uuid4())
     invalid_data.pop("cantidad", None)
+
+    print(invalid_data)
 
     response = client.post('/inventarios/createproduct',
                            json=invalid_data,
                            headers={'Authorization': 'Bearer 1234'})
 
+    print(response.get_json())
     assert response.status_code == 400
     json_response = response.get_json()
     assert "cantidad" in str(json_response)
@@ -198,6 +201,21 @@ def test_cannot_create_producto_with_invalid_cantidad(client, valid_producto_dat
     assert "cantidad" in str(json_response)
 
 
+def test_cannot_create_producto_with_invalid_bodega(client, valid_producto_data):
+    """Test para validar que no se pueda crear un producto con bodega inválida"""
+    invalid_data = valid_producto_data.copy()
+    invalid_data["fabricante_id"] = str(uuid.uuid4())
+    invalid_data["bodega"] = "INVALID_BODEGA_ID"
+
+    response = client.post('/inventarios/createproduct',
+                           json=invalid_data,
+                           headers={'Authorization': 'Bearer 1234'})
+
+    assert response.status_code == 400
+    json_response = response.get_json()
+    assert "bodega" in str(json_response).lower() or "ubicación" in str(json_response).lower()
+
+
 """Test para control de duplicados"""
 
 
@@ -211,12 +229,12 @@ def test_cannot_create_duplicate_producto(client, valid_producto_data, monkeypat
     }
 
     response_bodega = client.post('/inventarios/bodegas',
-                                json=bodega_data,
-                                headers={'Authorization': 'Bearer 1234'})
+                                  json=bodega_data,
+                                  headers={'Authorization': 'Bearer 1234'})
     assert response_bodega.status_code == 201
     bodega = response_bodega.get_json()
     bodega_id = bodega.get("id")
-    
+
     # Update the valid_producto_data with the necessary bodega
     test_data = valid_producto_data.copy()
     test_data["bodega"] = bodega_id
@@ -377,8 +395,8 @@ def test_list_productos_with_data(client, valid_producto_data):
     }
 
     response_bodega = client.post('/inventarios/bodegas',
-                                 json=bodega_data,
-                                 headers={'Authorization': 'Bearer 1234'})
+                                  json=bodega_data,
+                                  headers={'Authorization': 'Bearer 1234'})
     assert response_bodega.status_code == 201
     bodega = response_bodega.get_json()
     bodega_id = bodega.get("id")

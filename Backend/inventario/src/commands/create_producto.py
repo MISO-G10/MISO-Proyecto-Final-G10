@@ -23,11 +23,10 @@ class CreateProductoSchema(Schema):
     reglasComerciales = fields.Str(required=True)
     reglasTributarias = fields.Str(required=True)
     categoria = fields.Str(required=True)
-    bodega = fields.Str(required=True)
-    cantidad = fields.Int(required=True)
+    bodega = fields.Str(required=False, allow_none=True)
+    cantidad = fields.Int(required=False, allow_none=True)
     fabricante_id = fields.Str(required=True)
-    
-   
+
     @validates_schema
     def validate_categoria(self, data, **kwargs):
         try:
@@ -56,10 +55,18 @@ class CreateProductoSchema(Schema):
 
     @validates_schema
     def validate_cantidad(self, data, **kwargs):
-        # Se valida que la cantidad sea mayor a 0
-        if data.get("cantidad") <= 0:
-            raise ValidationError(
-                {"cantidad": ["La cantidad debe ser mayor a 0"]})
+        if "bodega" in data:
+            if not data.get("bodega"):
+                raise ValidationError(
+                    {"bodega": ["La bodega es requerida para asignar un producto"]})
+            if 'cantidad' not in data and not data.get("cantidad"):
+                raise ValidationError(
+                    {"cantidad": ["La cantidad es requerida para asignar un producto"]})
+
+            else:
+                if data.get("cantidad") <= 0:
+                    raise ValidationError(
+                        {"cantidad": ["La cantidad debe ser mayor a 0"]})
 
 
 class Create(BaseCommand):
@@ -102,13 +109,14 @@ class Create(BaseCommand):
             db.add(nuevo_producto)
             db.commit()
 
-            bodega = AssignProductoBodega(schema['bodega'], {
-                "producto_id": str(nuevo_producto.id),
-                "cantidad": schema['cantidad'],
-            }).execute()
+            if 'bodega' in schema and 'cantidad' in schema:
+                bodega = AssignProductoBodega(schema['bodega'], {
+                    "producto_id": str(nuevo_producto.id),
+                    "cantidad": schema['cantidad'],
+                }).execute()
 
-            if isinstance(bodega, tuple) and len(bodega) == 2:
-                return bodega[0], bodega[1]
+                if isinstance(bodega, tuple) and len(bodega) == 2:
+                    return bodega[0], bodega[1]
 
             return {
                 "id": nuevo_producto.id,
