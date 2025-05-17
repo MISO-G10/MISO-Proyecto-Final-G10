@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeliveryRoute } from './models/entrega-ruta.model';
 import { formatDate } from '@angular/common';
 import { environment } from '../../../../environment/environment';
+import { RutaService } from '../../../core/services/rutas.service';
 
 @Component({
   selector: 'app-rutas',
@@ -38,6 +39,7 @@ export class RutasComponent implements OnInit {
   filteredRoutes = signal<DeliveryRoute[]>([]);
   selectedDate = signal(new Date());
   hasRoutes = signal(false);
+  private readonly rutaService = inject(RutaService);
 
   // Traducciones
   readonly translations = {
