@@ -9,12 +9,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DeliveryRoute } from './models/delivery-route.model';
+import { DeliveryRoute } from './models/entrega-ruta.model';
 import { formatDate } from '@angular/common';
 import { environment } from '../../../../environment/environment';
 
 @Component({
-  selector: 'app-delivery-routes',
+  selector: 'app-rutas',
   standalone: true,
   imports: [
     CommonModule,
@@ -29,10 +29,10 @@ import { environment } from '../../../../environment/environment';
     FormsModule,
     ReactiveFormsModule
   ],
-  templateUrl: './delivery-routes.component.html',
-  styleUrls: ['./delivery-routes.component.scss']
+  templateUrl: './rutas.component.html',
+  styleUrls: ['./rutas.component.scss']
 })
-export class DeliveryRoutesComponent implements OnInit {
+export class RutasComponent implements OnInit {
   // Señales para gestionar el estado
   routes = signal<DeliveryRoute[]>([]);
   filteredRoutes = signal<DeliveryRoute[]>([]);
