@@ -3,12 +3,14 @@ from sqlalchemy.orm import joinedload
 from src.db.session import SessionLocal
 from .base_command import BaseCommand
 from .get_producto import GetProducto
+from .get_bodega import GetBodega
 from ..models import InventarioBodega
 
 
-class GetProductoUbicacion(BaseCommand):
-    def __init__(self, producto_id):
+class GetProductoBodegaInventario(BaseCommand):
+    def __init__(self, bodega_id, producto_id):
         self.producto_id = producto_id
+        self.bodega_id = bodega_id
 
     def execute(self):
         db = SessionLocal()
@@ -16,35 +18,27 @@ class GetProductoUbicacion(BaseCommand):
         try:
             # Get the product first
             producto = GetProducto(self.producto_id).execute()
+            bodega = GetBodega(self.bodega_id).execute()
 
             if not producto:
                 return {"error": f"Producto con id/sku {self.producto_id} no encontrado"}, 404
 
-            # Query the inventory_bodega relationships with bodega details
-            inventory_items = db.query(InventarioBodega) \
-                .filter(InventarioBodega.producto_id == producto.id) \
-                .options(joinedload(InventarioBodega.bodega)) \
-                .all()
+            if not bodega:
+                return {"error": f"Bodega con id {self.bodega_id} no encontrada"}, 404
 
-            # Format the result
-            ubicaciones = []
-            for item in inventory_items:
-                bodega = item.bodega
-                ubicacion = {
-                    "bodega_id": str(bodega.id),
-                    "nombre_bodega": bodega.nombre,
-                    "direccion": bodega.direccion,
-                    "cantidad": item.cantidad,
-                    "ciudad": bodega.ciudad,
-                    "pais": bodega.pais,
-                }
-                ubicaciones.append(ubicacion)
+            # Query the inventory_bodega relationships with bodega details
+            inventario = db.query(InventarioBodega) \
+                .filter(InventarioBodega.producto_id == producto.id) \
+                .filter(InventarioBodega.bodega_id == bodega.id) \
+                .options(joinedload(InventarioBodega.bodega)) \
+                .first()
 
             result = {
-                "producto_id": str(producto.id),
-                "sku": producto.sku,
-                "nombre": producto.nombre,
-                "ubicaciones": ubicaciones
+                "bodega_id": bodega.id,
+                "producto_id": producto.id,
+                "cantidad": inventario.cantidad if inventario else 0,
+                "nombre": bodega.nombre,
+                "direccion": bodega.direccion,
             }
 
             return result
