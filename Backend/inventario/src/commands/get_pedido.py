@@ -48,7 +48,7 @@ class GetPedido(BaseCommand):
             if self.fecha_entrega:
                 try:
                     fecha = datetime.strptime(self.fecha_entrega, '%Y-%m-%d')
-                    filters.append(Pedido.fecha_entrega <= fecha)
+                    filters.append(Pedido.fechaEntrega <= fecha)
                 except ValueError:
                     print(f"Error: Formato de fecha inválido. Use YYYY-MM-DD")
 
