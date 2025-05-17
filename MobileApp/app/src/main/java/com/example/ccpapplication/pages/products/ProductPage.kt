@@ -105,10 +105,11 @@ fun ProductCard(
 @Composable
 fun ProductPage(
     productUiState: DataUiState<List<Producto>>,
-    onProductClick: (id: String) -> Unit = {},
     cartViewModel: ShoppingCartViewModel,
-    onViewDetailProduct:(id: String) -> Unit = {},
-    showAddToShopping: Boolean = true
+    onProductClick: (id: String) -> Unit = {},
+    onViewDetailProduct: (id: String) -> Unit = {},
+    showAddToShopping: Boolean = true,
+    enableLazyColumnScroll: Boolean = true // <-- nuevo parámetro
 ) {
     var searchQuery by remember { mutableStateOf("") }
 
@@ -144,23 +145,39 @@ fun ProductPage(
                 return@DataFetchStates
             }
 
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(filteredProducts) { producto ->
-                    ProductCardWithDialog(
-                        product = producto,
-                        onClick = { onProductClick(producto.id) },
-                        cartViewModel = cartViewModel,
-                        onViewDetail = { onViewDetailProduct(producto.id) },
-                        showAddToShopping = showAddToShopping
-                    )
+            if (enableLazyColumnScroll) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(filteredProducts) { producto ->
+                        ProductCardWithDialog(
+                            product = producto,
+                            onClick = { onProductClick(producto.id) },
+                            cartViewModel = cartViewModel,
+                            onViewDetail = { onViewDetailProduct(producto.id) },
+                            showAddToShopping = showAddToShopping
+                        )
+                    }
+                }
+            } else {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    filteredProducts.forEach { producto ->
+                        ProductCardWithDialog(
+                            product = producto,
+                            onClick = { onProductClick(producto.id) },
+                            cartViewModel = cartViewModel,
+                            onViewDetail = { onViewDetailProduct(producto.id) },
+                            showAddToShopping = showAddToShopping
+                        )
+                    }
                 }
             }
-
         }
     }
 }

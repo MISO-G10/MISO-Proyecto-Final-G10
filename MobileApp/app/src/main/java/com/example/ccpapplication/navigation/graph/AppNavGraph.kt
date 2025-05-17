@@ -16,6 +16,7 @@ object Graph {
     const val SCHEDULE_VISIT = "schedule_visit"
     const val CLIENTS = "clients"
     const val VISITS = "visits"
+    const val VENDEDOR_SHOPPING="vendedor_shopping"
 }
 
 @Composable
