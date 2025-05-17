@@ -3,7 +3,7 @@ from flask import jsonify
 import os
 from .config import get_config
 
-def get_usuario(id, token=None):
+def get_vendedor(id, token=None):
     try:
         env_name = os.getenv('FLASK_ENV', 'development')
         envData = get_config(env_name)

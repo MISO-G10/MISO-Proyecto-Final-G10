@@ -18,6 +18,7 @@ class PedidoProductoInputSchema(Schema):
 
 class CreatePedidoSchema(Schema):
     usuario_id= fields.UUID(required=False)
+    direccion= fields.Str(required=True)
     fechaEntrega = fields.DateTime(required=False)
     productos = fields.List(fields.Nested(PedidoProductoInputSchema), required=True)
 
@@ -59,6 +60,7 @@ class CreatePedido(BaseCommand):
                     }, 400
                 
             nuevo_pedido = Pedido(
+                direccion=self.data["direccion"],
                 usuario_id=self.vendedor["id"] if not self.data.get("usuario_id") else self.data["usuario_id"],
                 vendedor_id=self.vendedor["id"],
                 estado=EstadoPedido.PENDIENTE,
@@ -111,6 +113,7 @@ class CreatePedido(BaseCommand):
                 "fechaEntrega": nuevo_pedido.fechaEntrega,
                 "vendedor_id": nuevo_pedido.vendedor_id,
                 "usuario_id": nuevo_pedido.usuario_id,
+                "direccion": nuevo_pedido.direccion,
                 "productos": [
                     {
                         "producto_id": pp.producto_id,

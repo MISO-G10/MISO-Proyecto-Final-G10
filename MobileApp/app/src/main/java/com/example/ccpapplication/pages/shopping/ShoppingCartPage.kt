@@ -87,14 +87,14 @@ fun ShoppingCartPage(
             GenericButton(
                 label = stringResource(R.string.confirm_order),
                 onClick = {
-                    user?.id?.let { usuarioId ->
+                    user?.let { user ->
                         val productosPedido = cart.map {
                             ProductoPedido(
                                 producto_id = it.producto.id,
                                 cantidad = it.cantidad
                             )
                         }
-                        cartViewModel.enviarPedido(usuarioId, productosPedido)
+                        cartViewModel.enviarPedido(user, productosPedido)
                     }
                 },
                 type = ButtonType.PRIMARY,
