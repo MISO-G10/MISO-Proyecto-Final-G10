@@ -12,7 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeliveryRoute } from './models/entrega-ruta.model';
 import { formatDate } from '@angular/common';
 import { environment } from '../../../../environment/environment';
-import { RutaService } from '../../../core/services/rutas.service';
+import { RutaService } from '../../../core/services/rutas.services';
+import { PedidoService } from '../../../core/services/pedidos.services';
 
 @Component({
   selector: 'app-rutas',
