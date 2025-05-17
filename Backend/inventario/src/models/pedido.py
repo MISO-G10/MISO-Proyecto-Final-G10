@@ -19,6 +19,7 @@ class Pedido(Base, Model):
     fechaSalida = Column(DateTime, nullable=True)    
     estado = Column(Enum(EstadoPedido), nullable=False)
     valor= Column(Float, nullable=False)
+    direccion=Column(String, nullable=False)
     pedido_productos = None
 
 class PedidoProducto(Base, Model):

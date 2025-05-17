@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import com.example.ccpapplication.R
+import com.example.ccpapplication.data.model.User
 
 class ShoppingCartViewModel(private val userId: String, context: Context,
                             private val inventaryRepository: InventaryRepository) : ViewModel() {
@@ -123,13 +124,14 @@ class ShoppingCartViewModel(private val userId: String, context: Context,
         }
     }
 
-    fun enviarPedido(usuarioId: String, productos: List<ProductoPedido>) {
+    fun enviarPedido(user: User, productos: List<ProductoPedido>) {
         viewModelScope.launch {
             pedidoUiState = DataUiState.Loading
 
             val pedidoRequest = PedidoRequest(
-                usuario_id = usuarioId,
-                productos = productos
+                usuario_id = user.id,
+                productos = productos,
+                direccion= user.direccion.toString()
             )
 
             val resultado = try {

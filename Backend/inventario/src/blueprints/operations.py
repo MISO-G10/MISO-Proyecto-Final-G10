@@ -9,6 +9,7 @@ from ..commands.get_producto_ubicacion import GetProductoUbicacion
 from ..commands.assign_producto_bodega import AssignProductoBodega
 from ..commands.create_pedido import CreatePedido
 from ..commands.listar_rutas import ListRutas
+from ..commands.get_pedido import GetPedido
 import os
 
 
@@ -136,19 +137,46 @@ def create_productos_bulk():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
 @operations_blueprint.route("/pedidos", methods=['POST'])
 @token_required
 def create_pedido():
-    json_data = request.get_json()
-    if not json_data:
-        return jsonify({"error": "El cuerpo de la solicitud no puede estar vacío"}), 400
+    try:
+        json_data = request.get_json()
+        if not json_data:
+            return jsonify({"error": "El cuerpo de la solicitud no puede estar vacío"}), 400
 
-    current_usuario = g.current_usuario
-    result = CreatePedido(current_usuario, json_data).execute()
+        current_usuario = g.current_usuario
+        result = CreatePedido(current_usuario, json_data).execute()
 
+        if isinstance(result, tuple) and len(result) == 2:
+            return jsonify(result[0]), result[1]
+
+        return jsonify(result), 201
+    except Exception as e:
+        print(f"Error al crear pedido: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+@operations_blueprint.route("/pedidos", methods=['GET'])
+@token_required
+def get_pedidos():
+    user_id = request.args.get('user_id')
+    tipo_usuario = request.args.get('tipo_usuario')
+    fecha_entrega = request.args.get('fecha_entrega')
+    pedido_id = request.args.get('pedido_id')
+
+    result = GetPedido(
+        pedido_id=pedido_id,
+        user_id=user_id,
+        tipo_usuario=tipo_usuario,
+        fecha_entrega=fecha_entrega
+    ).execute()
+    
     if isinstance(result, tuple) and len(result) == 2:
         return jsonify(result[0]), result[1]
 
+<<<<<<< HEAD
     return jsonify(result), 201
 
 # Listar todas las rutas
@@ -164,4 +192,16 @@ def list_rutas():
     if isinstance(result, tuple) and len(result) == 2:
         return jsonify(result[0]), result[1]
     
+=======
+    return jsonify(result), 200
+
+@operations_blueprint.route("/pedidos/<pedido_id>", methods=['GET'])
+@token_required
+def get_pedido(pedido_id):
+    result = GetPedido(pedido_id=pedido_id).execute()
+    
+    if isinstance(result, tuple) and len(result) == 2:
+        return jsonify(result[0]), result[1]
+
+>>>>>>> develop
     return jsonify(result), 200

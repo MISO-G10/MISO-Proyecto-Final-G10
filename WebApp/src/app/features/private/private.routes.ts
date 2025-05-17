@@ -20,6 +20,11 @@ export const PRIVATE_ROUTES: Routes = [
           data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
       },
       { 
+        path: 'sellers/edit', loadComponent: () => import('./sellers/update-seller/update-seller.component').then(m => m.UpdateSellerComponent),
+          canActivate: [RoleGuard],
+          data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
+      },
+      { 
         path: 'sellers/sales-report/:id', 
         loadComponent: () => import('./sellers/sales-report/sales-report.component').then(m => m.SalesReportComponent),
         canActivate: [RoleGuard],

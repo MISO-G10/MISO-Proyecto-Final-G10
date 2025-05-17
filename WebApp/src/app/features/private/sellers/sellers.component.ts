@@ -92,6 +92,10 @@ export class SellersComponent {
         state: { sellerData: seller }
       });
     }
+    navigateToEdit(user: User): void {
+      console.log(user);
+      this.router.navigate(['/private/sellers/edit'], { state: { user } });
+}
   
 
 }
