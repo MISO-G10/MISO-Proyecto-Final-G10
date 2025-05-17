@@ -14,6 +14,7 @@ class SalesPlan(db.Model, Model):
     __tablename__ = 'sales_plans'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    usuario_id: Mapped[str] = mapped_column(String(255), nullable=False)
     nombre: Mapped[str] = mapped_column(String(255), nullable=False)
     descripcion: Mapped[str] = mapped_column(String(500), nullable=False)
     valor_objetivo: Mapped[float] = mapped_column(Float, nullable=False)

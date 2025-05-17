@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, ValidationError
+from marshmallow import Schema, fields, ValidationError, validates
 
 from src.commands.base_command import BaseCommand
 from src.db.session import SessionLocal
@@ -9,6 +9,8 @@ from src.models import Bodega
 class CreateBodegaSchema(Schema):
     nombre = fields.Str(required=True)
     direccion = fields.Str(required=True)
+    ciudad = fields.Str(required=True)
+    pais = fields.Str(required=True)
 
 
 class CreateBodega(BaseCommand):
@@ -23,7 +25,9 @@ class CreateBodega(BaseCommand):
             # Se instancia una nueva bodega
             bodega = Bodega(
                 nombre=schema['nombre'],
-                direccion=schema['direccion']
+                direccion=schema['direccion'],
+                ciudad=schema['ciudad'],
+                pais=schema['pais'],
             )
             db.add(bodega)
             db.commit()
@@ -33,6 +37,8 @@ class CreateBodega(BaseCommand):
                 "id": str(bodega.id),
                 "nombre": bodega.nombre,
                 "direccion": bodega.direccion,
+                "ciudad": bodega.ciudad,
+                "pais": bodega.pais,
                 "createdAt": bodega.createdAt.isoformat(),
                 "updatedAt": bodega.updatedAt.isoformat()
             }

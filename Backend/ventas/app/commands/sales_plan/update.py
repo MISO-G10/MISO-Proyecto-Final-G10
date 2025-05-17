@@ -1,9 +1,8 @@
 from app.commands.base_command import BaseCommand
-from app.models.sales_plan import SalesPlan
-from app.models.sales_plan_seller import SalesPlanSeller
 from app.lib.database import db
 from app.lib.errors import NotFoundError, BadRequestError
 from app.lib.validators import validate_date_range
+from app.models.sales_plan import SalesPlan
 
 
 class UpdateSalesPlanCommand(BaseCommand):
@@ -31,29 +30,24 @@ class UpdateSalesPlanCommand(BaseCommand):
 
         if 'fecha_fin' in self.data:
             sales_plan.fecha_fin = self.data['fecha_fin']
-        
+
         try:
             validate_date_range(sales_plan.fecha_inicio, sales_plan.fecha_fin)
         except ValueError as e:
             raise BadRequestError(str(e))
 
-        if 'seller_ids' in self.data:
-            seller_ids = self.data['seller_ids']
-            sales_plan.sellers = []
-
-            for seller_id in seller_ids:
-                seller = db.session.execute(
-                    db.select(SalesPlanSeller).where(SalesPlanSeller.seller_id == seller_id)
-                ).scalar_one_or_none()
-
-                if not seller:
-                    seller = SalesPlanSeller(
-                        nombre=f"Seller {seller_id}",
-                        seller_id=seller_id
-                    )
-                    db.session.add(seller)
-
-                sales_plan.sellers.append(seller)
+        # # Update sales plan, DO NOT UPDATE SELLERS
+        # db.session.query(
+        #     SalesPlan
+        # ).filter(
+        #     SalesPlan.id == sales_plan.id
+        # ).update({
+        #     "nombre": sales_plan.nombre,
+        #     "descripcion": sales_plan.descripcion,
+        #     "valor_objetivo": sales_plan.valor_objetivo,
+        #     "fecha_inicio": sales_plan.fecha_inicio,
+        #     "fecha_fin": sales_plan.fecha_fin
+        # })
 
         db.session.commit()
 

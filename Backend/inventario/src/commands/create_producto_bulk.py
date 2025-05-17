@@ -6,6 +6,7 @@ from .create_producto import Create, CreateProductoSchema
 from .create_producto import CreateProductoSchema
 from .base_command import BaseCommand
 
+
 class CreateProductoBulkCommand(BaseCommand):
     def __init__(self, usuario, productos):
         self.usuario = usuario
@@ -16,13 +17,16 @@ class CreateProductoBulkCommand(BaseCommand):
             # Validar cada producto
             validated_products = []
             errors = []
-            
+
             for i, producto in enumerate(self.productos):
                 try:
-                    schema = CreateProductoSchema().load(producto)
-                    validated_products.append(schema)
+                    CreateProductoSchema().load(producto)
+
+                    validated_products.append(producto)
                 except ValidationError as e:
                     errors.append({"index": i, "error": e.messages})
+
+            print(validated_products)
 
             if errors:
                 return {"error": "Error de validación", "details": errors}, 400

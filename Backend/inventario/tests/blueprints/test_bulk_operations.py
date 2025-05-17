@@ -6,7 +6,7 @@ from src.models.producto import Categoria
 def valid_bulk_productos():
     fecha_vencimiento = datetime.now() + timedelta(days=30)
     tiempo_entrega = datetime.now() + timedelta(days=5)
-    
+
     return {
         "productos": [
             {
@@ -45,7 +45,7 @@ def test_bulk_create_success(client, valid_bulk_productos):
     response = client.post('/inventarios/productos/bulk',
                           json=valid_bulk_productos,
                           headers={'Authorization': 'Bearer 1234'})
-    
+
     assert response.status_code == 201
     json_response = response.get_json()
     assert "products" in json_response
@@ -60,11 +60,11 @@ def test_cannot_bulk_create_without_token(client, valid_bulk_productos):
 """Test para validar errores de validación en productos"""
 def test_bulk_create_validation_errors(client, valid_bulk_productos):
     valid_bulk_productos["productos"][0]["categoria"] = "CATEGORIA_INVALIDA"
-    
+
     response = client.post('/inventarios/productos/bulk',
                           json=valid_bulk_productos,
                           headers={'Authorization': 'Bearer 1234'})
-    
+
     assert response.status_code == 400
     json_response = response.get_json()
     assert "error" in json_response

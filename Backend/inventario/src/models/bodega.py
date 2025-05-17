@@ -8,6 +8,8 @@ class Bodega(Base, Model):
     __tablename__ = 'Bodega'
     nombre = Column(String, nullable=False)
     direccion = Column(String, nullable=False)
+    ciudad = Column(String, nullable=False)
+    pais = Column(String, nullable=False)
 
     bodega_productos = None
 
