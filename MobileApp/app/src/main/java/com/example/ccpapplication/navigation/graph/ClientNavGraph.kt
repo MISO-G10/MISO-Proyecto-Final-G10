@@ -49,7 +49,8 @@ fun NavGraphBuilder.clientNavGraph(navController: NavHostController,tokenManager
             ShoppingCartPage(
                 cartViewModel = cartViewModel,
                 navController = navController,
-                user = tokenManager.getUser()
+                user = tokenManager.getUser(),
+                tendero = null
             )
         }
         composable(BottomNavItem.Orders.route) {

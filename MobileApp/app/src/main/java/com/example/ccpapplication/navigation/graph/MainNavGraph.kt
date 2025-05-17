@@ -8,9 +8,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.ccpapplication.data.model.Client
+import com.example.ccpapplication.data.model.User
 import com.example.ccpapplication.navigation.BottomDrawer
 import com.example.ccpapplication.navigation.BottomNavItem
 import com.example.ccpapplication.navigation.graph.Graph.SCHEDULE_VISIT
+import com.example.ccpapplication.navigation.graph.Graph.VENDEDOR_SHOPPING
 import com.example.ccpapplication.pages.clients.ClientsPage
 import com.example.ccpapplication.pages.visits.VisitsPage
 import com.example.ccpapplication.pages.clients.ScheduleVisitPage
@@ -18,6 +20,7 @@ import com.example.ccpapplication.pages.home.HomePage
 import com.example.ccpapplication.pages.products.ProductPage
 import com.example.ccpapplication.pages.products.ProductViewModel
 import com.example.ccpapplication.pages.shopping.ShoppingCartViewModel
+import com.example.ccpapplication.pages.shopping.VendedorTenderoPage
 import com.example.ccpapplication.services.interceptors.TokenManager
 
 fun NavGraphBuilder.mainNavGraph(navController: NavHostController,tokenManager:TokenManager) {
@@ -65,6 +68,44 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController,tokenManager:T
                 productUiState=productViewModel.productUiState ,
                 showAddToShopping=false,
                 cartViewModel = cartViewModel
+            )
+        }
+        composable("$VENDEDOR_SHOPPING/{id}/{name}/{telephone}/{address}/{username}") { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: ""
+            val name = backStackEntry.arguments?.getString("name") ?: ""
+            val telephone = backStackEntry.arguments?.getString("telephone") ?: ""
+            val address = backStackEntry.arguments?.getString("address") ?: ""
+            val username = backStackEntry.arguments?.getString("username") ?: ""
+
+            val tendero = User(
+                id = id,
+                telefono = telephone,
+                direccion = address,
+                username = username,
+                password = name,
+                rol = "TENDERO",
+                name = ""
+            )
+
+            val tenderoId = backStackEntry.arguments?.getString("id") ?: return@composable
+            val context = LocalContext.current
+
+            val cartViewModel: ShoppingCartViewModel = viewModel(
+                factory = ShoppingCartViewModel.provideFactory(
+                    userId = tokenManager.getUser()?.id ?: "", // vendedor actual
+                    context = context,
+                    overrideUserId = tenderoId // carrito del tendero
+                )
+            )
+
+            val productViewModel: ProductViewModel = viewModel(factory = ProductViewModel.Factory)
+
+            VendedorTenderoPage(
+                cartViewModel = cartViewModel,
+                navController = navController,
+                productViewModel = productViewModel,
+                user = tokenManager.getUser(),
+                tendero = tendero,
             )
         }
 
