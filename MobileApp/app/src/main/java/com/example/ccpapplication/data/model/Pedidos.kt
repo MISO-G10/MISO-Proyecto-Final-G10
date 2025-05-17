@@ -19,6 +19,7 @@ data class ProductoPedidoResponse(
 @Serializable
 data class PedidoRequest(
     @SerialName("usuario_id") val usuario_id:String?,
+    @SerialName("direccion") val direccion:String,
     @SerialName("productos") val productos : List<ProductoPedido>
 )
 
@@ -32,6 +33,7 @@ data class PedidoResponse(
     @SerialName("usuario_id") val usuario_id:String,
     @SerialName("valorTotal") val valorTotal:Float,
     @SerialName("vendedor_id") val vendedor_id:String,
+    @SerialName("direccion") val direccion:String,
 )
 
 @Serializable

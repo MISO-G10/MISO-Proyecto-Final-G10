@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, Blueprint
+from ..commands.get_usuario import GetUsuario
 from ..commands.create import Create
 from ..commands.update import Update
 from ..commands.login import Login
@@ -32,6 +33,11 @@ def validate_usuario():
     #Obtener el token de la cabecera
     auth_header = request.headers.get('Authorization')
     result = Validate(auth_header).execute()
+    return jsonify(result), 200
+
+@operations_blueprint.route('/<uuid:id>', methods = ['GET'])
+def get_usuario(id):
+    result = GetUsuario(id).execute()
     return jsonify(result), 200
 
 # Consulta de salud del servicio
