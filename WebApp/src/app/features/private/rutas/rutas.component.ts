@@ -94,36 +94,36 @@ export class RutasComponent implements OnInit {
     const allRoutes: DeliveryRoute[] = [
       {
         id: '1',
-        name: 'Ruta Centro',
-        truckPlate: 'XYZ-123',
-        driverName: 'Carlos Ramírez',
+        nombre: 'Ruta Centro',
+        placa: 'XYZ-123',
+        conductor: 'Carlos Ramírez',
         routeMapUrl: this.generateStaticMapUrl(centroWaypoints),
-        date: new Date(),
+        fechaEntrega: new Date(),
         waypoints: centroWaypoints
       },
       {
         id: '2',
-        name: 'Ruta Norte',
-        truckPlate: 'ABC-456',
-        driverName: 'Juan Pérez',
+        nombre: 'Ruta Norte',
+        placa: 'ABC-456',
+        conductor: 'Juan Pérez',
         routeMapUrl: this.generateStaticMapUrl(norteWaypoints),
-        date: new Date(),
+        fechaEntrega: new Date(),
         waypoints: norteWaypoints
       },
       {
         id: '3',
-        name: 'Ruta Sur',
-        truckPlate: 'DEF-789',
-        driverName: 'Luis Torres',
+        nombre: 'Ruta Sur',
+        placa: 'DEF-789',
+        conductor: 'Luis Torres',
         routeMapUrl: this.generateStaticMapUrl(surWaypoints),
-        date: new Date(new Date().setDate(new Date().getDate() + 1)),
+        fechaEntrega: new Date(new Date().setDate(new Date().getDate() + 1)),
         waypoints: surWaypoints
       }
     ];
     
     // Filtrar rutas por la fecha seleccionada
-    const filteredRoutes = allRoutes.filter(route => 
-      formatDate(route.date, 'yyyy-MM-dd', 'es-CO') === selectedDateStr
+    const filteredRoutes = allRoutes.filter(route =>
+      formatDate(route.fechaEntrega, 'yyyy-MM-dd', 'es-CO') === selectedDateStr
     );
     
     // Actualizar las señales

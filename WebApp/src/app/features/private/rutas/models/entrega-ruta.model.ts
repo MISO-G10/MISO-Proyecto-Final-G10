@@ -1,9 +1,9 @@
 export interface DeliveryRoute {
   id: string;
-  name: string;
-  truckPlate: string;
-  driverName: string;
+  nombre: string;
+  placa: string;
+  conductor: string;
   routeMapUrl: string;
-  date: Date;
+  fechaEntrega: Date;
   waypoints?: string[];
 }
