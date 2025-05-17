@@ -45,6 +45,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ccpapplication.R
 import com.example.ccpapplication.data.model.Client
+import com.example.ccpapplication.navigation.state.DataUiState
+import com.example.ccpapplication.ui.components.DataFetchStates
+import com.example.ccpapplication.ui.components.EmptyItemsScreen
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -54,6 +57,7 @@ fun ClientsPage(
     viewModel: ClientsViewModel = viewModel(factory = ClientsViewModel.Factory)
 ) {
     val clients by viewModel.clients.collectAsState()
+
 
     Scaffold(
         topBar = {
@@ -118,6 +122,9 @@ fun ClientsList(
                         navController.navigate(
                             "schedule_visit/${client.id}/${client.name}/${client.telephone}/${client.address}/${client.email}"
                         )
+                    },
+                    onCreateOrder = {
+                        navController.navigate("vendedor_shopping/${client.id}/${client.name}/${client.telephone}/${client.address}/${client.email}")
                     }
                 )
             }
@@ -132,7 +139,8 @@ fun ClientsList(
 @Composable
 fun ClientItem(
     client: Client,
-    onSchedule: () -> Unit
+    onSchedule: () -> Unit,
+    onCreateOrder: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -140,6 +148,7 @@ fun ClientItem(
             .padding(vertical = 8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
+
         Box(modifier = Modifier.padding(16.dp)) {
             Row(
                 verticalAlignment = Alignment.Top,
@@ -173,7 +182,7 @@ fun ClientItem(
                         text = "${client.name} ${client.lastName}".trim(),
                         style = MaterialTheme.typography.titleMedium
                     )
-                    
+
                     // Ubicación del negocio
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -191,7 +200,7 @@ fun ClientItem(
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
-                    
+
                     // Teléfono
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -209,7 +218,7 @@ fun ClientItem(
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
-                    
+
                     // Fecha de última visita
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -223,11 +232,15 @@ fun ClientItem(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = if (client.lastVisitDate != null) "Última visita: ${formatDate(client.lastVisitDate)}" else "Sin visitas previas",
+                            text = if (client.lastVisitDate != null) "Última visita: ${
+                                formatDate(
+                                    client.lastVisitDate
+                                )
+                            }" else "Sin visitas previas",
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
-                    
+
                     // Número de visitas
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -246,16 +259,38 @@ fun ClientItem(
                         )
                     }
                 }
+
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                ) {
+                    Button(
+                        onClick = onSchedule
+
+                    ) {
+                        Text(text = stringResource(R.string.schedule_visit_label_button))
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Button(
+                        onClick = onCreateOrder
+
+                    ) {
+                        Text("Crear pedido")
+                    }
+                }
             }
 
-            // Botón en la esquina superior derecha, solo "Agendar"
-            Button(
-                onClick = onSchedule,
-                modifier = Modifier.align(Alignment.TopEnd)
-            ) {
-                Text(text = stringResource(R.string.schedule_visit_label_button))
-            }
+
+
+
+
+
+
         }
+
     }
 }
 

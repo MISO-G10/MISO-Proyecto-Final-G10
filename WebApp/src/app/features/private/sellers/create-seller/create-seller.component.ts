@@ -33,7 +33,7 @@ import { Router } from '@angular/router';
 })
 export class CreateSellerComponent {
   private readonly fb = inject(FormBuilder);
-  private readonly sellerService=inject(SellerService)
+  private readonly sellerService=inject(SellerService);
   private readonly snackbarService = inject(SnackbarService);
   private readonly router = inject(Router);
   getErrorMessages = getErrorMessages;

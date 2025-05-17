@@ -25,11 +25,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import com.example.ccpapplication.R
+import com.example.ccpapplication.data.model.User
 
 class ShoppingCartViewModel(private val userId: String, context: Context,
-                            private val inventaryRepository: InventaryRepository) : ViewModel() {
+                            private val inventaryRepository: InventaryRepository,private val overrideUserId: String? = null) : ViewModel() {
 
-    private val sharedPrefs = context.getSharedPreferences("cart_$userId", Context.MODE_PRIVATE)
+    private val effectiveCartOwnerId = overrideUserId ?: userId
+    private val sharedPrefs = context.getSharedPreferences("cart_$effectiveCartOwnerId", Context.MODE_PRIVATE)
 
     private var _cart = mutableStateOf<List<CartItem>>(emptyList())
     val cart: State<List<CartItem>> = _cart
@@ -123,13 +125,14 @@ class ShoppingCartViewModel(private val userId: String, context: Context,
         }
     }
 
-    fun enviarPedido(usuarioId: String, productos: List<ProductoPedido>) {
+    fun enviarPedido(user: User, productos: List<ProductoPedido>) {
         viewModelScope.launch {
             pedidoUiState = DataUiState.Loading
 
             val pedidoRequest = PedidoRequest(
-                usuario_id = usuarioId,
-                productos = productos
+                usuario_id = user.id,
+                productos = productos,
+                direccion= user.direccion.toString()
             )
 
             val resultado = try {
@@ -167,7 +170,8 @@ class ShoppingCartViewModel(private val userId: String, context: Context,
     companion object {
         fun provideFactory(
             userId: String,
-            context: Context
+            context: Context,
+            overrideUserId: String? = null
         ): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as App)
@@ -175,7 +179,8 @@ class ShoppingCartViewModel(private val userId: String, context: Context,
                 ShoppingCartViewModel(
                     userId = userId,
                     context = context.applicationContext,
-                    inventaryRepository = inventaryRepository
+                    inventaryRepository = inventaryRepository,
+                    overrideUserId = overrideUserId
                 )
             }
         }
