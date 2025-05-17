@@ -5,12 +5,12 @@ from src.models.pedido import Pedido, PedidoProducto, EstadoPedido
 from src.models.producto import Producto
 from src.errors.errors import InvalidPedidoData
 from .base_command import BaseCommand
-from datetime import datetime
+from datetime import datetime,timedelta
 from src.models.inventario_bodega import InventarioBodega
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func
 import uuid
-
+import random
 
 class PedidoProductoInputSchema(Schema):    
     producto_id = fields.UUID(required=True)
@@ -57,10 +57,14 @@ class CreatePedido(BaseCommand):
                     return {
                         "error": f"No hay suficiente stock para el producto con ID {producto_id}. Disponible: {inventario_total}, Solicitado: {cantidad_solicitada}"
                     }, 400
-                
+            fecha_entrega = datetime.now() + timedelta(days=random.randint(1, 5))
+            fecha_salida = datetime.now() + timedelta(days=random.randint(0, (fecha_entrega - datetime.now()).days - 1))
+
             nuevo_pedido = Pedido(
                 usuario_id=self.vendedor["id"] if not self.data.get("usuario_id") else self.data["usuario_id"],
                 vendedor_id=self.vendedor["id"],
+                fechaEntrega=fecha_entrega,
+                fechaSalida=fecha_salida,
                 estado=EstadoPedido.PENDIENTE,
                 valor=0  # Se calcula más abajo
             )
