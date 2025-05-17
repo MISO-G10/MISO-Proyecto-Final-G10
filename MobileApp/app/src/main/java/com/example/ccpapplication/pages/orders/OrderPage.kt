@@ -32,14 +32,15 @@ import com.example.ccpapplication.ui.components.EmptyItemsScreen
 fun Order(
     product: Producto,
     onClick: () -> Unit,
-    onAddToCart: () -> Unit,  // Añadir un nuevo parámetro para el botón de agregar al carrito
-    showAddToShopping: Boolean
+    onAddToCart: () -> Unit,
+    showAddToShopping: Boolean,
+    onViewDetail: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onClick() }
+            .clickable { onViewDetail() }
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
 
@@ -70,9 +71,10 @@ fun Order(
 fun ProductPage(
     productUiState: DataUiState<List<Producto>>,
     onProductClick: (sku: String) -> Unit = {},
-    onAddToCartClick: (sku: String) -> Unit = {}, // Agregar una función para manejar el evento del carrito
-    onViewDetailClick:(id:String)->Unit={},
-    showAddToShopping: Boolean=true
+    onAddToCartClick: (sku: String) -> Unit = {},
+    onViewDetailClick: (id: String) -> Unit = {},
+    showAddToShopping: Boolean = true,
+    navController: NavHostController? = null
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Spacer(modifier = Modifier.height(16.dp))
@@ -96,9 +98,11 @@ fun ProductPage(
                     ProductCard(
                         product = producto,
                         onClick = { onProductClick(producto.sku) },
-                        onAddToCart = { onAddToCartClick(producto.sku) }, // Llamar a la función de agregar al carrito
-                        onViewDetail = {onViewDetailClick},
-                        showAddToShopping
+                        onAddToCart = { onAddToCartClick(producto.sku) },
+                        onViewDetail = {
+                            navController?.navigate(AppPages.OrderDetailPage.createRoute(producto.sku))
+                        },
+                        showAddToShopping = showAddToShopping
                     )
                 }
             }
