@@ -25,7 +25,7 @@ data class PedidoRequest(
 
 @Serializable
 data class PedidoResponse(
-    @SerialName("estado") val producto_id:Estado,
+    @SerialName("estado") val estado:Estado,
     @SerialName("id") val id:String,
     @SerialName("fechaEntrega") val fechaEntrega:String?,
     @SerialName("fechaSalida") val fechaSalida:String?,

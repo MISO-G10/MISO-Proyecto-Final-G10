@@ -129,7 +129,8 @@ class ClientsPageTest {
         composeTestRule.setContent {
             ClientItem(
                 client = client,
-                onSchedule = {}
+                onSchedule = {},
+                onCreateOrder = {}
             )
         }
 
@@ -157,7 +158,8 @@ class ClientsPageTest {
         composeTestRule.setContent {
             ClientItem(
                 client = client,
-                onSchedule = { buttonClicked = true }
+                onSchedule = { buttonClicked = true },
+                onCreateOrder = {}
             )
         }
 
