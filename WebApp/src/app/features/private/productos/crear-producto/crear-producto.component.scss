@@ -1,4 +1,13 @@
 .crear-producto-container {
+  .header-actions {
+    margin-left: auto;
+    button {
+      mat-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+
   padding: 20px;
   display: flex;
   justify-content: center;

@@ -1,0 +1,54 @@
+<div class="registro-masivo-container">
+  <h2 mat-dialog-title>Carga Masiva de Productos</h2>
+  
+  <mat-dialog-content>
+    <div class="instructions">
+      <p>Seleccione un archivo CSV con la información de los productos a registrar.</p>
+    </div>
+
+    <div class="file-upload-container">
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        accept=".csv"
+        [disabled]="isUploading"
+        style="display: none"
+      />
+      
+      <div class="file-selection">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="fileInput.click()" 
+          [disabled]="isUploading"
+        >
+          <mat-icon>file_upload</mat-icon>
+          Seleccionar archivo CSV
+        </button>
+        
+        <span *ngIf="selectedFile" class="selected-file-name">
+          {{ selectedFile.name }}
+        </span>
+      </div>
+
+      <div *ngIf="isUploading" class="progress-container">
+        <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+        <span>{{ uploadProgress }}%</span>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="closeDialog()" [disabled]="isUploading">Cancelar</button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="uploadFile()" 
+      [disabled]="!selectedFile || isUploading"
+    >
+      
+      Cargar productos
+    </button>
+  </mat-dialog-actions>
+</div>

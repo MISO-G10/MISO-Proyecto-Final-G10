@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, Blueprint, g
 from ..commands.create_producto import Create
 from ..commands.get_producto import GetProducto
+from ..commands.create_producto_bulk import CreateProductoBulkCommand
 from ..commands.listar_productos import ListProductos
 from ..commands.clean import Clean
 from src.utils.validate_token import token_required
@@ -155,6 +156,33 @@ def get_producto(producto_id):
 def list_productos():
     result = ListProductos().execute()
     return jsonify(result), 200
+
+
+# Crear productos en bulk con Pub/Sub
+@operations_blueprint.route("/productos/bulk", methods=['POST'])
+@token_required
+def create_productos_bulk():
+    try:
+        json_data = request.get_json()
+        productos = json_data.get('productos', [])
+
+        if not productos or not isinstance(productos, list):
+            return jsonify({"error": "Se requiere una lista de productos"}), 400
+
+        current_usuario = g.current_usuario
+        command = CreateProductoBulkCommand(current_usuario, productos)
+        result = command.execute()
+
+        # Si el resultado es una tupla, contiene un código de estado
+        if isinstance(result, tuple):
+            return jsonify(result[0]), result[1]
+
+        # Si no es una tupla, es una respuesta exitosa
+        return jsonify(result), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @operations_blueprint.route("/pedidos", methods=['POST'])
 @token_required
