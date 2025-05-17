@@ -5,5 +5,5 @@ export interface DeliveryRoute {
   conductor: string;
   routeMapUrl: string;
   fechaEntrega: Date;
-  waypoints?: string[];
+  direcciones?: string[];
 }

@@ -69,21 +69,21 @@ export class RutasComponent implements OnInit {
     const currentDateStr = formatDate(new Date(), 'yyyy-MM-dd', 'es-CO');
     
     // Definición de waypoints usando direcciones en lugar de coordenadas
-    const centroWaypoints = [
+    const centroDirecciones = [
       'Carrera 7 # 32-16, Bogotá, Colombia', 
       'Plaza de Bolívar, Bogotá, Colombia',
       'Museo Nacional, Bogotá, Colombia',
       'Parque de la 93, Bogotá, Colombia'
     ];
     
-    const norteWaypoints = [
+    const norteDirecciones = [
       'Cra 20 #127A-05, Bogotá, Colombia',
       'Cra. 12 A #134-10, Bogotá, Colombia',
       'Calle 163A # 13B-60, Bogotá, Colombia',
       'Cll. 108 #3-42, Bogotá, Colombia'
     ];
     
-    const surWaypoints = [
+    const surDirecciones = [
       'Centro Comercial El Tunal, Bogotá, Colombia',
       'Biblioteca El Tintal, Bogotá, Colombia',
       'Portal Sur Transmilenio, Bogotá, Colombia',
@@ -97,27 +97,27 @@ export class RutasComponent implements OnInit {
         nombre: 'Ruta Centro',
         placa: 'XYZ-123',
         conductor: 'Carlos Ramírez',
-        routeMapUrl: this.generateStaticMapUrl(centroWaypoints),
+        routeMapUrl: this.generateStaticMapUrl(centroDirecciones),
         fechaEntrega: new Date(),
-        waypoints: centroWaypoints
+        direcciones: centroDirecciones
       },
       {
         id: '2',
         nombre: 'Ruta Norte',
         placa: 'ABC-456',
         conductor: 'Juan Pérez',
-        routeMapUrl: this.generateStaticMapUrl(norteWaypoints),
+        routeMapUrl: this.generateStaticMapUrl(norteDirecciones),
         fechaEntrega: new Date(),
-        waypoints: norteWaypoints
+        direcciones: norteDirecciones
       },
       {
         id: '3',
         nombre: 'Ruta Sur',
         placa: 'DEF-789',
         conductor: 'Luis Torres',
-        routeMapUrl: this.generateStaticMapUrl(surWaypoints),
+        routeMapUrl: this.generateStaticMapUrl(surDirecciones),
         fechaEntrega: new Date(new Date().setDate(new Date().getDate() + 1)),
-        waypoints: surWaypoints
+        direcciones: surDirecciones
       }
     ];
     
@@ -142,20 +142,20 @@ export class RutasComponent implements OnInit {
   openMap(route: DeliveryRoute) {
     // Crear una URL para Google Maps interactivo en lugar de una imagen estática
     let mapUrl = 'https://www.google.com/maps/dir/?api=1';
-    
-    if (route.waypoints && route.waypoints.length > 0) {
+
+    if (route.direcciones && route.direcciones.length > 0) {
       // Origen (primera parada)
-      const origin = encodeURIComponent(route.waypoints[0]);
+      const origin = encodeURIComponent(route.direcciones[0]);
       mapUrl += `&origin=${origin}`;
       
       // Destino (última parada, si es diferente al origen)
-      const destination = encodeURIComponent(route.waypoints[route.waypoints.length > 1 ? route.waypoints.length - 1 : 0]);
+      const destination = encodeURIComponent(route.direcciones[route.direcciones.length > 1 ? route.direcciones.length - 1 : 0]);
       mapUrl += `&destination=${destination}`;
-      
-      // Puntos intermedios (si hay más de 2 waypoints)
-      if (route.waypoints.length > 2) {
+
+      // Puntos intermedios (si hay más de 2 direcciones)
+      if (route.direcciones.length > 2) {
         // Google Maps espera los waypoints sin el primero y el último
-        const waypointsEncoded = route.waypoints
+        const waypointsEncoded = route.direcciones
           .slice(1, -1)
           .map(wp => encodeURIComponent(wp))
           .join('|');
