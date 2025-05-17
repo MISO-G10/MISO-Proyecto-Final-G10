@@ -76,10 +76,10 @@ export class RutasComponent implements OnInit {
     ];
     
     const norteWaypoints = [
-      'Centro Comercial Santafé, Bogotá, Colombia',
-      'Parque Simón Bolívar, Bogotá, Colombia',
-      'Universidad Nacional, Bogotá, Colombia',
-      'Centro Andino, Bogotá, Colombia'
+      'Cra 20 #127A-05, Bogotá, Colombia',
+      'Cra. 12 A #134-10, Bogotá, Colombia',
+      'Calle 163A # 13B-60, Bogotá, Colombia',
+      'Cll. 108 #3-42, Bogotá, Colombia'
     ];
     
     const surWaypoints = [
