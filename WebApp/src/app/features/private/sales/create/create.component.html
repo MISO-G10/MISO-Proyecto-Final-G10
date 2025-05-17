@@ -1,11 +1,11 @@
 <div class="create-sales-container">
-  <h1>Crear Plan</h1>
+  <h1>{{ translations.title }}</h1>
 
   <div class="content">
     <form class="create-sales-form" [formGroup]="createForm" (ngSubmit)="onCreate()">
       <!-- Nombre plan -->
       <mat-form-field appearance="outline">
-        <mat-label>Nombre plan</mat-label>
+        <mat-label>{{ translations.field_name }}</mat-label>
         <input matInput formControlName="nombre" required>
         <button mat-icon-button matSuffix type="button"
                 *ngIf="createForm.get('nombre')?.value"
@@ -19,9 +19,9 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Buscar vendedor</mat-label>
+        <mat-label>{{ translations.field_search_seller }}</mat-label>
         <input type="text" matInput formControlName="vendorSearch"
-               [matAutocomplete]="auto" placeholder="Buscar vendedor">
+               [matAutocomplete]="auto" [placeholder]="translations.field_search_seller_placeholder">
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let vendor of filteredVendors | async"
                       [value]="vendor.nombre"
@@ -54,7 +54,7 @@
 
       <!-- Fecha inicio -->
       <mat-form-field appearance="outline">
-        <mat-label>Fecha inicio</mat-label>
+        <mat-label>{{ translations.field_start_date }}</mat-label>
         <input matInput [matDatepicker]="startPicker" formControlName="fecha_inicio" required
                (dateChange)="onDateChange($event, 'fecha_inicio')">
         <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
@@ -73,7 +73,7 @@
 
       <!-- Fecha final -->
       <mat-form-field appearance="outline">
-        <mat-label>Fecha final</mat-label>
+        <mat-label>{{ translations.field_end_date }}</mat-label>
         <input matInput [matDatepicker]="endPicker" formControlName="fecha_fin" required
                (dateChange)="onDateChange($event, 'fecha_fin')">
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
@@ -92,7 +92,7 @@
 
       <!-- Descripcion -->
       <mat-form-field appearance="outline">
-        <mat-label>Descripcion</mat-label>
+        <mat-label>{{ translations.field_description }}</mat-label>
         <input matInput formControlName="descripcion" required>
         <button mat-icon-button matSuffix type="button"
                 *ngIf="createForm.get('descripcion')?.value"
@@ -107,7 +107,7 @@
 
       <!-- Valor Objetivo -->
       <mat-form-field appearance="outline">
-        <mat-label>Objetivo</mat-label>
+        <mat-label>{{ translations.field_target }}</mat-label>
         <input matInput formControlName="valor_objetivo" required>
         <button mat-icon-button matSuffix type="button"
                 *ngIf="createForm.get('valor_objetivo')?.value"
@@ -125,11 +125,11 @@
               color="primary"
               type="submit"
               [disabled]="!createForm.valid">
-        Registrar plan
+        {{ translations.button_submit }}
       </button>
 
       <a mat-button class="cancel-button" (click)="onCancel()">
-        Cancelar
+        {{ translations.button_cancel }}
       </a>
     </form>
   </div>
