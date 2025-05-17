@@ -176,8 +176,17 @@ def get_pedidos():
     if isinstance(result, tuple) and len(result) == 2:
         return jsonify(result[0]), result[1]
 
-<<<<<<< HEAD
-    return jsonify(result), 201
+    return jsonify(result), 200
+
+@operations_blueprint.route("/pedidos/<pedido_id>", methods=['GET'])
+@token_required
+def get_pedido(pedido_id):
+    result = GetPedido(pedido_id=pedido_id).execute()
+    
+    if isinstance(result, tuple) and len(result) == 2:
+        return jsonify(result[0]), result[1]
+
+    return jsonify(result), 200
 
 # Listar todas las rutas
 @operations_blueprint.route("/rutas", methods=['GET'])
@@ -192,16 +201,4 @@ def list_rutas():
     if isinstance(result, tuple) and len(result) == 2:
         return jsonify(result[0]), result[1]
     
-=======
-    return jsonify(result), 200
-
-@operations_blueprint.route("/pedidos/<pedido_id>", methods=['GET'])
-@token_required
-def get_pedido(pedido_id):
-    result = GetPedido(pedido_id=pedido_id).execute()
-    
-    if isinstance(result, tuple) and len(result) == 2:
-        return jsonify(result[0]), result[1]
-
->>>>>>> develop
     return jsonify(result), 200
