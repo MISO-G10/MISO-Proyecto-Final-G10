@@ -41,6 +41,7 @@ export class RutasComponent implements OnInit {
   selectedDate = signal(new Date());
   hasRoutes = signal(false);
   private readonly rutaService = inject(RutaService);
+  private readonly pedidoService = inject(PedidoService);
 
   // Traducciones
   readonly translations = {
@@ -67,29 +68,7 @@ export class RutasComponent implements OnInit {
     // Formatear la fecha seleccionada para comparar
     const selectedDateStr = formatDate(date, 'yyyy-MM-dd', 'es-CO');
     const currentDateStr = formatDate(new Date(), 'yyyy-MM-dd', 'es-CO');
-    
-    // Definición de waypoints usando direcciones en lugar de coordenadas
-    const centroDirecciones = [
-      'Carrera 7 # 32-16, Bogotá, Colombia', 
-      'Plaza de Bolívar, Bogotá, Colombia',
-      'Museo Nacional, Bogotá, Colombia',
-      'Parque de la 93, Bogotá, Colombia'
-    ];
-    
-    const norteDirecciones = [
-      'Cra 20 #127A-05, Bogotá, Colombia',
-      'Cra. 12 A #134-10, Bogotá, Colombia',
-      'Calle 163A # 13B-60, Bogotá, Colombia',
-      'Cll. 108 #3-42, Bogotá, Colombia'
-    ];
-    
-    const surDirecciones = [
-      'Centro Comercial El Tunal, Bogotá, Colombia',
-      'Biblioteca El Tintal, Bogotá, Colombia',
-      'Portal Sur Transmilenio, Bogotá, Colombia',
-      'Centro Comercial Ciudad Tunal, Bogotá, Colombia'
-    ];
-    
+
     // Datos de ejemplo - En una aplicación real esto vendría de un servicio
     const allRoutes: DeliveryRoute[] = [
       {
@@ -97,27 +76,57 @@ export class RutasComponent implements OnInit {
         nombre: 'Ruta Centro',
         placa: 'XYZ-123',
         conductor: 'Carlos Ramírez',
-        routeMapUrl: this.generateStaticMapUrl(centroDirecciones),
+        routeMapUrl: this.generateStaticMapUrl([
+        'Carrera 7 # 32-16, Bogotá, Colombia', 
+        'Plaza de Bolívar, Bogotá, Colombia',
+        'Museo Nacional, Bogotá, Colombia',
+        'Parque de la 93, Bogotá, Colombia'
+      ]),
         fechaEntrega: new Date(),
-        direcciones: centroDirecciones
+        direcciones: [
+        'Carrera 7 # 32-16, Bogotá, Colombia', 
+        'Plaza de Bolívar, Bogotá, Colombia',
+        'Museo Nacional, Bogotá, Colombia',
+        'Parque de la 93, Bogotá, Colombia'
+      ]
       },
       {
         id: '2',
         nombre: 'Ruta Norte',
         placa: 'ABC-456',
         conductor: 'Juan Pérez',
-        routeMapUrl: this.generateStaticMapUrl(norteDirecciones),
+        routeMapUrl: this.generateStaticMapUrl([
+          'Cra 20 #127A-05, Bogotá, Colombia',
+          'Cra. 12 A #134-10, Bogotá, Colombia',
+          'Calle 163A # 13B-60, Bogotá, Colombia',
+          'Cll. 108 #3-42, Bogotá, Colombia'
+      ]),
         fechaEntrega: new Date(),
-        direcciones: norteDirecciones
+        direcciones: [
+      'Cra 20 #127A-05, Bogotá, Colombia',
+      'Cra. 12 A #134-10, Bogotá, Colombia',
+      'Calle 163A # 13B-60, Bogotá, Colombia',
+      'Cll. 108 #3-42, Bogotá, Colombia'
+    ]
       },
       {
         id: '3',
         nombre: 'Ruta Sur',
         placa: 'DEF-789',
         conductor: 'Luis Torres',
-        routeMapUrl: this.generateStaticMapUrl(surDirecciones),
+        routeMapUrl: this.generateStaticMapUrl([
+          'Centro Comercial El Tunal, Bogotá, Colombia',
+          'Biblioteca El Tintal, Bogotá, Colombia',
+          'Portal Sur Transmilenio, Bogotá, Colombia',
+          'Centro Comercial Ciudad Tunal, Bogotá, Colombia'
+        ]),
         fechaEntrega: new Date(new Date().setDate(new Date().getDate() + 1)),
-        direcciones: surDirecciones
+        direcciones: [
+          'Centro Comercial El Tunal, Bogotá, Colombia',
+          'Biblioteca El Tintal, Bogotá, Colombia',
+          'Portal Sur Transmilenio, Bogotá, Colombia',
+          'Centro Comercial Ciudad Tunal, Bogotá, Colombia'
+        ]
       }
     ];
     
