@@ -448,7 +448,7 @@ def test_list_productos_with_data(client, valid_producto_data):
             assert "sku" in producto
             assert "createdAt" in producto
         elif producto["nombre"] == "Producto Test 2":
-            assert producto["categoria"] == "CUIDADO_PERSONAL"
+            assert producto["categoria"] == "CUIDADO PERSONAL"
 
 
 def test_list_productos_authorization_required(client):
