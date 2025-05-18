@@ -13,6 +13,7 @@ import { DeliveryRoute } from './models/entrega-ruta.model';
 import { formatDate } from '@angular/common';
 import { environment } from '../../../../environment/environment';
 import { RutaService } from '../../../core/services/rutas.services';
+import { BodegaService } from '../../../core/services/bodegas.services';
 import { PedidoService } from '../../../core/services/pedidos.services';
 import { Pedido } from '../pedidos/models/pedido';
 import { Ruta } from './models/ruta';
@@ -44,7 +45,8 @@ export class RutasComponent implements OnInit {
   hasRoutes = signal(false);
   private readonly rutaService = inject(RutaService);
   private readonly pedidoService = inject(PedidoService);
-  
+  private readonly bodegaService = inject(BodegaService);
+
   // Constante para el número máximo de pedidos por ruta
   private readonly MAX_PEDIDOS_POR_RUTA = 3;
   
