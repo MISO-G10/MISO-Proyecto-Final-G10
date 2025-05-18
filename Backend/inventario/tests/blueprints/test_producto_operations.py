@@ -33,7 +33,7 @@ def valid_producto_data():
         "reglasLegales": "Registro sanitario INVIMA",
         "reglasComerciales": "No se aceptan devoluciones",
         "reglasTributarias": "IVA 19%",
-        "categoria": "ALIMENTOS_BEBIDAS",
+        "categoria": "ALIMENTOS Y BEBIDAS",
         "fabricante_id": "12345",
         "bodega": "bodega-test-id",
         "cantidad": 10
@@ -415,7 +415,7 @@ def test_list_productos_with_data(client, valid_producto_data):
     # Create second product with different name
     producto2_data = valid_producto_data.copy()
     producto2_data["nombre"] = "Producto Test 2"
-    producto2_data["categoria"] = "CUIDADO_PERSONAL"
+    producto2_data["categoria"] = "CUIDADO PERSONAL"
     producto2_data["bodega"] = bodega_id
     producto2_data["cantidad"] = 25
 
@@ -444,7 +444,7 @@ def test_list_productos_with_data(client, valid_producto_data):
         if producto["nombre"] == "Producto Test 1":
             assert producto["descripcion"] == valid_producto_data["descripcion"]
             assert producto["valorUnidad"] == valid_producto_data["valorUnidad"]
-            assert producto["categoria"] == "ALIMENTOS_BEBIDAS"
+            assert producto["categoria"] == "ALIMENTOS Y BEBIDAS"
             assert "sku" in producto
             assert "createdAt" in producto
         elif producto["nombre"] == "Producto Test 2":
