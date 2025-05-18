@@ -184,7 +184,6 @@ def create_productos_bulk():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
 @operations_blueprint.route("/pedidos", methods=['POST'])
 @token_required
 def create_pedido():
@@ -192,9 +191,11 @@ def create_pedido():
         json_data = request.get_json()
         if not json_data:
             return jsonify({"error": "El cuerpo de la solicitud no puede estar vacío"}), 400
-
         current_usuario = g.current_usuario
-        result = CreatePedido(current_usuario, json_data).execute()
+        token=g.token
+        
+        result = CreatePedido(current_usuario, json_data,token).execute()
+
 
         if isinstance(result, tuple) and len(result) == 2:
             return jsonify(result[0]), result[1]
@@ -203,7 +204,7 @@ def create_pedido():
     except Exception as e:
         print(f"Error al crear pedido: {str(e)}")
         return jsonify({"error": str(e)}), 500
-
+    
 @operations_blueprint.route("/pedidos", methods=['GET'])
 @token_required
 def get_pedidos():
@@ -218,7 +219,6 @@ def get_pedidos():
         tipo_usuario=tipo_usuario,
         fecha_entrega=fecha_entrega
     ).execute()
-
     if isinstance(result, tuple) and len(result) == 2:
         return jsonify(result[0]), result[1]
 
