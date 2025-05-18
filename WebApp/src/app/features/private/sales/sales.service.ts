@@ -25,31 +25,10 @@ export class SalesService {
     fecha_fin: string;
     seller_ids: string[];
   }) {
-    this.http.post<SalesPlan>(`${this.apiUrl}`, sale, {
+    return this.http.post<SalesPlan>(`${this.apiUrl}`, sale, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('auth')}`
       }
-    }).subscribe({
-      next: (response) => {
-        this.snackbarService.success('Plan de ventas creado', {
-          duration: 5000,
-          position: { horizontal: 'center', vertical: 'bottom' }
-        });
-      },
-      error: (error) => {
-        if (error.error) {
-          const err = error.error;
-
-          for (const key in err) {
-            const errCtx = err[key];
-
-            this.snackbarService.error(errCtx.ctx.error, {
-              duration: 5000,
-              position: { horizontal: 'center', vertical: 'bottom' }
-            });
-          }
-        }
-      }
-    });
+    })
   }
 }
