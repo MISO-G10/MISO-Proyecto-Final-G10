@@ -76,7 +76,7 @@ def seed_all_users():
         "Don Jose", 
         UsuarioRol.TENDERO,
         telefono="+(300) 221-5843",
-        direccion="Bossque II 10-20"
+        direccion="Cra 20 #127A-05, Bogotá, Colombia"
     )
     
     # Create tendero user
@@ -87,7 +87,7 @@ def seed_all_users():
         "Surtimax", 
         UsuarioRol.TENDERO,
         telefono="+(311) 205-34897",
-        direccion="Calle 124 St"
+        direccion="Cra. 12 A #134-10, Bogotá, Colombia"
     )
     
     # Create tendero user
@@ -98,7 +98,7 @@ def seed_all_users():
         "Calleja", 
         UsuarioRol.TENDERO,
         telefono="+(312) 225-3544",
-        direccion="Calle 5A 25-21"
+        direccion="Calle 163A # 13B-60, Bogotá, Colombia"
     )
     
     # Create tendero user
@@ -106,10 +106,54 @@ def seed_all_users():
         "tendero4@gmail.com", 
         "tendero123", 
         "Tienda", 
-        "Alameda", 
+        "Santa Ana", 
         UsuarioRol.TENDERO,
         telefono="+(318) 205-2160",
-        direccion="Carrera 4 20-16"
+        direccion="Cll. 108 #3-42, Bogotá, Colombia"
+    )
+
+    # Create tendero user
+    tendero_id5 = create_test_user(
+        "tendero5@gmail.com", 
+        "tendero123", 
+        "Tienda", 
+        "La Septima", 
+        UsuarioRol.TENDERO,
+        telefono="+(318) 205-2160",
+        direccion="Carrera 7 # 32-16, Bogotá, Colombia"
+    )
+
+    # Create tendero user
+    tendero_id6 = create_test_user(
+        "tendero6@gmail.com", 
+        "tendero123", 
+        "Tienda", 
+        "Nacional", 
+        UsuarioRol.TENDERO,
+        telefono="+(318) 205-2160",
+        direccion="Museo Nacional, Bogotá, Colombia"
+    )
+
+    # Create tendero user
+    tendero_id7 = create_test_user(
+        "tendero7@gmail.com", 
+        "tendero123", 
+        "Tienda", 
+        "Centro", 
+        UsuarioRol.TENDERO,
+        telefono="+(318) 205-2160",
+        direccion="Plaza de Bolívar, Bogotá, Colombia"
+    )
+
+    # Create tendero user
+    tendero_id8 = create_test_user(
+        "tendero7@gmail.com", 
+        "tendero123", 
+        "Tienda", 
+        "Oro", 
+        UsuarioRol.TENDERO,
+        telefono="+(318) 205-2160",
+        direccion="Museo del Oro, Bogotá, Colombia"
     )
     
     # Create vendedor user

@@ -8,17 +8,34 @@
   </div>
   
   <div class="table-container">
-    <table mat-table [dataSource]="salesData()">
+    <!-- Loading state -->
+    <div class="loading-container" *ngIf="loading()">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>{{ translations.loading }}</p>
+    </div>
+    
+    <!-- Error state -->
+    <div class="error-container" *ngIf="error()">
+      <p class="error-message">{{ error() }}</p>
+    </div>
+    
+    <!-- No data message -->
+    <div class="no-data-container" *ngIf="!loading() && !error() && salesData().length === 0">
+      <p>{{ translations.no_data }}</p>
+    </div>
+    
+    <!-- Data table -->
+    <table mat-table [dataSource]="salesData()" *ngIf="!loading() && !error() && salesData().length > 0">
       <!-- Date Column -->
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef>{{ translations.date }}</th>
-        <td mat-cell *matCellDef="let sale">{{ sale.date | date: 'dd/MM/yyyy' }}</td>
+        <td mat-cell *matCellDef="let sale">{{ sale.createdAt | date: 'dd/MM/yyyy' }}</td>
       </ng-container>
       
       <!-- Amount Column -->
       <ng-container matColumnDef="amount">
         <th mat-header-cell *matHeaderCellDef>{{ translations.amount }}</th>
-        <td mat-cell *matCellDef="let sale">{{ sale.amount | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
+        <td mat-cell *matCellDef="let sale">{{ sale.valor | currency:'COP':'symbol-narrow':'1.0-0':'es-CO' }}</td>
       </ng-container>
       
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

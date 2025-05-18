@@ -1,30 +1,38 @@
+from sqlalchemy import select
 from src.db.session import SessionLocal
 from src.models.bodega import Bodega
-from .base_command import BaseCommand
 
-
-class ListBodegas(BaseCommand):
-    def __init__(self):
-        pass
-
+class ListBodegas:
     def execute(self):
-        db = SessionLocal()
+        """
+        Obtiene todas las bodegas disponibles en la base de datos.
+        
+        Returns:
+            list: Lista de bodegas con sus detalles
+        """
+        session = SessionLocal()
+        
         try:
-            bodegas = db.query(Bodega).all()
+            # Consultar todas las bodegas
+            stmt = select(Bodega)
+            bodegas = session.execute(stmt).scalars().all()
 
-            bodegas_list = []
+            # Convertir a lista de diccionarios para la respuesta JSON
+            result = []
             for bodega in bodegas:
-                bodegas_list.append({
-                    "id": bodega.id,
+                result.append({
+                    "id": str(bodega.id),
                     "nombre": bodega.nombre,
                     "direccion": bodega.direccion,
-                    "ciudad": bodega.ciudad,
-                    "pais": bodega.pais,
-                    "createdAt": bodega.createdAt.isoformat() if bodega.createdAt else None
+                    "createdAt": bodega.createdAt.isoformat() if bodega.createdAt else None,
+                    "updatedAt": bodega.updatedAt.isoformat() if bodega.updatedAt else None
                 })
-
-            return bodegas_list
-
+            
+            return result
+        
         except Exception as e:
-            db.rollback()
-            raise e
+            session.rollback()
+            return {"error": str(e)}, 500
+        
+        finally:
+            session.close()
