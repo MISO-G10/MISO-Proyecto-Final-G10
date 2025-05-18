@@ -1,15 +1,15 @@
 # MISO Proyecto Final - Grupo 10
 
-Sistema de gestión para la empresa CCP (Compañía Comercializadora de Productos), que facilita la administración de vendedores, tenderos, productos,visitas,inventarios, fabricantes y clientes.
+Sistema de gestión para la empresa CCP que facilita la administración de vendedores, tenderos, productos,visitas,inventarios, fabricantes y clientes.
 
 ## Equipo de Desarrollo
 
 | Nombre | Correo |
 |--------|---------|
-| Oscar Andrés García | oa.garcia2@uniandes.edu.co |
+| Andrés García | oa.garcia2@uniandes.edu.co |
 | Felipe Valencia | jf.valencia23@uniandes.edu.co |
 | Juan Jiménez | jm.jimenezc12@uniandes.edu.co |
-| Paula Alejandra Bohorquez Alfonso | p.bohorqueza@uniandes.edu.co |
+| Paula Bohórquez | p.bohorqueza@uniandes.edu.co |
 
 ## Arquitectura del Sistema
 
