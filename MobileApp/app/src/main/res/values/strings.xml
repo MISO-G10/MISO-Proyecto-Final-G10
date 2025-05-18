@@ -64,5 +64,7 @@
     <string name="error_crear_pedido">Error al crear pedido</string>
     <string name="confirm_order">Place Order</string>
     <string name="clean_cart">Cancel Order</string>
-
+    <string name="orders_not_found">No se encontraron pedidos</string>
+    <string name="loading_failed_orders">Error al cargar los pedidos</string>
+    <string name="view_order_detail">Ver detalle del pedido</string>
 </resources>

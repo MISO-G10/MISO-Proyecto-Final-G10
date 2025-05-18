@@ -1,58 +1,57 @@
-package com.example.ccpapplication.pages.orders
+package com.example.ccpapplication.pages.clients
 
-
-import androidx.compose.runtime.getValue
+import android.util.Log
+import com.example.ccpapplication.data.model.Order
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.ccpapplication.App
-import com.example.ccpapplication.data.model.Producto
-import com.example.ccpapplication.data.repository.InventaryRepository
-import com.example.ccpapplication.navigation.state.DataUiState
-import com.example.ccpapplication.pages.products.ProductViewModel
-import retrofit2.HttpException
-import java.io.IOException
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import com.example.ccpapplication.data.repository.OrderRepository
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
-
-class OrderViewModel(
-    private val inventaryRepository: InventaryRepository
+open class OrderViewModel(
+    private val orderRepository: OrderRepository
 ) : ViewModel() {
-    var productUiState: DataUiState<List<Producto>> by mutableStateOf(DataUiState.Loading)
+
+    private val _orders = MutableStateFlow<List<Order>>(emptyList())
+    val orders: StateFlow<List<Order>> = _orders
 
     init {
-        fetchProducts()
+        loadOrders()
     }
 
-    private fun fetchProducts() {
+    fun loadOrders() {
         viewModelScope.launch {
-            productUiState = try {
-                val result = inventaryRepository.getProductos()
-                if (result.isSuccess) {
-                    val products = result.getOrNull() ?: emptyList()  // Si es nulo, asignamos una lista vacía
-                    DataUiState.Success(products)
-                } else {
-                    DataUiState.Error
-                }
-            } catch (e: IOException) {
-                DataUiState.Error
-            }
-            catch (e: HttpException) {
-                DataUiState.Error
+            try {
+                // Obtener los pedidos del repositorio
+                val ordersList = orderRepository.getOrders()
+                _orders.value = ordersList
+            } catch (e: Exception) {
+                handleError(e)
             }
         }
     }
+
+    // Método protegido para manejar errores, que puede ser sobrescrito en pruebas
+    protected open fun handleError(e: Exception) {
+        Log.e("OrderViewModel", "Error al cargar pedidos: ${e.message}")
+        e.printStackTrace()
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as App)
-                val inventaryRepository = application.container.inventarioRepository
-                ProductViewModel(inventaryRepository = inventaryRepository)
+                val orderRepository = application.container.orderRepository
+                OrderViewModel(orderRepository)
             }
         }
     }

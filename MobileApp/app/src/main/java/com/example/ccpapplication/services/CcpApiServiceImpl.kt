@@ -13,6 +13,7 @@ import com.example.ccpapplication.data.model.UserRegistration
 import com.example.ccpapplication.data.model.UserRegistrationResponse
 import com.example.ccpapplication.data.model.VisitAdd
 import com.example.ccpapplication.data.model.VisitUpdate
+import com.example.ccpapplication.data.model.Order
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -39,4 +40,8 @@ interface CcpApiServiceImpl:CcpApiServiceAdapter {
     override suspend fun getAssignedClients(): Response<List<Client>>
     @POST("/inventarios/pedidos")
     override suspend fun createPedido(@Body request: PedidoRequest):Response<PedidoResponse>
+    @GET("/inventarios/pedidos?user_id={tendero_Id}&tipo_usuario=t")
+    override suspend fun getOrdersTendero(@Path("tendero_Id") tendero_Id: String): Response<List<Order>>
+
+
 }
