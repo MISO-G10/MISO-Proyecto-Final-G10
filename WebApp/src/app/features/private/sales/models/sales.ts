@@ -12,4 +12,5 @@ export interface SalesPlanSeller {
   id: number;
   nombre: string;
   seller_id: number;
+  apellido?: string;
 }

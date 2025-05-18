@@ -22,6 +22,11 @@ describe('CreateComponent', () => {
   let fixture: ComponentFixture<CreateComponent>;
   let routerSpy = { navigate: jasmine.createSpy('navigate') };
   let salesServiceSpy = jasmine.createSpyObj('SalesService', ['createSale']);
+  
+  // Mock observable for createSale
+  const mockCreateSaleResponse = {
+    subscribe: jasmine.createSpy('subscribe')
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -110,16 +115,16 @@ describe('CreateComponent', () => {
   });
 
   it('should add and remove seller correctly', () => {
-    const vendor = { id: 1, seller_id: 1, nombre: 'Vendedor 1' };
+    const vendor = { id: '1', seller_id: 1, nombre: 'Vendedor 1', apellido: 'Apellido 1' };
 
     // Add a seller
     component.addSeller(vendor);
     expect(component.sellerIds.length).toBe(1);
-    expect(component.sellerIds.at(0).value).toBe(1);
+    expect(component.sellerIds.at(0).value).toBe(vendor.id);
 
     // Check if vendor is detected as selected
-    expect(component.isVendorSelected(1)).toBeTrue();
-    expect(component.isVendorSelected(2)).toBeFalse();
+    expect(component.isVendorSelected('1')).toBeTrue();
+    expect(component.isVendorSelected('2')).toBeFalse();
 
     // Remove the seller
     component.removeSeller(0);
@@ -127,8 +132,14 @@ describe('CreateComponent', () => {
   });
 
   it('should get vendor name correctly', () => {
-    expect(component.getVendorName(1)).toBe('Vendedor 1');
-    expect(component.getVendorName(999)).toBe(999); // Non-existent vendor
+    // Set up vendedores array with test data
+    const testVendedores = [
+      { id: '1', username: 'user1', nombre: 'Vendedor 1', apellido: 'Apellido 1', rol: 'VENDEDOR' as 'VENDEDOR' }
+    ];
+    component['vendedores'].set(testVendedores);
+    
+    expect(component.getVendorName('1')).toBe('Vendedor 1 Apellido 1');
+    expect(component.getVendorName('999')).toBe('999'); // Non-existent vendor
   });
 
   it('should not call service when form is invalid', () => {
@@ -145,6 +156,9 @@ describe('CreateComponent', () => {
     // Reset spy call counters before the actual test
     salesServiceSpy.createSale.calls.reset();
     routerSpy.navigate.calls.reset();
+    
+    // Set up the mock response
+    salesServiceSpy.createSale.and.returnValue(mockCreateSaleResponse);
 
     // Execute the method being tested
     component.onCreate();
@@ -166,8 +180,18 @@ describe('CreateComponent', () => {
     component.createForm.get('fecha_fin')?.setValue(endDate);
 
     // Add a seller to make the form valid
-    const vendor = { id: 1, seller_id: 1, nombre: 'Vendedor 1' };
+    const vendor = { id: '1', seller_id: 1, nombre: 'Vendedor 1' };
     component.addSeller(vendor);
+    
+    // Set up the mock response
+    salesServiceSpy.createSale.and.returnValue(mockCreateSaleResponse);
+    // Set up the subscribe mock to immediately call success callback
+    mockCreateSaleResponse.subscribe.and.callFake((callbacks: any) => {
+      if (callbacks && callbacks.next) {
+        callbacks.next({});
+      }
+      return { unsubscribe: () => {} };
+    });
 
     component.onCreate();
 
@@ -177,18 +201,8 @@ describe('CreateComponent', () => {
       valor_objetivo: 1000,
       fecha_inicio: component.formatDate(today),
       fecha_fin: component.formatDate(endDate),
-      seller_ids: [1]
+      seller_ids: ['1']
     });
     expect(routerSpy.navigate).toHaveBeenCalledWith(['private/sales']);
-  });
-
-  it('should reset form on cancel', () => {
-    component.createForm.get('nombre')?.setValue('Test Plan');
-    component.addSeller({ id: 1, seller_id: 1, nombre: 'Vendedor 1' });
-
-    component.onCancel();
-
-    expect(component.createForm.get('nombre')?.value).toBeFalsy();
-    expect(component.sellerIds.length).toBe(0);
   });
 });

@@ -42,8 +42,8 @@ import { SnackbarService } from '../../../../shared/ui/snackbar.service';
 export class CreateComponent {
   createForm!: FormGroup;
   vendors: SalesPlanSeller[] = [
-    { id: 1, seller_id: 1, nombre: 'Vendedor 1' },
-    { id: 2, seller_id: 2, nombre: 'Vendedor 2' }
+    { id: 1, seller_id: 1, nombre: 'Vendedor 1', apellido: 'Apellido 1' },
+    { id: 2, seller_id: 2, nombre: 'Vendedor 2', apellido: 'Apellido 2' }
   ];
 
   vendedores = signal<User[]>([]);
@@ -179,7 +179,7 @@ export class CreateComponent {
     return this.createForm.get('seller_ids') as FormArray;
   }
 
-  addSeller(vendor: User): void {
+  addSeller(vendor: Pick<User, 'id'>): void {
     // Check if vendor is already selected
     const existingIndex = this.getSellerIdIndex(vendor.id!);
     if (existingIndex === -1) {
