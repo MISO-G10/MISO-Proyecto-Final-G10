@@ -122,7 +122,6 @@ def create_app():
     # Register all the API blueprints
     app.register_api(api)  # Main API blueprint
     app.register_api(plan_blueprint)  # Sales plans blueprint
-    app.register_api(seller_blueprint)  # Sellers blueprint
 
     app.register_blueprint(command_bp)  # Register regular blueprint for commands
     app.register_blueprint(commands)  # Register commands blueprint

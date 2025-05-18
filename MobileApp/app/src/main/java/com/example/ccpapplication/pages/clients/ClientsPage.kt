@@ -38,6 +38,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -267,16 +268,16 @@ fun ClientItem(
                         .padding(start = 8.dp)
                 ) {
                     Button(
-                        onClick = onSchedule
-
+                        onClick = onSchedule,
+                        modifier = Modifier.testTag("schedule_button")
                     ) {
                         Text(text = stringResource(R.string.schedule_visit_label_button))
                     }
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Button(
-                        onClick = onCreateOrder
-
+                        onClick = onCreateOrder ,
+                        modifier = Modifier.testTag("create_order_button")
                     ) {
                         Text("Crear pedido")
                     }

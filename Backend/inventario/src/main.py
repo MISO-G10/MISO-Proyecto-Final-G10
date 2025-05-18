@@ -11,6 +11,8 @@ from src.utils.config import get_config
 from .blueprints.operations import operations_blueprint
 # ERRORS
 from .errors.errors import ApiError
+# SEED SCRIPTS
+from .scripts.initialize_data import initialize_rutas
 
 # ENVIRONMENT VARIABLES
 
@@ -52,6 +54,9 @@ def initialize_database():
         print('Tablas Creadas.')
     else:
         print('Las tablas ya existen en la base de datos.')
+    
+    # Inicializar datos predeterminados
+    initialize_rutas()
 
 if __name__ == "__main__":
     app = create_app()

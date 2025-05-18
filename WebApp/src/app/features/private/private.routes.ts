@@ -14,18 +14,19 @@ export const PRIVATE_ROUTES: Routes = [
         canActivate: [RoleGuard],
         data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
       },
-      { 
-        path: 'sellers/create', loadComponent: () => import('./sellers/create-seller/create-seller.component').then(m => m.CreateSellerComponent),
-          canActivate: [RoleGuard],
-          data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
+      {
+        path: 'sellers/create',
+        loadComponent: () => import('./sellers/create-seller/create-seller.component').then(m => m.CreateSellerComponent),
+        canActivate: [RoleGuard],
+        data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
       },
-      { 
+      {
         path: 'sellers/edit', loadComponent: () => import('./sellers/update-seller/update-seller.component').then(m => m.UpdateSellerComponent),
           canActivate: [RoleGuard],
           data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
       },
-      { 
-        path: 'sellers/sales-report/:id', 
+      {
+        path: 'sellers/sales-report/:id',
         loadComponent: () => import('./sellers/sales-report/sales-report.component').then(m => m.SalesReportComponent),
         canActivate: [RoleGuard],
         data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
@@ -36,31 +37,50 @@ export const PRIVATE_ROUTES: Routes = [
         canActivate: [RoleGuard],
         data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
       },
+
       {
         path: 'sales/create',
         loadComponent: () => import('./sales/create/create.component').then(m => m.CreateComponent),
         canActivate: [RoleGuard],
         data: { roles: ['DIRECTOR_VENTAS', 'ADMINISTRADOR'] }
       },
+
       {
         path: 'fabricantes',
         loadComponent: () => import('./fabricantes/fabricantes.component').then(m => m.FabricantesComponent),
         canActivate: [RoleGuard],
-        data: { roles: ['ADMINISTRADOR','ENCARGADO_COMPRAS_PROVEEDORES'] }
+        data: { roles: ['ADMINISTRADOR', 'ENCARGADO_COMPRAS_PROVEEDORES'] }
       },
+
       {
         path: 'fabricantes/create',
         loadComponent: () => import('./fabricantes/create-fabricante/create-fabricante.component').then(c => c.CreateFabricanteComponent),
         canActivate: [RoleGuard],
         data: { roles: ['ADMINISTRADOR'] }
       },
-      { path: 'crear-producto/:fabricanteId', loadComponent: () => import('./productos/crear-producto/crear-producto.component').then(m => m.CrearProductoComponent),
+
+      {
+        path: 'crear-producto/:fabricanteId',
+        loadComponent: () => import('./productos/crear-producto/crear-producto.component').then(m => m.CrearProductoComponent),
         canActivate: [RoleGuard],
         data: { roles: ['ADMINISTRADOR', 'ENCARGADO_COMPRAS_PROVEEDORES'] }
       },
-      { 
+      {
+        path: 'productos/:productoId',
+        loadComponent: () => import('./productos/producto-detalle/producto-detalle.component').then(m => m.ProductoDetalleComponent),
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMINISTRADOR', 'LOGISTICA'] }
+      },
+
+      {
+        path: 'productos',
+        loadComponent: () => import('./productos/productos.component').then(m => m.ProductosComponent),
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMINISTRADOR', 'LOGISTICA'] }
+      },
+      {
         path: 'routes', 
-        loadComponent: () => import('./routes/delivery-routes.component').then(m => m.DeliveryRoutesComponent),
+        loadComponent: () => import('./rutas/rutas.component').then(m => m.RutasComponent),
         canActivate: [RoleGuard],
         data: { roles: ['ADMINISTRADOR', 'LOGISTICA'] }
       },

@@ -34,7 +34,9 @@ class GetProductoUbicacion(BaseCommand):
                     "bodega_id": str(bodega.id),
                     "nombre_bodega": bodega.nombre,
                     "direccion": bodega.direccion,
-                    "cantidad": item.cantidad
+                    "cantidad": item.cantidad,
+                    "ciudad": bodega.ciudad,
+                    "pais": bodega.pais,
                 }
                 ubicaciones.append(ubicacion)
 

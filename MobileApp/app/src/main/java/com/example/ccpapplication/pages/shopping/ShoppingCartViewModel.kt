@@ -1,6 +1,7 @@
 package com.example.ccpapplication.pages.shopping
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -27,11 +28,13 @@ import kotlinx.coroutines.flow.asSharedFlow
 import com.example.ccpapplication.R
 import com.example.ccpapplication.data.model.User
 
-class ShoppingCartViewModel(private val userId: String, context: Context,
-                            private val inventaryRepository: InventaryRepository,private val overrideUserId: String? = null) : ViewModel() {
+class ShoppingCartViewModel(private val userId: String,
+                            private val sharedPrefs: SharedPreferences,
+                            private val inventaryRepository: InventaryRepository,
+                            private val overrideUserId: String? = null) : ViewModel() {
 
-    private val effectiveCartOwnerId = overrideUserId ?: userId
-    private val sharedPrefs = context.getSharedPreferences("cart_$effectiveCartOwnerId", Context.MODE_PRIVATE)
+
+    //private val sharedPrefs = context.getSharedPreferences("cart_$effectiveCartOwnerId", Context.MODE_PRIVATE)
 
     private var _cart = mutableStateOf<List<CartItem>>(emptyList())
     val cart: State<List<CartItem>> = _cart
@@ -135,22 +138,24 @@ class ShoppingCartViewModel(private val userId: String, context: Context,
                 direccion= user.direccion.toString()
             )
 
-            val resultado = try {
-                inventaryRepository.createProducto(pedidoRequest)
-            } catch (e: Exception) {
-                null
-            }
+            val resultado = runCatching { inventaryRepository.createProducto(pedidoRequest) }
+                .getOrNull()
 
             if (resultado?.isSuccess == true) {
+                runCatching {
+                    Log.d("ShoppingCartViewModel", "Pedido creado con éxito")
+                }
                 val response = resultado.getOrNull()
-                Log.d("ShoppingCartViewModel", "Pedido creado con éxito: $response")
+
                 pedidoUiState = DataUiState.Success(Unit)
 
                 _messageEvent.emit(UiText.StringResource(R.string.pedido_exitoso))
                 clearCart()
             } else {
                 val error = resultado?.exceptionOrNull()?.message ?: "Error desconocido"
-                Log.e("ShoppingCartViewModel", "Error al crear pedido: $error")
+                runCatching {
+                    Log.e("ShoppingCartViewModel", "Error al crear pedido: $error")
+                }
                 pedidoUiState = DataUiState.Error
 
                 _messageEvent.emit(
@@ -176,9 +181,11 @@ class ShoppingCartViewModel(private val userId: String, context: Context,
             initializer {
                 val application = (this[APPLICATION_KEY] as App)
                 val inventaryRepository = application.container.inventarioRepository
+                val prefs = context.applicationContext
+                    .getSharedPreferences("cart_${overrideUserId ?: userId}", Context.MODE_PRIVATE)
                 ShoppingCartViewModel(
                     userId = userId,
-                    context = context.applicationContext,
+                    sharedPrefs = prefs,
                     inventaryRepository = inventaryRepository,
                     overrideUserId = overrideUserId
                 )

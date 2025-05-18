@@ -11,7 +11,7 @@ from ..commands.create_asignacion import CreateAsignacion
 from ..commands.list_asignacion import ListAsignacion
 from ..commands.update_asignacion import UpdateAsignacion
 from ..commands.get_vendedor_tenderos import GetVendedorTenderos
-
+from ..commands.get_vendedor import GetVendedorIdFromTendero
 
 operations_blueprint = Blueprint('visitas', __name__)
 
@@ -138,5 +138,16 @@ def get_tenderos(id):
         service = GetVendedorTenderos(usuario)
         tenderos = service.execute()
         return jsonify(tenderos), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@operations_blueprint.route('/asignaciones/vendedor', methods=['GET'])
+@token_required
+def get_vendedor_id():    
+    current_usuario = g.current_usuario
+    try:
+        service = GetVendedorIdFromTendero(current_usuario)
+        data = service.execute()
+        return jsonify(data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

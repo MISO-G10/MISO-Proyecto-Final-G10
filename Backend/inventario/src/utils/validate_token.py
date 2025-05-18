@@ -23,6 +23,7 @@ def token_required(f):
             if response.status_code != 200:
                 return jsonify({'message': 'Token is invalid or expired!'}), 401
             g.current_usuario = response.json()
+            g.token = token
         except Exception as e:
             print(f"Error while validating token: {e}")
             return jsonify({'message': 'Token is invalid or expired!'}), 401

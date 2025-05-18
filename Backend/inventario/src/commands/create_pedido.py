@@ -11,7 +11,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func
 import uuid
 import random
-
+from ..utils.config import get_config
+import os
+import requests
 class PedidoProductoInputSchema(Schema):    
     producto_id = fields.UUID(required=True)
     cantidad = fields.Float(required=True)
@@ -29,9 +31,10 @@ class CreatePedidoSchema(Schema):
 
 
 class CreatePedido(BaseCommand):
-    def __init__(self, vendedor, data):
+    def __init__(self, vendedor, data,token):
         self.vendedor = vendedor
         self.data = data
+        self.token = token
 
     def execute(self):
         schema = self.safe_payload()
@@ -58,13 +61,18 @@ class CreatePedido(BaseCommand):
                     return {
                         "error": f"No hay suficiente stock para el producto con ID {producto_id}. Disponible: {inventario_total}, Solicitado: {cantidad_solicitada}"
                     }, 400
-            fecha_entrega = datetime.now() + timedelta(days=random.randint(1, 5))
+            fecha_entrega = datetime.now() + timedelta(days=random.randint(1, 2))
             fecha_salida = datetime.now() + timedelta(days=random.randint(0, (fecha_entrega - datetime.now()).days - 1))
-
+            vendedor_id = self.vendedor["id"]
+            if self.data.get("usuario_id") and self.data["usuario_id"] == vendedor_id:
+                # Significa que no es el verdadero vendedor
+                vendedor_id = self.obtener_vendedor_real()
+            usuario_id=self.vendedor["id"] if not self.data.get("usuario_id") else self.data["usuario_id"]
+            print(vendedor_id, usuario_id)
             nuevo_pedido = Pedido(
                 direccion=self.data["direccion"],
-                usuario_id=self.vendedor["id"] if not self.data.get("usuario_id") else self.data["usuario_id"],
-                vendedor_id=self.vendedor["id"],
+                usuario_id=usuario_id,
+                vendedor_id=vendedor_id,
                 fechaEntrega=fecha_entrega,
                 fechaSalida=fecha_salida,
                 estado=EstadoPedido.PENDIENTE,
@@ -137,3 +145,21 @@ class CreatePedido(BaseCommand):
             return CreatePedidoSchema().load(self.data)
         except ValidationError as e:
             raise InvalidPedidoData(e.messages)
+    def obtener_vendedor_real(self):    
+
+        env_name = os.getenv('FLASK_ENV', 'development')
+        envData = get_config(env_name)
+        visitas_path = envData.VISITAS_PATH + "/visitas/asignaciones/vendedor"
+
+        try:
+            headers = {"Authorization": f"Bearer {self.token}"}
+            response = requests.get(visitas_path, headers=headers)
+
+            if response.status_code == 200:
+                data = response.json()
+                return data.get("idVendedor")  # Asegúrate que el micro devuelva {"id": ...}
+            else:
+                raise Exception(f"Error al consultar vendedor: {response.text}")
+        except Exception as e:
+            raise Exception(f"Error conectando con servicio de visitas: {e}")
+
