@@ -21,6 +21,7 @@ import retrofit2.http.POST
 import retrofit2.http.Headers
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface CcpApiServiceImpl:CcpApiServiceAdapter {
     @GET("/usuarios/me")
@@ -40,8 +41,8 @@ interface CcpApiServiceImpl:CcpApiServiceAdapter {
     override suspend fun getAssignedClients(): Response<List<Client>>
     @POST("/inventarios/pedidos")
     override suspend fun createPedido(@Body request: PedidoRequest):Response<PedidoResponse>
-    @GET("/inventarios/pedidos?user_id={tendero_Id}&tipo_usuario=t")
-    override suspend fun getOrdersTendero(@Path("tendero_Id") tendero_Id: String): Response<List<Order>>
+    @GET("/inventarios/pedidos")
+    override suspend fun getOrdersTendero(@Query("user_id") tenderoId: String, @Query("tipo_usuario") tipoUsuario: String): Response<List<Order>>
 
 
 }

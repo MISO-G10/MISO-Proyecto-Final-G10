@@ -25,5 +25,5 @@ interface CcpApiServiceAdapter {
     suspend fun listProductos():Response<List<Producto>>
     suspend fun getAssignedClients(): Response<List<Client>>
     suspend fun createPedido(request: PedidoRequest):Response<PedidoResponse>
-    suspend fun getOrdersTendero(tenderoId: String): Response<List<Order>>
+    suspend fun getOrdersTendero(tenderoId: String, tipoUsuario: String = "t"): Response<List<Order>>
 }

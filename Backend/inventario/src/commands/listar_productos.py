@@ -3,6 +3,7 @@ from src.models.producto import Producto
 from src.models.inventario_bodega import InventarioBodega
 from .base_command import BaseCommand
 from sqlalchemy.orm import joinedload
+from src.utils.helpers import serialize_sqlalchemy
 
 
 class ListProductos(BaseCommand):
@@ -24,26 +25,13 @@ class ListProductos(BaseCommand):
 
             productos_list = []
             for producto in productos:
-                #calculo de cantidad total de productos en todas las bodegas
+                # Calculo de cantidad total de productos en todas las bodegas
                 cantidad_total = sum([ib.cantidad for ib in producto.bodega_productos])
-                productos_list.append({
-                    "id": producto.id,
-                    "sku": producto.sku,
-                    "nombre": producto.nombre,
-                    "descripcion": producto.descripcion,
-                    "perecedero": producto.perecedero,
-                    "fechaVencimiento": producto.fechaVencimiento.isoformat() if producto.fechaVencimiento else None,
-                    "valorUnidad": producto.valorUnidad,
-                    "tiempoEntrega": producto.tiempoEntrega.isoformat() if producto.tiempoEntrega else None,
-                    "condicionAlmacenamiento": producto.condicionAlmacenamiento,
-                    "reglasLegales": producto.reglasLegales,
-                    "reglasComerciales": producto.reglasComerciales,
-                    "reglasTributarias": producto.reglasTributarias,
-                    "categoria": producto.categoria.name if producto.categoria else None,
-                    "fabricante_id": producto.fabricante_id,
-                    "createdAt": producto.createdAt.isoformat() if producto.createdAt else None,
-                    "cantidad_total": cantidad_total
-                })
+                # Serializar el producto usando serialize_sqlalchemy
+                producto_dict = serialize_sqlalchemy(producto)
+                # Agregar la cantidad total que no es parte del modelo
+                producto_dict['cantidad_total'] = cantidad_total
+                productos_list.append(producto_dict)
 
             return productos_list
 

@@ -25,16 +25,16 @@ data class Producto(
 
 @Serializable
 enum class Categoria {
-    @SerialName("ALIMENTOS_BEBIDAS")
+    @SerialName("ALIMENTOS Y BEBIDAS")
     ALIMENTOS_BEBIDAS,
 
-    @SerialName("CUIDADO_PERSONAL")
+    @SerialName("CUIDADO PERSONAL")
     CUIDADO_PERSONAL,
 
-    @SerialName("LIMPIEZA_HOGAR")
+    @SerialName("LIMPIEZA DEL HOGAR")
     LIMPIEZA_HOGAR,
 
-    @SerialName("BEBES")
+    @SerialName("BEBÉS")
     BEBES,
 
     @SerialName("MASCOTAS")

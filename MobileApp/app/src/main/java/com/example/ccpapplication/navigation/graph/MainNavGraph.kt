@@ -23,7 +23,8 @@ import com.example.ccpapplication.pages.shopping.ShoppingCartViewModel
 import com.example.ccpapplication.pages.shopping.VendedorTenderoPage
 import com.example.ccpapplication.services.interceptors.TokenManager
 import com.example.ccpapplication.navigation.AppPages
-import com.example.ccpapplication.pages.orders.OrderDetailPage
+import com.example.ccpapplication.pages.clients.OrderViewModel
+import com.example.ccpapplication.pages.orders.OrderPage
 
 fun NavGraphBuilder.mainNavGraph(navController: NavHostController,tokenManager:TokenManager) {
     navigation(
@@ -39,6 +40,20 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController,tokenManager:T
         }
         composable(BottomNavItem.Visits.route) {
             VisitsPage()
+        }
+
+        composable(BottomNavItem.Orders.route) {
+            val orderViewModel: OrderViewModel = viewModel(factory = OrderViewModel.Factory)
+
+            OrderPage(
+                orderUiState = orderViewModel.orderUiState,
+                navController = navController,
+                viewModel = orderViewModel,
+                userId = tokenManager.getUser()?.id ?: "",
+                onViewDetailOrder = { orderId ->
+                    // navController.navigate("order_detail/$orderId")
+                }
+            )
         }
 
         composable(
@@ -111,17 +126,9 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController,tokenManager:T
             )
         }
 
-        composable(
-            route = AppPages.OrderDetailPage.route
-        ) { backStackEntry ->
-            val orderId = backStackEntry.arguments?.getString("orderId") ?: ""
-            OrderDetailPage(
-                orderId = orderId,
-                products = listOf(), // TODO: Get products from ViewModel
-                onBackClick = { navController.popBackStack() },
-                onFavoriteClick = { /* TODO: Implement favorite functionality */ }
-            )
-        }
+
+
+
 
     }
 }
@@ -135,7 +142,8 @@ fun MainNavigationDrawer(
         BottomNavItem.Home,
         BottomNavItem.Visits,
         BottomNavItem.Clients,
-        BottomNavItem.Catalog
+        BottomNavItem.Catalog,
+        BottomNavItem.Orders
     )
     BottomDrawer(navController,menus)
 }

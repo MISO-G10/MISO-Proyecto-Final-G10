@@ -14,7 +14,7 @@
     <string name="login_text_lang_1">Español</string>
     <string name="login_text_lang_2">Ingles</string>
     <string name="bottom_nav_1">Inicio</string>
-    <string name="bottom_nav_2">Ordenes</string>
+    <string name="bottom_nav_2">Pedidos</string>
     <string name="bottom_nav_3">Carrito</string>
     <string name="bottom_nav_4">Visitas</string>
     <string name="bottom_nav_5">Clientes</string>

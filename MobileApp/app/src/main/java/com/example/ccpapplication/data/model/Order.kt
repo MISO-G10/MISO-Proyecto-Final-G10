@@ -13,7 +13,9 @@ data class Order(
     @SerialName("estado") val estado: OrderStatus,
     @SerialName("valor") val valor: Float,
     @SerialName("direccion") val direccion: String,
-    @SerialName("pedido_productos") val orderProducts: List<OrderProduct>?
+    @SerialName("pedido_productos") val orderProducts: List<OrderProduct>?,
+    @SerialName("createdAt") val createdAt: String?,
+    @SerialName("updatedAt") val updatedAt: String?
 )
 
 @Serializable
@@ -23,7 +25,10 @@ data class OrderProduct(
     @SerialName("producto_id") val productoId: String,
     @SerialName("valorUnitario") val valorUnitario: Float,
     @SerialName("subtotal") val subtotal: Float,
-    @SerialName("producto") val producto: Producto?
+    @SerialName("producto") val producto: ProductInOrder?,
+    @SerialName("id") val id: String,
+    @SerialName("createdAt") val createdAt: String?,
+    @SerialName("updatedAt") val updatedAt: String?
 )
 
 @Serializable

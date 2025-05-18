@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.ccpapplication.data.model.Producto
 import java.text.NumberFormat
 import java.util.*
-
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderDetailPage(
@@ -261,4 +261,4 @@ fun OrderCostSection(products: List<Producto>) {
 private fun formatCurrency(amount: Double): String {
     val format = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
     return format.format(amount)
-}
+*/
