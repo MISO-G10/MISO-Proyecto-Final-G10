@@ -12,33 +12,33 @@ from src.models.bodega import Bodega
 # List of bodegas to create
 BODEGAS = [
     {
-        "nombre": "Bodega Principal Bogotá",
-        "direccion": "Calle 100 #15-25",
+        "nombre": "Bodega Bogotá 1",
+        "direccion": "Tv. 59b #127d-69, Bogotá, Colombia",
         "ciudad": "Bogotá",
         "pais": "Colombia"
     },
     {
-        "nombre": "Bodega Norte Medellín",
-        "direccion": "Carrera 43A #1-50",
-        "ciudad": "Medellín",
+        "nombre": "Bodega Bogota 2",
+        "direccion": "Cl 147 #7-70, Bogotá, Colombia",
+        "ciudad": "Bogotá",
         "pais": "Colombia"
     },
     {
-        "nombre": "Bodega Este Cali",
-        "direccion": "Avenida 6N #28N-10",
-        "ciudad": "Cali",
+        "nombre": "Bodega Bogota 3",
+        "direccion": "Cl. 140 #11- 45, Bogotá, Colombia",
+        "ciudad": "Bogotá",
         "pais": "Colombia"
     },
     {
-        "nombre": "Bodega Sur Barranquilla",
-        "direccion": "Carrera 54 #58-90",
-        "ciudad": "Barranquilla",
+        "nombre": "Bodega Bogota 4",
+        "direccion": "Cl. 147 #58c-95, Bogotá",
+        "ciudad": "Bogotá",
         "pais": "Colombia"
     },
     {
-        "nombre": "Bodega Oeste Bucaramanga",
-        "direccion": "Carrera 27 #52-41",
-        "ciudad": "Bucaramanga",
+        "nombre": "Bodega Bogotá 5",
+        "direccion": "Cl. 165 #55a-41, Bogotá, Colombia",
+        "ciudad": "Bogotá",
         "pais": "Colombia"
     }
 ]
