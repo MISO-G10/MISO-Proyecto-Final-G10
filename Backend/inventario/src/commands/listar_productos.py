@@ -4,6 +4,7 @@ from src.models.inventario_bodega import InventarioBodega
 from .base_command import BaseCommand
 from sqlalchemy.orm import joinedload
 
+
 class ListProductos(BaseCommand):
     def __init__(self):
         pass

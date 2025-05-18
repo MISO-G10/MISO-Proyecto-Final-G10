@@ -1,9 +1,12 @@
 package com.example.ccpapplication.pages.clients
 
+import android.content.Context
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.navigation.compose.rememberNavController
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.example.ccpapplication.data.model.Client
 import com.example.ccpapplication.data.repository.ClientRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,6 +14,8 @@ import kotlinx.coroutines.flow.StateFlow
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import com.example.ccpapplication.R
+import org.junit.Assert.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 class ClientsPageTest {
@@ -129,7 +134,8 @@ class ClientsPageTest {
         composeTestRule.setContent {
             ClientItem(
                 client = client,
-                onSchedule = {}
+                onSchedule = {},
+                onCreateOrder = {}
             )
         }
 
@@ -157,14 +163,23 @@ class ClientsPageTest {
         composeTestRule.setContent {
             ClientItem(
                 client = client,
-                onSchedule = { buttonClicked = true }
+                onSchedule = { buttonClicked = true },
+                onCreateOrder = {}
             )
         }
-
+        val context = InstrumentationRegistry
+            .getInstrumentation()
+            .targetContext
+        val scheduleLabel = context
+            .getString(R.string.schedule_visit_label_button)
         // Hacer clic en el botón Agendar
-        composeTestRule.onNode(hasClickAction()).performClick()
-        
-        // Verificar que se llamó a la función onSchedule
-        assert(buttonClicked)
+        composeTestRule
+            .onNodeWithTag("schedule_button")
+            .assertExists()
+            .assertIsEnabled()
+            .performClick()
+
+        // Verificamos que nuestra lambda se ejecutó
+        assertTrue(buttonClicked)
     }
 }

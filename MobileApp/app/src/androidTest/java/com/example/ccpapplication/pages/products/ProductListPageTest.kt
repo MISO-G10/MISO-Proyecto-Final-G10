@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.ccpapplication.pages.shopping.InMemorySharedPreferences
 import com.example.ccpapplication.pages.shopping.ShoppingCartViewModel
 import org.junit.Rule
 import org.junit.runner.RunWith
@@ -14,6 +15,8 @@ import org.junit.Test
 
 @RunWith(AndroidJUnit4::class)
 class ProductListPageTest {
+    private lateinit var sharedPrefs: InMemorySharedPreferences
+
     @get:Rule
     val composeTestRule = createComposeRule()
     @Test
@@ -22,10 +25,11 @@ class ProductListPageTest {
             val context = ApplicationProvider.getApplicationContext<Context>()
             val fakeRepository = FakeInventaryRepository()
             val testViewModel = ProductViewModel(fakeRepository)
+            sharedPrefs = InMemorySharedPreferences()
             val cartViewModel = ShoppingCartViewModel(
                 userId = "0c1da9e2-cd13-4cdc-ad62-00dabea7f472",
-                context = context,
-                inventaryRepository = fakeRepository
+                inventaryRepository = fakeRepository,
+                sharedPrefs = sharedPrefs
             )
             ProductPage(
                 productUiState = testViewModel.productUiState,

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,7 +43,9 @@ import kotlinx.coroutines.flow.collectLatest
 fun ShoppingCartPage(
     cartViewModel: ShoppingCartViewModel,
     navController: NavController,
-    user: User?
+    user: User?,
+    tendero: User?,
+    enableLazyColumnScroll: Boolean = true
 ) {
     val cart = cartViewModel.cart.value
     var itemToRemove by remember { mutableStateOf<CartItem?>(null) }
@@ -68,33 +69,58 @@ fun ShoppingCartPage(
     }
 
     Column(Modifier.padding(16.dp)) {
-        Text("Mi carrito", style = MaterialTheme.typography.headlineSmall)
+        Text(
+            text = if (!tendero?.username.isNullOrBlank()) {
+                "Carrito para ${tendero!!.username}"
+            } else {
+                "Mi carrito"
+            },
+            style = MaterialTheme.typography.headlineSmall
+        )
+
 
         if (cart.isNotEmpty()) {
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                items(cart) { item ->
-                    CartItemCard(
-                        item = item,
-                        onRemove = { itemToRemove = item }
-                    )
+            if (enableLazyColumnScroll) {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(cart) { item ->
+                        CartItemCard(
+                            item = item,
+                            onRemove = { itemToRemove = item }
+                        )
+                    }
+                }
+            }else{
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    cart.forEach { item ->
+                        CartItemCard(
+                            item = item,
+                            onRemove = { itemToRemove = item }
+                        )
+                    }
                 }
             }
             Spacer(Modifier.height(16.dp))
 
-            TotalCard(total = total, user = user)
+            TotalCard(total = total, user = tendero ?: user)
             Spacer(Modifier.height(16.dp))
 
             GenericButton(
                 label = stringResource(R.string.confirm_order),
                 onClick = {
-                    user?.let { user ->
+                    (tendero ?: user)?.let { selectedUser ->
                         val productosPedido = cart.map {
                             ProductoPedido(
                                 producto_id = it.producto.id,
                                 cantidad = it.cantidad
                             )
                         }
-                        cartViewModel.enviarPedido(user, productosPedido)
+                        cartViewModel.enviarPedido(selectedUser, productosPedido)
                     }
                 },
                 type = ButtonType.PRIMARY,

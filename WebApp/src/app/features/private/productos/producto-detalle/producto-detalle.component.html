@@ -1,0 +1,53 @@
+<div class="producto-detalle-container">
+  <h1>Inventario</h1>
+  <div class="content">
+    <div class="inventory-wrapper">
+      <div class="inventory-form">
+        <h2>Inventario</h2>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Cantidad</mat-label>
+          <input matInput type="number" [(ngModel)]="cantidadProducto" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Bodega</mat-label>
+          <input matInput type="text" [(ngModel)]="bodegaSeleccionada" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Direccion</mat-label>
+          <input matInput type="text" [(ngModel)]="direccionBodega" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Ciudad</mat-label>
+          <input matInput type="text" [(ngModel)]="ciudadBodega" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Pais</mat-label>
+          <input matInput type="text" [(ngModel)]="paisBodega" readonly>
+        </mat-form-field>
+      </div>
+
+      <div class="inventory-history">
+        <h2>Historial de movimientos en inventario</h2>
+
+        <div class="history-item" *ngFor="let movimiento of movimientosInventario">
+          <div class="avatar-indicator">
+            <div class="avatar">A</div>
+          </div>
+          <div class="movement-details">
+            <div class="movement-title">{{ movimiento.descripcion }}</div>
+            <div class="movement-date">{{ movimiento.fecha | date:'yyyy-MM-dd' }}</div>
+          </div>
+        </div>
+
+        <div *ngIf="movimientosInventario.length === 0" class="no-history">
+          No hay movimientos registrados
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
