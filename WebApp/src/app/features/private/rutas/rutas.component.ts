@@ -47,6 +47,9 @@ export class RutasComponent implements OnInit {
   
   // Constante para el número máximo de pedidos por ruta
   private readonly MAX_PEDIDOS_POR_RUTA = 3;
+  
+  // Dirección inicial para todas las rutas (punto de partida)
+  private readonly DIRECCION_INICIAL = 'Auto. Norte #108-27, Bogotá';
 
   // Traducciones
   readonly translations = {
@@ -128,7 +131,9 @@ export class RutasComponent implements OnInit {
         pedidosGrupo.forEach(pedido => {
           direccionesSet.add(pedido.direccion);
         });
-        const direcciones = Array.from(direccionesSet);
+        
+        // Crear array de direcciones comenzando con la dirección inicial
+        const direcciones = [this.DIRECCION_INICIAL, ...Array.from(direccionesSet)];
         
         // Crear un nuevo DeliveryRoute
         const deliveryRoute: DeliveryRoute = {
