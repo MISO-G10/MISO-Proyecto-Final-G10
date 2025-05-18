@@ -39,7 +39,7 @@ fun OrderCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onViewDetail() },
+            .clickable(onClick = onViewDetail),
         colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface
@@ -84,13 +84,11 @@ fun OrderCard(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                IconButton(onClick = onViewDetail) {
-                    Icon(
-                        imageVector = Icons.Filled.Visibility,
-                        contentDescription = "Ver detalle",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Filled.Visibility,
+                    contentDescription = "Ver detalle",
+                    tint = MaterialTheme.colorScheme.primary
+                )
             }
         }
     }
@@ -102,7 +100,7 @@ fun OrderPage(
     navController: NavHostController = rememberNavController(),
     viewModel: OrderViewModel = viewModel(factory = OrderViewModel.Factory),
     userId: String,
-    onViewDetailOrder: (id: String) -> Unit = {}
+    onViewDetailOrder: (String) -> Unit
 ) {
 
     Column(modifier = Modifier.padding(16.dp)) {
@@ -130,7 +128,10 @@ fun OrderPage(
                     items(ordersData) { pedido ->
                         OrderCard(
                         order = pedido,
-                        onViewDetail = {onViewDetailOrder(pedido.id) }
+                        onViewDetail = { 
+                            println("DEBUG: Clicked on order ${pedido.id}")
+                            onViewDetailOrder(pedido.id)
+                        }
                     )
                 }
             }
