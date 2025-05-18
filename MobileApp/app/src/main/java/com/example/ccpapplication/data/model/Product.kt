@@ -31,7 +31,7 @@ enum class Categoria {
     @SerialName("CUIDADO PERSONAL")
     CUIDADO_PERSONAL,
 
-    @SerialName("LIMPIEZA DEL HOGAR")
+    @SerialName("LIMPIEZA Y HOGAR")
     LIMPIEZA_HOGAR,
 
     @SerialName("BEBÉS")

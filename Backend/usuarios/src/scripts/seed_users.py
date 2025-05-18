@@ -117,10 +117,10 @@ def seed_all_users():
         "tendero5@gmail.com", 
         "tendero123", 
         "Tienda", 
-        "La Septima", 
+        "La 116", 
         UsuarioRol.TENDERO,
         telefono="+(318) 205-2160",
-        direccion="Carrera 7 # 32-16, Bogotá, Colombia"
+        direccion="Ac 116 #9-72, Bogotá, Colombia"
     )
 
     # Create tendero user
@@ -131,7 +131,7 @@ def seed_all_users():
         "Nacional", 
         UsuarioRol.TENDERO,
         telefono="+(318) 205-2160",
-        direccion="Museo Nacional, Bogotá, Colombia"
+        direccion="Cra. 11a #113-9, Bogotá, Colombia"
     )
 
     # Create tendero user
@@ -139,21 +139,21 @@ def seed_all_users():
         "tendero7@gmail.com", 
         "tendero123", 
         "Tienda", 
-        "Centro", 
+        "Bolivar", 
         UsuarioRol.TENDERO,
         telefono="+(318) 205-2160",
-        direccion="Plaza de Bolívar, Bogotá, Colombia"
+        direccion="Cra. 13a #109-45, Bogotá, Colombia"
     )
 
     # Create tendero user
     tendero_id8 = create_test_user(
-        "tendero7@gmail.com", 
+        "tendero8@gmail.com", 
         "tendero123", 
         "Tienda", 
-        "Oro", 
+        "104", 
         UsuarioRol.TENDERO,
         telefono="+(318) 205-2160",
-        direccion="Museo del Oro, Bogotá, Colombia"
+        direccion="Cl. 104 #15-56, Bogotá, Colombia"
     )
     
     # Create vendedor user
