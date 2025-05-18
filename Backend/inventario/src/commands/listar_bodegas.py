@@ -24,6 +24,8 @@ class ListBodegas:
                     "id": str(bodega.id),
                     "nombre": bodega.nombre,
                     "direccion": bodega.direccion,
+                    "ciudad": bodega.ciudad,
+                    "pais": bodega.pais,
                     "createdAt": bodega.createdAt.isoformat() if bodega.createdAt else None,
                     "updatedAt": bodega.updatedAt.isoformat() if bodega.updatedAt else None
                 })
