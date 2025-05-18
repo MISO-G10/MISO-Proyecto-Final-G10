@@ -17,6 +17,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { User } from '../../../auth/login/models/user';
 import { CreateService } from './create.service';
+import { SnackbarService } from '../../../../shared/ui/snackbar.service';
 
 @Component({
   selector: 'app-create',
@@ -53,6 +54,7 @@ export class CreateComponent {
   private readonly fb = inject(FormBuilder);
   private readonly salesService = inject(SalesService);
   private readonly createService = inject(CreateService);
+  private readonly snackbarService = inject(SnackbarService);
 
   // Translations
   readonly translations = {
@@ -69,31 +71,64 @@ export class CreateComponent {
   };
 
   getErrorMessages = getErrorMessages;
-  
+
   // Validation messages
   validaciones = {
     'nombre': [
-      { type: 'required', message: $localize`:@@private.sales.create.validation.name.required:El correo electronico es requerido` }
+      {
+        type: 'required',
+        message: $localize`:@@private.sales.create.validation.name.required:Nombre`
+      }
     ],
     'descripcion': [
-      { type: 'required', message: $localize`:@@private.sales.create.validation.description.required:El nombre es requerido` }
+      {
+        type: 'required',
+        message: $localize`:@@private.sales.create.validation.description.required:Descripción`
+      }
     ],
     'valor_objetivo': [
-      { type: 'required', message: $localize`:@@private.sales.create.validation.target.required:El valor objetivo es requerido` },
-      { type: 'pattern', message: $localize`:@@private.sales.create.validation.target.pattern:El valor objetivo debe ser un número` },
-      { type: 'min', message: $localize`:@@private.sales.create.validation.target.min:El valor objetivo debe ser mayor a 0` }
+      {
+        type: 'required',
+        message: $localize`:@@private.sales.create.validation.target.required:El valor objetivo es requerido`
+      },
+      {
+        type: 'pattern',
+        message: $localize`:@@private.sales.create.validation.target.pattern:El valor objetivo debe ser un número`
+      },
+      {
+        type: 'min',
+        message: $localize`:@@private.sales.create.validation.target.min:El valor objetivo debe ser mayor a 0`
+      }
     ],
     'fecha_inicio': [
-      { type: 'required', message: $localize`:@@private.sales.create.validation.start_date.required:La fecha de inicio es requerida` },
-      { type: 'pattern', message: $localize`:@@private.sales.create.validation.start_date.pattern:La fecha de inicio debe ser una fecha válida` }
+      {
+        type: 'required',
+        message: $localize`:@@private.sales.create.validation.start_date.required:La fecha de inicio es requerida`
+      },
+      {
+        type: 'pattern',
+        message: $localize`:@@private.sales.create.validation.start_date.pattern:La fecha de inicio debe ser una fecha válida`
+      }
     ],
     'fecha_fin': [
-      { type: 'required', message: $localize`:@@private.sales.create.validation.end_date.required:La fecha de fin es requerida` },
-      { type: 'pattern', message: $localize`:@@private.sales.create.validation.end_date.pattern:La fecha de fin debe ser una fecha válida` }
+      {
+        type: 'required',
+        message: $localize`:@@private.sales.create.validation.end_date.required:La fecha de fin es requerida`
+      },
+      {
+        type: 'pattern',
+        message: $localize`:@@private.sales.create.validation.end_date.pattern:La fecha de fin debe ser una fecha válida`
+      }
     ],
     'seller_ids': [
-      { type: 'required', message: $localize`:@@private.sales.create.validation.sellers.required:Los vendedores son requeridos` },
-      { type: 'minlength', message: $localize`:@@private.sales.create.validation.sellers.minlength:Se requiere al menos un vendedor` }
+      {
+        type: 'required',
+        message: $localize`:@@private.sales.create.validation.sellers.required:Los vendedores son requeridos`
+      },
+      {
+        type: 'minlength',
+        message: $localize`:@@private.sales.create.validation.sellers.minlength:Se requiere al menos un vendedor`
+      }
     ]
   };
 
@@ -207,9 +242,32 @@ export class CreateComponent {
         fecha_inicio: formattedFechaInicio!,
         fecha_fin: formattedFechaFin!,
         seller_ids: this.createForm.value.seller_ids as string[]
+      }).subscribe({
+        next: (response) => {
+          this.router.navigate(['private/sales']);
+
+          this.snackbarService.success('Plan de ventas creado', {
+            duration: 5000,
+            position: { horizontal: 'center', vertical: 'bottom' }
+          });
+
+        },
+        error: (error) => {
+          if (error.error) {
+            const err = error.error;
+
+            for (const key in err) {
+              const errCtx = err[key];
+
+              this.snackbarService.error(errCtx.ctx.error, {
+                duration: 5000,
+                position: { horizontal: 'center', vertical: 'bottom' }
+              });
+            }
+          }
+        }
       });
 
-      this.router.navigate(['private/sales']);
     } else {
       Object.keys(this.createForm.controls).forEach(key => {
         const control = this.createForm.get(key);
