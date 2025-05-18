@@ -44,6 +44,9 @@ export class RutasComponent implements OnInit {
   hasRoutes = signal(false);
   private readonly rutaService = inject(RutaService);
   private readonly pedidoService = inject(PedidoService);
+  
+  // Constante para el número máximo de pedidos por ruta
+  private readonly MAX_PEDIDOS_POR_RUTA = 3;
 
   // Traducciones
   readonly translations = {
@@ -108,7 +111,7 @@ export class RutasComponent implements OnInit {
     return pedidosPorFecha;
   }
   
-  // Método para crear objetos DeliveryRoute con máximo 3 pedidos por fecha
+  // Método para crear objetos DeliveryRoute con máximo de pedidos por fecha según MAX_PEDIDOS_POR_RUTA
   private crearDeliveryRoutes(pedidosPorFecha: { [key: string]: Pedido[] }): DeliveryRoute[] {
     const deliveryRoutes: DeliveryRoute[] = [];
     
@@ -116,12 +119,16 @@ export class RutasComponent implements OnInit {
     Object.keys(pedidosPorFecha).forEach(fecha => {
       const pedidosEnFecha = pedidosPorFecha[fecha];
       
-      // Dividir pedidos en grupos de máximo 3
-      for (let i = 0; i < pedidosEnFecha.length; i += 3) {
-        const pedidosGrupo = pedidosEnFecha.slice(i, i + 3);
+      // Dividir pedidos en grupos según MAX_PEDIDOS_POR_RUTA
+      for (let i = 0; i < pedidosEnFecha.length; i += this.MAX_PEDIDOS_POR_RUTA) {
+        const pedidosGrupo = pedidosEnFecha.slice(i, i + this.MAX_PEDIDOS_POR_RUTA);
         
-        // Crear arreglo de direcciones de los pedidos
-        const direcciones = pedidosGrupo.map(pedido => pedido.direccion);
+        // Crear arreglo de direcciones únicas de los pedidos
+        const direccionesSet = new Set<string>();
+        pedidosGrupo.forEach(pedido => {
+          direccionesSet.add(pedido.direccion);
+        });
+        const direcciones = Array.from(direccionesSet);
         
         // Crear un nuevo DeliveryRoute
         const deliveryRoute: DeliveryRoute = {
