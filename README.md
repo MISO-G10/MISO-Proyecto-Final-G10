@@ -127,6 +127,39 @@ Tecnologías principales:
 - `GET /fabricantes/ping` - Health check
 - `POST /fabricantes/reset` - Restablecer base de datos
 
+### Servicio de Inventarios
+- `POST /inventarios/createproduct` - Crear nuevo producto asociado a un fabricante
+- `GET /inventarios/productos/ubicacion` - Obtener ubicación de un producto
+- `POST /inventarios/bodegas` - Crear nueva bodega
+- `GET /inventarios/bodegas` - Listar todas las bodegas
+- `POST /inventarios/bodegas/{bodega_id}/productos` - Asignar producto a bodega
+- `GET /inventarios/bodegas/{bodega_id}/productos/{producto_id}` - Obtener producto en bodega
+- `GET /inventarios/productos` - Listar todos los productos
+- `POST /inventarios/productos/bulk` - Crear múltiples productos
+- `POST /inventarios/pedidos` - Crear nuevo pedido
+- `GET /inventarios/pedidos` - Listar pedidos (filtrable por usuario, tipo y fecha)
+- `GET /inventarios/pedidos/{pedido_id}` - Obtener detalles de un pedido
+- `GET /inventarios/rutas` - Listar todas las rutas disponibles
+- `GET /inventarios/ping` - Health check
+- `POST /inventarios/reset` - Restablecer base de datos
+
+### Servicio de Ventas
+- `GET /ping` - Health check del servicio
+
+Planes de Venta:
+- `GET /planes` - Listar todos los planes de venta
+- `GET /planes/{plan_id}` - Obtener detalles de un plan de venta
+- `POST /planes` - Crear nuevo plan de venta (requiere rol Director)
+- `PUT /planes/{plan_id}` - Actualizar plan de venta (requiere rol Director)
+- `DELETE /planes/{plan_id}` - Eliminar plan de venta (requiere rol Director)
+
+Vendedores en Planes:
+- `GET /planes/{plan_id}/vendedores` - Listar vendedores asignados a un plan
+- `GET /planes/{plan_id}/vendedores/{seller_id}` - Obtener detalles de un vendedor en un plan
+- `POST /planes/{plan_id}/vendedores` - Añadir vendedor a un plan (requiere rol Director)
+- `PUT /planes/{plan_id}/vendedores/{seller_id}` - Actualizar vendedor en un plan (requiere rol Director)
+- `DELETE /planes/{plan_id}/vendedores/{seller_id}` - Eliminar vendedor de un plan (requiere rol Director)
+
 ### Colección de Postman
 La colección postman se encuentra en el archivo postman_collection.json en este repositorio.
 
