@@ -158,8 +158,7 @@ fun MainNavigationDrawer(
         BottomNavItem.Home,
         BottomNavItem.Visits,
         BottomNavItem.Clients,
-        BottomNavItem.Catalog,
-        BottomNavItem.Orders
+        BottomNavItem.Catalog
     )
     BottomDrawer(navController,menus)
 }
