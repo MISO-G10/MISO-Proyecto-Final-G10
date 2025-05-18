@@ -58,7 +58,7 @@ class CreatePedido(BaseCommand):
                     return {
                         "error": f"No hay suficiente stock para el producto con ID {producto_id}. Disponible: {inventario_total}, Solicitado: {cantidad_solicitada}"
                     }, 400
-            fecha_entrega = datetime.now() + timedelta(days=random.randint(1, 5))
+            fecha_entrega = datetime.now() + timedelta(days=random.randint(1, 2))
             fecha_salida = datetime.now() + timedelta(days=random.randint(0, (fecha_entrega - datetime.now()).days - 1))
 
             nuevo_pedido = Pedido(

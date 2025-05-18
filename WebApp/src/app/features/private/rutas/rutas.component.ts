@@ -17,6 +17,7 @@ import { BodegaService } from '../../../core/services/bodegas.services';
 import { PedidoService } from '../../../core/services/pedidos.services';
 import { Pedido } from '../pedidos/models/pedido';
 import { Ruta } from './models/ruta';
+import { Bodega } from '../bodegas/models/bodega';
 
 @Component({
   selector: 'app-rutas',
@@ -50,7 +51,7 @@ export class RutasComponent implements OnInit {
   // Constante para el número máximo de pedidos por ruta
   private readonly MAX_PEDIDOS_POR_RUTA = 3;
   
-  // Dirección inicial para todas las rutas (punto de partida)
+  // Dirección inicial en caso de que no existan bodegas en la BDD aunque siempre deberia existir al menos una
   private readonly DIRECCION_INICIAL = 'Auto. Norte #108-27, Bogotá';
 
   // Traducciones
@@ -79,24 +80,37 @@ export class RutasComponent implements OnInit {
     this.pedidoService.listPedidos().subscribe(pedidos => { 
       // Obtener las rutas desde el servicio
       this.rutaService.listRutas().subscribe(rutas => {
-        // Paso 1: Agrupar pedidos por fechaEntrega
-        const pedidosPorFecha = this.agruparPedidosPorFecha(pedidos);
-        
-        // Paso 2 y 3: Crear objetos DeliveryRoute con máximo 3 pedidos por fecha
-        const deliveryRoutes = this.crearDeliveryRoutes(pedidosPorFecha);
-        
-        // Paso 4: Asignar datos de Ruta a cada DeliveryRoute
-        const allRoutes = this.asignarDatosRutas(deliveryRoutes, rutas);
-        
-        // Filtrar rutas por la fecha seleccionada
-        const filteredRoutes = allRoutes.filter(route =>
-          formatDate(route.fechaEntrega, 'yyyy-MM-dd', 'es-CO') === selectedDateStr
-        );
-        
-        // Actualizar las señales
-        this.routes.set(allRoutes);
-        this.filteredRoutes.set(filteredRoutes);
-        this.hasRoutes.set(filteredRoutes.length > 0);
+        // Obtener las bodegas desde el servicio
+        this.bodegaService.listBodegas().subscribe(bodegas => {
+          // Si no hay bodegas, crear una bodega por defecto
+          if (!bodegas || bodegas.length === 0) {
+            bodegas = [{
+              nombre: 'Bodega Principal',
+              direccion: this.DIRECCION_INICIAL,
+              createdAt: new Date(),
+              updatedAt: new Date()
+            }];
+          }
+          
+          // Paso 1: Agrupar pedidos por fechaEntrega
+          const pedidosPorFecha = this.agruparPedidosPorFecha(pedidos);
+          
+          // Paso 2: Crear objetos DeliveryRoute con máximo MAX_PEDIDOS_POR_RUTA pedidos por fecha
+          const deliveryRoutes = this.crearDeliveryRoutes(pedidosPorFecha, bodegas);
+          
+          // Paso 3: Asignar datos de Ruta a cada DeliveryRoute
+          const allRoutes = this.asignarDatosRutas(deliveryRoutes, rutas);
+          
+          // Filtrar rutas por la fecha seleccionada
+          const filteredRoutes = allRoutes.filter(route =>
+            formatDate(route.fechaEntrega, 'yyyy-MM-dd', 'es-CO') === selectedDateStr
+          );
+          
+          // Actualizar las señales
+          this.routes.set(allRoutes);
+          this.filteredRoutes.set(filteredRoutes);
+          this.hasRoutes.set(filteredRoutes.length > 0);
+        });
       });
     });
   }
@@ -117,7 +131,7 @@ export class RutasComponent implements OnInit {
   }
   
   // Método para crear objetos DeliveryRoute con máximo de pedidos por fecha según MAX_PEDIDOS_POR_RUTA
-  private crearDeliveryRoutes(pedidosPorFecha: { [key: string]: Pedido[] }): DeliveryRoute[] {
+  private crearDeliveryRoutes(pedidosPorFecha: { [key: string]: Pedido[] }, bodegas: Bodega[]): DeliveryRoute[] {
     const deliveryRoutes: DeliveryRoute[] = [];
     
     // Recorrer grupos de pedidos por fecha
@@ -126,6 +140,10 @@ export class RutasComponent implements OnInit {
       
       // Dividir pedidos en grupos según MAX_PEDIDOS_POR_RUTA
       for (let i = 0; i < pedidosEnFecha.length; i += this.MAX_PEDIDOS_POR_RUTA) {
+        // Seleccionar la bodega para esta ruta (ciclando si hay más rutas que bodegas)
+        const bodegaIndex = deliveryRoutes.length % bodegas.length;
+        const bodegaDireccion = bodegas[bodegaIndex].direccion;
+        
         const pedidosGrupo = pedidosEnFecha.slice(i, i + this.MAX_PEDIDOS_POR_RUTA);
         
         // Crear arreglo de direcciones únicas de los pedidos
@@ -134,8 +152,8 @@ export class RutasComponent implements OnInit {
           direccionesSet.add(pedido.direccion);
         });
         
-        // Crear array de direcciones comenzando con la dirección inicial
-        const direcciones = [this.DIRECCION_INICIAL, ...Array.from(direccionesSet)];
+        // Crear array de direcciones comenzando con la dirección de la bodega
+        const direcciones = [bodegaDireccion, ...Array.from(direccionesSet)];
         
         // Crear un nuevo DeliveryRoute
         const deliveryRoute: DeliveryRoute = {
@@ -208,7 +226,7 @@ export class RutasComponent implements OnInit {
       // Modo de transporte
       mapUrl += '&travelmode=driving';
     } else {
-      // Si no hay waypoints, abrir un mapa centrado en una ubicación predeterminada
+      // Si no hay direcciones (waypoints), abrir un mapa centrado en una ubicación predeterminada
       mapUrl = `https://www.google.com/maps/search/?api=1&query=Bogota,Colombia`;
     }
     
