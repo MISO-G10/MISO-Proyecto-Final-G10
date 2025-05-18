@@ -26,7 +26,7 @@ export class ProductoService {
 
   crearProducto(producto: Producto) {
     // Crear una copia del objeto y transformar el nombre del campo
-    const {fabricanteId, ...rest} = producto;
+    const {fabricante_id, ...rest} = producto;
 
     // Formatear las fechas como strings ISO
     const fechaVencimiento = producto.perecedero ? new Date(producto.fechaVencimiento).toISOString() : null;
@@ -49,7 +49,7 @@ export class ProductoService {
       ...rest,
       fechaVencimiento: fechaVencimiento,
       tiempoEntrega: tiempoEntrega,
-      fabricante_id: fabricanteId,
+      fabricante_id: fabricante_id,
       // Enviar el nombre del enum para que haga match de la manera en que está en el backend
       categoria: Object.keys(Categoria).find(key => Categoria[key as keyof typeof Categoria] === producto.categoria) || producto.categoria
     };
@@ -60,7 +60,7 @@ export class ProductoService {
 
   crearProductosMasivo(productos: Producto[]) {
     const productosData = productos.map(producto => {
-      const { fabricanteId, ...rest } = producto;
+      const { fabricante_id, ...rest } = producto;
 
       // Transformar el valor de la categoría al formato que espera el backend
       const categoriaEnum = Object.keys(Categoria).find(key =>
@@ -71,7 +71,7 @@ export class ProductoService {
         ...rest,
         fechaVencimiento: producto.perecedero ? new Date(producto.fechaVencimiento).toISOString() : null,
         tiempoEntrega: new Date(producto.tiempoEntrega).toISOString(),
-        fabricante_id: fabricanteId,
+        fabricante_id: fabricante_id,
         categoria: categoriaEnum
       };
     });

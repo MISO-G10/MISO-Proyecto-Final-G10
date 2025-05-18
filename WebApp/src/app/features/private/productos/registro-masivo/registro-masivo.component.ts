@@ -225,7 +225,7 @@ export class RegistroMasivoComponent implements OnInit {
         reglasComerciales: productData.reglascomerciales,
         reglasTributarias: productData.reglastributarias,
         categoria: this.mapCategoria(productData.categoria),
-        fabricanteId: this.fabricanteId
+        fabricante_id: this.fabricanteId
       } as Producto;
 
       productos.push(producto);

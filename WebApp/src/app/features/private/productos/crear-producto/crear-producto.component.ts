@@ -176,7 +176,7 @@ export class CrearProductoComponent implements OnInit {
 
     const producto: Producto = {
       ...formValues,
-      fabricanteId: this.fabricanteId
+      fabricante_id: this.fabricanteId
     };
 
     console.log('Enviando producto con fabricanteId:', this.fabricanteId);

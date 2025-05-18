@@ -42,7 +42,9 @@ describe('ProductoService', () => {
           reglasComerciales: 'Reglas 2',
           reglasTributarias: 'IVA 19%',
           categoria: Categoria.ALIMENTOS_BEBIDAS,
-          fabricanteId: '12345'
+          fabricante_id: '12345',
+          sku: 'TEST123',
+          createdAt: new Date().toISOString()
         }
       ];
 
@@ -58,12 +60,12 @@ describe('ProductoService', () => {
 
       const req = httpMock.expectOne(`${environment.apiUrl}:${environment.endpointInventario}/productos/bulk`);
       expect(req.request.method).toBe('POST');
-      
+
       // Verificar que los datos se transforman correctamente
       const requestBody = req.request.body;
-      expect(requestBody.productos[0].fabricante_id).toBe(mockProducts[0].fabricanteId);
+      expect(requestBody.productos[0].fabricante_id).toBe(mockProducts[0].fabricante_id);
       expect(requestBody.productos[0].categoria).toBe('ALIMENTOS_BEBIDAS');
-      
+
       req.flush(expectedResponse);
     });
 
@@ -81,7 +83,9 @@ describe('ProductoService', () => {
           reglasComerciales: 'Reglas 2',
           reglasTributarias: 'IVA 19%',
           categoria: Categoria.ALIMENTOS_BEBIDAS,
-          fabricanteId: '12345'
+          fabricante_id: '12345',
+          sku: 'TEST123',
+          createdAt: new Date().toISOString()
         }
       ];
 
@@ -118,7 +122,9 @@ describe('ProductoService', () => {
           reglasComerciales: 'Reglas 2',
           reglasTributarias: 'IVA 19%',
           categoria: Categoria.LIMPIEZA_HOGAR,
-          fabricanteId: '12345'
+          fabricante_id: '12345',
+          sku: 'TEST123',
+          createdAt: new Date().toISOString()
         }
       ];
 
