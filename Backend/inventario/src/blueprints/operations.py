@@ -143,7 +143,9 @@ def create_pedido():
         return jsonify({"error": "El cuerpo de la solicitud no puede estar vacío"}), 400
 
     current_usuario = g.current_usuario
-    result = CreatePedido(current_usuario, json_data).execute()
+    token=g.token
+    
+    result = CreatePedido(current_usuario, json_data,token).execute()
 
     if isinstance(result, tuple) and len(result) == 2:
         return jsonify(result[0]), result[1]
