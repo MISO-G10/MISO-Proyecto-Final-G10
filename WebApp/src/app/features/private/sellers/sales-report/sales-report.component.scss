@@ -22,6 +22,27 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     
+    .loading-container, .error-container, .no-data-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      padding: 16px;
+      
+      p {
+        margin-top: 16px;
+        color: #666;
+      }
+    }
+    
+    .error-container {
+      .error-message {
+        color: #f44336;
+        text-align: center;
+      }
+    }
+    
     table {
       width: 100%;
       

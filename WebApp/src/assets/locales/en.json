@@ -103,6 +103,7 @@
     "private.seller.sales.report.table.col.date":"Date",
     "private.seller.sales.report.table.col.amount":"Amount",
     "private.seller.sales.report.total":"Total Sales",
-    "private.seller.sales.report.back":"Back to Sellers"
+    "private.seller.sales.report.back":"Back to Sellers",
+    "private.seller.sales.report.no_data":"No sales data available for this seller."
   }
 }
