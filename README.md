@@ -166,7 +166,7 @@ La colección postman se encuentra en el archivo postman_collection.json en este
 ## Infraestructura y Despliegue
 
 ### Tecnologías de Infraestructura
-- Backend desplegado en contenedores Docker
+- Backend desplegado en contenedores Docker en instancia VM de GCP
 - Frontend web desplegado en GCP VM con Nginx
 - CI/CD automatizado con GitHub Actions
 - CORS configurado para permitir comunicación segura entre componentes
@@ -183,7 +183,8 @@ La colección postman se encuentra en el archivo postman_collection.json en este
 - Backups automatizados
 
 ### Monitoreo
+Mediante el servicio de GCP - Uptime checker conectado a inventarios se pueden visualizar
+- Estado del servicio (continuo llamado a healthcheck)
 - Logs centralizados
-- Métricas de rendimiento
 - Alertas automáticas
-- Dashboard de estado del sistema
+- Dashboard de historia del estado del sistema
