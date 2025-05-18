@@ -11,20 +11,25 @@ config = get_config(env_name)
 print(f"env_name: {env_name}")
 if env_name == 'test':
     DATABASE_URL = 'sqlite:///:memory:'  # Usar SQLite en memoria para pruebas
+    print(f"Connecting to database: {DATABASE_URL}")
+    # SQLite en memoria no soporta los mismos parámetros de pool que PostgreSQL
+    engine = create_engine(
+        DATABASE_URL,
+        # Solo parámetros compatibles con SQLite
+        pool_pre_ping=True  # Verificar que la conexión sigue viva antes de usarla
+    )
 else:
     DATABASE_URL = f"postgresql+psycopg2://{config.DB_USER}:{config.DB_PASSWORD}@{config.DB_HOST}:{config.DB_PORT}/{config.DB_NAME}"
-
-print(f"Connecting to database: {DATABASE_URL}")
-
-# Configuración del pool de conexiones
-engine = create_engine(
-    DATABASE_URL,
-    pool_size=5,  # Número de conexiones permanentes
-    max_overflow=10,  # Número máximo de conexiones adicionales
-    pool_timeout=30,  # Tiempo de espera para obtener una conexión
-    pool_recycle=3600,  # Reciclar conexiones después de una hora
-    pool_pre_ping=True  # Verificar que la conexión sigue viva antes de usarla
-)
+    print(f"Connecting to database: {DATABASE_URL}")
+    # Configuración completa del pool de conexiones para PostgreSQL
+    engine = create_engine(
+        DATABASE_URL,
+        pool_size=5,  # Número de conexiones permanentes
+        max_overflow=10,  # Número máximo de conexiones adicionales
+        pool_timeout=30,  # Tiempo de espera para obtener una conexión
+        pool_recycle=3600,  # Reciclar conexiones después de una hora
+        pool_pre_ping=True  # Verificar que la conexión sigue viva antes de usarla
+    )
 
 def get_inspector(engine):
     return inspect(engine)
