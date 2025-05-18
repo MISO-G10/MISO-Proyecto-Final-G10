@@ -26,16 +26,16 @@ export class RegistroMasivoComponent implements OnInit {
   selectedFile: File | null = null;
   isUploading: boolean = false;
   uploadProgress: number = 0;
-  
+
   // Campos requeridos para validación del csv
   requiredFields = [
-    'nombre', 
-    'valorunidad', 
-    'fechavencimiento', 
-    'tiempoentrega', 
-    'descripcion', 
-    'condicionalmacenamiento', 
-    'reglascomerciales', 
+    'nombre',
+    'valorunidad',
+    'fechavencimiento',
+    'tiempoentrega',
+    'descripcion',
+    'condicionalmacenamiento',
+    'reglascomerciales',
     'reglastributarias',
     'perecedero',
     'categoria',
@@ -59,14 +59,14 @@ export class RegistroMasivoComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      
+
       // Se valida que sea un archivo formato csv
       if (file.type !== 'text/csv' && !file.name.toLowerCase().endsWith('.csv')) {
         this.showError('El archivo debe tener formato CSV');
         this.selectedFile = null;
         return;
       }
-      
+
       this.selectedFile = file;
     }
   }
@@ -103,12 +103,12 @@ export class RegistroMasivoComponent implements OnInit {
 
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      
+
       reader.onload = (e) => {
         try {
           const content = e.target?.result as string;
           const productos = this.parseCSV(content);
-          
+
           if (productos.length === 0) {
             this.showError('El archivo CSV no contiene datos válidos');
             this.isUploading = false;
@@ -117,14 +117,14 @@ export class RegistroMasivoComponent implements OnInit {
           }
 
           console.log('Productos a registrar:', productos);
-          
+
           // Servicio registro masivo
           this.productoService.crearProductosMasivo(productos).subscribe({
             next: (response) => {
               console.log('Respuesta del servidor:', response);
-              
+
               if (response.error) {
-                
+
                 if (response.details) {
                   const errorMessages = response.details
                     .map(detail => `Línea ${detail.index + 2}: ${JSON.stringify(detail.error)}`)
@@ -137,7 +137,7 @@ export class RegistroMasivoComponent implements OnInit {
                 reject(new Error('Error de validación'));
                 return;
               }
-              
+
               // Mensaje de éxito si se crearon los productos en el back
               if (response.products && response.products.length > 0) {
                 this.showSuccess('Productos registrados exitosamente');
@@ -149,18 +149,18 @@ export class RegistroMasivoComponent implements OnInit {
               } else {
                 this.showError('No se recibió confirmación de productos creados');
               }
-              
+
               this.isUploading = false;
             },
             error: (error) => {
               console.error('Error al registrar productos:', error);
-              this.showError('Error al registrar productos: ' + 
+              this.showError('Error al registrar productos: ' +
                 (error.error?.error || error.error?.message || error.message || 'Error desconocido'));
               this.isUploading = false;
               reject(error);
             }
           });
-          
+
         } catch (error) {
           console.error('Error al procesar el archivo CSV:', error);
           this.showError('Error al procesar el archivo CSV: ' + (error as Error).message);
@@ -200,7 +200,7 @@ export class RegistroMasivoComponent implements OnInit {
     // Procesar cada línea (excepto la de encabezados)
     for (let i = 1; i < lines.length; i++) {
       if (!lines[i].trim()) continue; // Saltar líneas vacías
-      
+
       const values = this.parseCSVLine(lines[i]);
       if (values.length !== headers.length) {
         throw new Error(`La línea ${i + 1} no tiene el formato correcto`);
@@ -213,7 +213,7 @@ export class RegistroMasivoComponent implements OnInit {
       });
 
       // Se convierten los valores al formato del modelo de producto
-      const producto: Producto = {
+      const producto = {
         nombre: productData.nombre,
         descripcion: productData.descripcion,
         perecedero: productData.perecedero.toLowerCase() === 'true' || productData.perecedero === '1',
@@ -226,7 +226,7 @@ export class RegistroMasivoComponent implements OnInit {
         reglasTributarias: productData.reglastributarias,
         categoria: this.mapCategoria(productData.categoria),
         fabricanteId: this.fabricanteId
-      };
+      } as Producto;
 
       productos.push(producto);
     }
@@ -239,10 +239,10 @@ export class RegistroMasivoComponent implements OnInit {
     const result: string[] = [];
     let inQuotes = false;
     let currentValue = '';
-    
+
     for (let i = 0; i < line.length; i++) {
       const char = line[i];
-      
+
       if (char === '"') {
         inQuotes = !inQuotes;
       } else if (char === ',' && !inQuotes) {
@@ -252,16 +252,16 @@ export class RegistroMasivoComponent implements OnInit {
         currentValue += char;
       }
     }
-    
+
     // Añadir el último valor
     result.push(currentValue.trim());
-    
+
     return result;
   }
 
   mapCategoria(categoriaStr: string): Categoria {
     const categoriaUpper = categoriaStr.toUpperCase();
-    
+
     switch (categoriaUpper) {
       case 'ALIMENTOS Y BEBIDAS':
       case 'ALIMENTOS_BEBIDAS':

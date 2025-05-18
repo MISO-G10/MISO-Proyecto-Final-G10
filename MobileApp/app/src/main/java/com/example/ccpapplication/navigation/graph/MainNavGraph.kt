@@ -22,6 +22,8 @@ import com.example.ccpapplication.pages.products.ProductViewModel
 import com.example.ccpapplication.pages.shopping.ShoppingCartViewModel
 import com.example.ccpapplication.pages.shopping.VendedorTenderoPage
 import com.example.ccpapplication.services.interceptors.TokenManager
+import com.example.ccpapplication.navigation.AppPages
+import com.example.ccpapplication.pages.orders.OrderDetailPage
 
 fun NavGraphBuilder.mainNavGraph(navController: NavHostController,tokenManager:TokenManager) {
     navigation(
@@ -106,6 +108,18 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController,tokenManager:T
                 productViewModel = productViewModel,
                 user = tokenManager.getUser(),
                 tendero = tendero,
+            )
+        }
+
+        composable(
+            route = AppPages.OrderDetailPage.route
+        ) { backStackEntry ->
+            val orderId = backStackEntry.arguments?.getString("orderId") ?: ""
+            OrderDetailPage(
+                orderId = orderId,
+                products = listOf(), // TODO: Get products from ViewModel
+                onBackClick = { navController.popBackStack() },
+                onFavoriteClick = { /* TODO: Implement favorite functionality */ }
             )
         }
 

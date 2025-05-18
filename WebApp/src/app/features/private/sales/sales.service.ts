@@ -11,7 +11,7 @@ import { environment } from '../../../../environment/environment';
 export class SalesService {
   private readonly http = inject(HttpClient);
   private readonly snackbarService = inject(SnackbarService);
-  private readonly apiUrl = environment.apiUrl+':'+environment.endpointVentas;
+  private readonly apiUrl = environment.apiUrl + ':' + environment.endpointVentas;
 
 
   constructor() {
