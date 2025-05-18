@@ -14,6 +14,8 @@ import { formatDate } from '@angular/common';
 import { environment } from '../../../../environment/environment';
 import { RutaService } from '../../../core/services/rutas.services';
 import { PedidoService } from '../../../core/services/pedidos.services';
+import { Pedido } from '../pedidos/models/pedido';
+import { Ruta } from './models/ruta';
 
 @Component({
   selector: 'app-rutas',
@@ -62,83 +64,101 @@ export class RutasComponent implements OnInit {
 
   // Método para cargar las rutas según la fecha seleccionada
   loadRoutes(date: Date) {
-    // Normalmente aquí se haría una llamada a un servicio para obtener los datos
-    // Por ahora usaremos datos de ejemplo
-    
     // Formatear la fecha seleccionada para comparar
     const selectedDateStr = formatDate(date, 'yyyy-MM-dd', 'es-CO');
-    const currentDateStr = formatDate(new Date(), 'yyyy-MM-dd', 'es-CO');
-
-    // Datos de ejemplo - En una aplicación real esto vendría de un servicio
-    const allRoutes: DeliveryRoute[] = [
-      {
-        id: '1',
-        nombre: 'Ruta Centro',
-        placa: 'XYZ-123',
-        conductor: 'Carlos Ramírez',
-        routeMapUrl: this.generateStaticMapUrl([
-        'Carrera 7 # 32-16, Bogotá, Colombia', 
-        'Plaza de Bolívar, Bogotá, Colombia',
-        'Museo Nacional, Bogotá, Colombia',
-        'Parque de la 93, Bogotá, Colombia'
-      ]),
-        fechaEntrega: new Date(),
-        direcciones: [
-        'Carrera 7 # 32-16, Bogotá, Colombia', 
-        'Plaza de Bolívar, Bogotá, Colombia',
-        'Museo Nacional, Bogotá, Colombia',
-        'Parque de la 93, Bogotá, Colombia'
-      ]
-      },
-      {
-        id: '2',
-        nombre: 'Ruta Norte',
-        placa: 'ABC-456',
-        conductor: 'Juan Pérez',
-        routeMapUrl: this.generateStaticMapUrl([
-          'Cra 20 #127A-05, Bogotá, Colombia',
-          'Cra. 12 A #134-10, Bogotá, Colombia',
-          'Calle 163A # 13B-60, Bogotá, Colombia',
-          'Cll. 108 #3-42, Bogotá, Colombia'
-      ]),
-        fechaEntrega: new Date(),
-        direcciones: [
-      'Cra 20 #127A-05, Bogotá, Colombia',
-      'Cra. 12 A #134-10, Bogotá, Colombia',
-      'Calle 163A # 13B-60, Bogotá, Colombia',
-      'Cll. 108 #3-42, Bogotá, Colombia'
-    ]
-      },
-      {
-        id: '3',
-        nombre: 'Ruta Sur',
-        placa: 'DEF-789',
-        conductor: 'Luis Torres',
-        routeMapUrl: this.generateStaticMapUrl([
-          'Centro Comercial El Tunal, Bogotá, Colombia',
-          'Biblioteca El Tintal, Bogotá, Colombia',
-          'Portal Sur Transmilenio, Bogotá, Colombia',
-          'Centro Comercial Ciudad Tunal, Bogotá, Colombia'
-        ]),
-        fechaEntrega: new Date(new Date().setDate(new Date().getDate() + 1)),
-        direcciones: [
-          'Centro Comercial El Tunal, Bogotá, Colombia',
-          'Biblioteca El Tintal, Bogotá, Colombia',
-          'Portal Sur Transmilenio, Bogotá, Colombia',
-          'Centro Comercial Ciudad Tunal, Bogotá, Colombia'
-        ]
+    
+    // Obtener los pedidos desde el servicio
+    this.pedidoService.listPedidos().subscribe(pedidos => { 
+      // Obtener las rutas desde el servicio
+      this.rutaService.listRutas().subscribe(rutas => {
+        // Paso 1: Agrupar pedidos por fechaEntrega
+        const pedidosPorFecha = this.agruparPedidosPorFecha(pedidos);
+        
+        // Paso 2 y 3: Crear objetos DeliveryRoute con máximo 3 pedidos por fecha
+        const deliveryRoutes = this.crearDeliveryRoutes(pedidosPorFecha);
+        
+        // Paso 4: Asignar datos de Ruta a cada DeliveryRoute
+        const allRoutes = this.asignarDatosRutas(deliveryRoutes, rutas);
+        
+        // Filtrar rutas por la fecha seleccionada
+        const filteredRoutes = allRoutes.filter(route =>
+          formatDate(route.fechaEntrega, 'yyyy-MM-dd', 'es-CO') === selectedDateStr
+        );
+        
+        // Actualizar las señales
+        this.routes.set(allRoutes);
+        this.filteredRoutes.set(filteredRoutes);
+        this.hasRoutes.set(filteredRoutes.length > 0);
+      });
+    });
+  }
+  
+  // Método para agrupar pedidos por fechaEntrega
+  private agruparPedidosPorFecha(pedidos: Pedido[]): { [key: string]: Pedido[] } {
+    const pedidosPorFecha: { [key: string]: Pedido[] } = {};
+    
+    pedidos.forEach(pedido => {
+      const fecha = formatDate(new Date(pedido.fechaEntrega), 'yyyy-MM-dd', 'es-CO');
+      if (!pedidosPorFecha[fecha]) {
+        pedidosPorFecha[fecha] = [];
       }
-    ];
+      pedidosPorFecha[fecha].push(pedido);
+    });
     
-    // Filtrar rutas por la fecha seleccionada
-    const filteredRoutes = allRoutes.filter(route =>
-      formatDate(route.fechaEntrega, 'yyyy-MM-dd', 'es-CO') === selectedDateStr
-    );
+    return pedidosPorFecha;
+  }
+  
+  // Método para crear objetos DeliveryRoute con máximo 3 pedidos por fecha
+  private crearDeliveryRoutes(pedidosPorFecha: { [key: string]: Pedido[] }): DeliveryRoute[] {
+    const deliveryRoutes: DeliveryRoute[] = [];
     
-    // Actualizar las señales
-    this.routes.set(allRoutes);
-    this.filteredRoutes.set(filteredRoutes);
-    this.hasRoutes.set(filteredRoutes.length > 0);
+    // Recorrer grupos de pedidos por fecha
+    Object.keys(pedidosPorFecha).forEach(fecha => {
+      const pedidosEnFecha = pedidosPorFecha[fecha];
+      
+      // Dividir pedidos en grupos de máximo 3
+      for (let i = 0; i < pedidosEnFecha.length; i += 3) {
+        const pedidosGrupo = pedidosEnFecha.slice(i, i + 3);
+        
+        // Crear arreglo de direcciones de los pedidos
+        const direcciones = pedidosGrupo.map(pedido => pedido.direccion);
+        
+        // Crear un nuevo DeliveryRoute
+        const deliveryRoute: DeliveryRoute = {
+          id: `route-${fecha}-${i}`,
+          nombre: '', // Se completará después con los datos de la ruta
+          placa: '', // Se completará después con los datos de la ruta
+          conductor: '', // Se completará después con los datos de la ruta
+          routeMapUrl: this.generateStaticMapUrl(direcciones),
+          fechaEntrega: new Date(pedidosGrupo[0].fechaEntrega),
+          direcciones: direcciones
+        };
+        
+        deliveryRoutes.push(deliveryRoute);
+      }
+    });
+    
+    return deliveryRoutes;
+  }
+  
+  // Método para asignar datos de rutas a los objetos DeliveryRoute
+  private asignarDatosRutas(deliveryRoutes: DeliveryRoute[], rutas: Ruta[]): DeliveryRoute[] {
+    if (rutas.length === 0) {
+      return deliveryRoutes;
+    }
+    
+    return deliveryRoutes.map((route, index) => {
+      // Calcular el índice para asignar una ruta, ciclando si hay más deliveryRoutes que rutas
+      const rutaIndex = index % rutas.length;
+      const ruta = rutas[rutaIndex];
+      
+      return {
+        ...route,
+        nombre: ruta.nombre,
+        placa: ruta.placa,
+        conductor: ruta.conductor
+      };
+    });
   }
 
   // Método para manejar el cambio de fecha
