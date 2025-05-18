@@ -61,8 +61,15 @@ class CreatePedido(BaseCommand):
                     return {
                         "error": f"No hay suficiente stock para el producto con ID {producto_id}. Disponible: {inventario_total}, Solicitado: {cantidad_solicitada}"
                     }, 400
-            fecha_entrega = datetime.now() + timedelta(days=random.randint(1, 2))
-            fecha_salida = datetime.now() + timedelta(days=random.randint(0, (fecha_entrega - datetime.now()).days - 1))
+            now = datetime.now()
+            fecha_entrega = now + timedelta(days=random.randint(1, 2))
+            max_dias_salida = (fecha_entrega - now).days - 1
+
+            if max_dias_salida > 0:
+                fecha_salida = now + timedelta(days=random.randint(0, max_dias_salida))
+            else:
+                fecha_salida = now
+                
             vendedor_id = self.vendedor["id"]
             if self.data.get("usuario_id") and self.data["usuario_id"] == vendedor_id:
                 # Significa que no es el verdadero vendedor
