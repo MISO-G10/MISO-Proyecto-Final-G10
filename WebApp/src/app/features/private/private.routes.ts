@@ -56,7 +56,7 @@ export const PRIVATE_ROUTES: Routes = [
         path: 'fabricantes/create',
         loadComponent: () => import('./fabricantes/create-fabricante/create-fabricante.component').then(c => c.CreateFabricanteComponent),
         canActivate: [RoleGuard],
-        data: { roles: ['ADMINISTRADOR'] }
+        data: { roles: ['ADMINISTRADOR', 'ENCARGADO_COMPRAS_PROVEEDORES'] }
       },
 
       {
@@ -69,14 +69,14 @@ export const PRIVATE_ROUTES: Routes = [
         path: 'productos/:productoId',
         loadComponent: () => import('./productos/producto-detalle/producto-detalle.component').then(m => m.ProductoDetalleComponent),
         canActivate: [RoleGuard],
-        data: { roles: ['ADMINISTRADOR', 'LOGISTICA'] }
+        data: { roles: ['ADMINISTRADOR', 'LOGISTICA', 'ENCARGADO_COMPRAS_PROVEEDORES'] }
       },
 
       {
         path: 'productos',
         loadComponent: () => import('./productos/productos.component').then(m => m.ProductosComponent),
         canActivate: [RoleGuard],
-        data: { roles: ['ADMINISTRADOR', 'LOGISTICA'] }
+        data: { roles: ['ADMINISTRADOR', 'LOGISTICA', 'ENCARGADO_COMPRAS_PROVEEDORES'] }
       },
       {
         path: 'routes', 
