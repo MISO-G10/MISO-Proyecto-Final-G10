@@ -172,13 +172,13 @@ La colección postman se encuentra en el archivo postman_collection.json en este
 - CORS configurado para permitir comunicación segura entre componentes
 
 ### Seguridad
-- JWT para autenticación
+- JWT para generación de tokens y autenticación de microservicios
 - CORS configurado para endpoints
-- HTTPS en todas las comunicaciones
 - Roles y permisos por usuario
 
 ### Base de Datos
 - PostgreSQL para persistencia de datos
+- SQLLite en memoria para pruebas
 - Esquemas independientes por microservicio
 - Backups automatizados
 
@@ -188,3 +188,8 @@ Mediante el servicio de GCP - Uptime checker conectado a inventarios se pueden v
 - Logs centralizados
 - Alertas automáticas
 - Dashboard de historia del estado del sistema
+
+### Testing
+- Mobile: Pruebas E2E con Compose UI Testing y Android Instrumentales
+- Backend: Pytest para pruebas unitarias, Locustt para pruebas de desempeño, y Monitoreo con GCP.
+- App Web: Pruebas con Jest, Karma, Kasmine
