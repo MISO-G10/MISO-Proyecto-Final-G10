@@ -139,5 +139,12 @@ def create_app():
         from app.models import sales_plan_seller, sales_plan
 
         db.create_all()
+    
+    # Registrar función para limpiar conexiones a la base de datos al final de cada petición
+    # @app.teardown_appcontext
+    # def shutdown_session(exception=None):
+    #     db.session.remove()
+    #     if os.environ.get('FLASK_ENV') == 'development':
+    #         print("Sesiones de base de datos limpiadas")
 
     return app
