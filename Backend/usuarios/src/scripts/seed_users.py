@@ -76,7 +76,7 @@ def seed_all_users():
         "Don Jose", 
         UsuarioRol.TENDERO,
         telefono="+(300) 221-5843",
-        direccion="Bossque II 10-20"
+        direccion="Cra 20 #127A-05, Bogotá, Colombia"
     )
     
     # Create tendero user
@@ -87,7 +87,7 @@ def seed_all_users():
         "Surtimax", 
         UsuarioRol.TENDERO,
         telefono="+(311) 205-34897",
-        direccion="Calle 124 St"
+        direccion="Cra. 12 A #134-10, Bogotá, Colombia"
     )
     
     # Create tendero user
@@ -98,7 +98,7 @@ def seed_all_users():
         "Calleja", 
         UsuarioRol.TENDERO,
         telefono="+(312) 225-3544",
-        direccion="Calle 5A 25-21"
+        direccion="Calle 163A # 13B-60, Bogotá, Colombia"
     )
     
     # Create tendero user
@@ -106,19 +106,87 @@ def seed_all_users():
         "tendero4@gmail.com", 
         "tendero123", 
         "Tienda", 
-        "Alameda", 
+        "Santa Ana", 
         UsuarioRol.TENDERO,
         telefono="+(318) 205-2160",
-        direccion="Carrera 4 20-16"
+        direccion="Cll. 108 #3-42, Bogotá, Colombia"
+    )
+
+    # Create tendero user
+    tendero_id5 = create_test_user(
+        "tendero5@gmail.com", 
+        "tendero123", 
+        "Tienda", 
+        "La 116", 
+        UsuarioRol.TENDERO,
+        telefono="+(318) 205-2160",
+        direccion="Ac 116 #9-72, Bogotá, Colombia"
+    )
+
+    # Create tendero user
+    tendero_id6 = create_test_user(
+        "tendero6@gmail.com", 
+        "tendero123", 
+        "Tienda", 
+        "Nacional", 
+        UsuarioRol.TENDERO,
+        telefono="+(318) 205-2160",
+        direccion="Cra. 11a #113-9, Bogotá, Colombia"
+    )
+
+    # Create tendero user
+    tendero_id7 = create_test_user(
+        "tendero7@gmail.com", 
+        "tendero123", 
+        "Tienda", 
+        "Bolivar", 
+        UsuarioRol.TENDERO,
+        telefono="+(318) 205-2160",
+        direccion="Cra. 13a #109-45, Bogotá, Colombia"
+    )
+
+    # Create tendero user
+    tendero_id8 = create_test_user(
+        "tendero8@gmail.com", 
+        "tendero123", 
+        "Tienda", 
+        "104", 
+        UsuarioRol.TENDERO,
+        telefono="+(318) 205-2160",
+        direccion="Cl. 104 #15-56, Bogotá, Colombia"
     )
     
     # Create vendedor user
     vendedor_id = create_test_user(
         "vendedor@gmail.com", 
         "vendedor123", 
+        "Andres Garcia", 
+        "Triana", 
+        UsuarioRol.VENDEDOR,
+        telefono="+(314) 235-2199",
+        direccion="Carrera 20 21-22 Apt 206"
+    )
+
+    # Create vendedor user
+    vendedor_id2 = create_test_user(
+        "vendedor2@gmail.com", 
+        "vendedor123", 
+        "Juan", 
+        "Perez", 
+        UsuarioRol.VENDEDOR,
+        telefono="+(314) 235-2199",
+        direccion="Carrera 20 21-22 Apt 206"
+    )
+
+    # Create vendedor user
+    vendedor_id3 = create_test_user(
+        "vendedor3@gmail.com", 
+        "vendedor123", 
         "Camilo", 
         "Triana", 
-        UsuarioRol.VENDEDOR
+        UsuarioRol.VENDEDOR,
+        telefono="+(311) 344-9987",
+        direccion="Calle 18 134-22"
     )
     
     # Create logistica user
@@ -127,16 +195,20 @@ def seed_all_users():
         "logistica123", 
         "Logistica", 
         "Prueba", 
-        UsuarioRol.LOGISTICA
+        UsuarioRol.LOGISTICA,
+        telefono="+(314) 344-9987",
+        direccion="Calle 18 134-20"
     )
-    
+
     # Create director ventas user
     director_ventas_id = create_test_user(
         "directorventas@gmail.com", 
         "directorventas123", 
         "Director", 
         "Ventas", 
-        UsuarioRol.DIRECTOR_VENTAS
+        UsuarioRol.DIRECTOR_VENTAS,
+        telefono="+(314) 344-1822",
+        direccion="Calle 18 134-20"
     )
 
     # Create comprasproveedores user
@@ -145,7 +217,9 @@ def seed_all_users():
         "encargadoproveedores123", 
         "Encargado", 
         "ComprasProveedores", 
-        UsuarioRol.ENCARGADO_COMPRAS_PROVEEDORES
+        UsuarioRol.ENCARGADO_COMPRAS_PROVEEDORES,
+        telefono="+(300) 211-9944",
+        direccion="Carrera 18 114-60"
     )
     
     print("Proceso de creación de usuarios de prueba completado.")

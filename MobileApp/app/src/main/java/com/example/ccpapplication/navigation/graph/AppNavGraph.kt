@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.ccpapplication.AppViewModel
+import com.example.ccpapplication.services.interceptors.TokenManager
 
 object Graph {
     const val AUTHENTICATION = "auth_graph"
@@ -15,11 +16,12 @@ object Graph {
     const val SCHEDULE_VISIT = "schedule_visit"
     const val CLIENTS = "clients"
     const val VISITS = "visits"
+    const val VENDEDOR_SHOPPING="vendedor_shopping"
 }
 
 @Composable
 fun AppNavGraph(navController: NavHostController = rememberNavController(),
-                appViewModel: AppViewModel, modifier: Modifier) {
+                appViewModel: AppViewModel, modifier: Modifier,tokenManager:TokenManager) {
     NavHost(
         navController = navController,
         route = "root",
@@ -27,7 +29,7 @@ fun AppNavGraph(navController: NavHostController = rememberNavController(),
         modifier = modifier
     ) {
         authNavGraph(navController = navController,appViewModel = appViewModel)
-        clientNavGraph(navController = navController)
-        mainNavGraph(navController = navController)
+        clientNavGraph(navController = navController,tokenManager=tokenManager)
+        mainNavGraph(navController = navController,tokenManager=tokenManager)
     }
 }

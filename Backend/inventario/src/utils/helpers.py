@@ -1,5 +1,6 @@
 from datetime import datetime
 from uuid import UUID
+from enum import Enum
 
 
 def serialize_sqlalchemy(obj):
@@ -17,6 +18,9 @@ def serialize_sqlalchemy(obj):
         if isinstance(value, datetime):
             # Convert datetime to string
             result[key] = value.isoformat()
+        elif isinstance(value, Enum):
+            # Convert enum to its value
+            result[key] = value.value
         elif hasattr(value, '__dict__'):
             # Recursively serialize nested SQLAlchemy objects
             result[key] = serialize_sqlalchemy(value)

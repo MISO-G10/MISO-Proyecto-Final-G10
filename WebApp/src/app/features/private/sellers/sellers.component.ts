@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
-import {  RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { SellerService } from '../../../core/services/seller.services';
 import { User } from '../../auth/login/models/user';
 
@@ -29,6 +29,7 @@ import { User } from '../../auth/login/models/user';
 export class SellersComponent {
     private readonly dialog = inject(MatDialog);
     private readonly sellerService= inject(SellerService);
+    private readonly router = inject(Router);
     
     readonly translations = {
       search_placeholder: $localize`:@@private.seller.search.placeholder:Nombre, email o teléfono`,
@@ -41,7 +42,8 @@ export class SellersComponent {
       table_col5: $localize`:@@private.seller.table.col5:Acciones`,
       tooltip_detail: $localize`:@@private.seller.tooltip.detail:Ver detalles`,
       tooltip_edit: $localize`:@@private.seller.tooltip.edit:Editar`,
-      
+      sales_report_button: $localize`:@@private.seller.sales.report.button:Informe de Ventas`,
+      sales_report_tooltip: $localize`:@@private.seller.sales.report.tooltip:Ver informe de ventas`
     };
     
     displayedColumns: string[] = ['nombre', 'username', 'telefono', 'direccion', 'actions'];
@@ -77,6 +79,23 @@ export class SellersComponent {
         )
       );
     }
+
+    navigateToSalesReport(seller: User) {
+      // Verificamos que el vendedor tenga un ID
+      if (!seller.id) {
+        console.error('El vendedor no tiene ID');
+        return;
+      }
+      
+      // Navegamos a la ruta del informe de ventas pasando el vendedor en el estado
+      this.router.navigateByUrl('/private/sellers/sales-report/' + seller.id, { 
+        state: { sellerData: seller }
+      });
+    }
+    navigateToEdit(user: User): void {
+      console.log(user);
+      this.router.navigate(['/private/sellers/edit'], { state: { user } });
+}
   
 
 }

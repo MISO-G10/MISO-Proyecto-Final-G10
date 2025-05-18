@@ -5,12 +5,15 @@ import com.example.ccpapplication.data.model.UpdateVisitResponse
 import com.example.ccpapplication.data.model.AuthResponse
 import com.example.ccpapplication.data.model.Producto
 import com.example.ccpapplication.data.model.Client
+import com.example.ccpapplication.data.model.PedidoRequest
+import com.example.ccpapplication.data.model.PedidoResponse
 import com.example.ccpapplication.data.model.UserRegistrationResponse
 import com.example.ccpapplication.data.model.User
 import com.example.ccpapplication.data.model.UserLogin
 import com.example.ccpapplication.data.model.UserRegistration
 import com.example.ccpapplication.data.model.VisitAdd
 import com.example.ccpapplication.data.model.VisitUpdate
+import com.example.ccpapplication.data.model.Order
 import retrofit2.Response
 
 interface CcpApiServiceAdapter {
@@ -21,4 +24,6 @@ interface CcpApiServiceAdapter {
     suspend fun registerUser(user: UserRegistration): Response<UserRegistrationResponse>
     suspend fun listProductos():Response<List<Producto>>
     suspend fun getAssignedClients(): Response<List<Client>>
+    suspend fun createPedido(request: PedidoRequest):Response<PedidoResponse>
+    suspend fun getOrdersTendero(tenderoId: String, tipoUsuario: String = "t"): Response<List<Order>>
 }

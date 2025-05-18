@@ -38,10 +38,13 @@
         <ng-container matColumnDef="products">
           <th mat-header-cell *matHeaderCellDef>{{ translations.col_products }}</th>
           <td mat-cell *matCellDef="let fabricante">
-            <button mat-raised-button color="accent" (click)="navigateToAddProduct(fabricante.id)">
-              <mat-icon>add_shopping_cart</mat-icon>
-              {{ translations.button_addProduct }}
-            </button>
+            <div class="product-buttons">
+              <button mat-raised-button color="accent" (click)="navigateToAddProduct(fabricante.id)">
+                <mat-icon>add_shopping_cart</mat-icon>
+                {{ translations.button_addProduct }}
+              </button>
+              
+            </div>
           </td>
         </ng-container>
 
