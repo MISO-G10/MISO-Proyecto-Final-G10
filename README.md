@@ -94,64 +94,38 @@ Tecnologías principales:
 ## APIs y Endpoints Principales
 
 ### Servicio de Usuarios
-- `POST /usuarios/login` - Iniciar sesión
-- `POST /usuarios/logout` - Cerrar sesión
-- `POST /usuarios/signup` - Registrar nuevo usuario
-- `GET /usuarios` - Listar todos los usuarios
+- `POST /usuarios` - Crear nuevo usuario
+- `PATCH /usuarios/{id}` - Actualizar usuario
+- `POST /usuarios/auth` - Iniciar sesión
+- `GET /usuarios/me` - Validar usuario actual
 - `GET /usuarios/{id}` - Obtener usuario por ID
-- `PUT /usuarios/{id}` - Actualizar usuario
-- `DELETE /usuarios/{id}` - Eliminar usuario
-- `GET /usuarios/batch` - Obtener información de múltiples usuarios
-- `GET /usuarios/roles` - Obtener roles disponibles
-- `POST /usuarios/reset-password` - Solicitar reset de contraseña
+- `GET /usuarios` - Listar usuarios (filtrado por rol según el usuario)
+- `POST /usuarios/batch` - Obtener información de múltiples usuarios
+- `GET /usuarios/ping` - Health check
+- `POST /usuarios/reset` - Restablecer base de datos
 
 ### Servicio de Visitas
-- `GET /asignaciones/mis-tenderos` - Obtener tenderos asignados a un vendedor
-- `POST /asignaciones` - Crear nueva asignación vendedor-tendero
-- `PUT /asignaciones/{id}` - Actualizar asignación
-- `DELETE /asignaciones/{id}` - Eliminar asignación
+- `POST /visitas` - Crear nueva visita
+- `PUT /visitas/{id}` - Actualizar visita
 - `GET /visitas` - Listar visitas
-- `POST /visitas` - Registrar nueva visita
-- `GET /visitas/{id}` - Obtener detalles de una visita
-- `GET /visitas/vendedor/{id}` - Obtener visitas por vendedor
-- `GET /visitas/tendero/{id}` - Obtener visitas por tendero
-- `GET /visitas/estadisticas` - Obtener estadísticas de visitas
-
-### Servicio de Ventas
-- `GET /pedidos` - Listar todos los pedidos
-- `POST /pedidos` - Crear nuevo pedido
-- `GET /pedidos/{id}` - Obtener detalles de pedido
-- `PUT /pedidos/{id}` - Actualizar estado de pedido
-- `GET /pedidos/vendedor/{id}` - Obtener pedidos por vendedor
-- `GET /pedidos/tendero/{id}` - Obtener pedidos por tendero
-- `GET /ventas` - Listar todas las ventas
-- `POST /ventas` - Registrar nueva venta
-- `GET /ventas/estadisticas` - Obtener estadísticas de ventas
-- `GET /ventas/reporte` - Generar reporte de ventas
-
-### Servicio de Inventarios
-- `GET /productos` - Listar todos los productos
-- `POST /productos` - Crear nuevo producto
-- `POST /productos/bulk` - Crear múltiples productos
-- `GET /productos/{id}` - Obtener detalles de producto
-- `PUT /productos/{id}` - Actualizar producto
-- `DELETE /productos/{id}` - Eliminar producto
-- `GET /bodegas` - Listar todas las bodegas
-- `POST /bodegas` - Crear nueva bodega
-- `GET /bodegas/{id}` - Obtener detalles de bodega
-- `POST /bodegas/{id}/productos` - Asignar producto a bodega
-- `GET /inventario` - Obtener estado del inventario
-- `GET /inventario/productos/{id}` - Obtener inventario por producto
-- `GET /inventario/bodegas/{id}` - Obtener inventario por bodega
-- `GET /rutas` - Listar rutas de distribución
+- `GET /visitas/{id}` - Obtener detalles de visita
+- `DELETE /visitas/{id}` - Eliminar visita
+- `POST /visitas/asignaciones` - Crear asignación vendedor-tendero
+- `GET /visitas/asignaciones` - Listar asignaciones
+- `PUT /visitas/asignaciones/{id}` - Actualizar asignación
+- `GET /visitas/asignaciones/mis-tenderos` - Obtener tenderos asignados al vendedor actual
+- `GET /visitas/asignaciones/tenderos/{id}` - Obtener tenderos asignados a un vendedor
+- `GET /visitas/asignaciones/vendedor` - Obtener ID del vendedor asignado
+- `GET /visitas/ping` - Health check
+- `POST /visitas/reset` - Restablecer base de datos
 
 ### Servicio de Fabricantes
-- `GET /fabricantes` - Listar todos los fabricantes
-- `POST /fabricantes` - Registrar nuevo fabricante
+- `POST /fabricantes` - Crear nuevo fabricante
+- `GET /fabricantes` - Listar fabricantes
 - `GET /fabricantes/{id}` - Obtener detalles de fabricante
-- `PUT /fabricantes/{id}` - Actualizar información de fabricante
 - `DELETE /fabricantes/{id}` - Eliminar fabricante
-- `GET /fabricantes/{id}/productos` - Obtener productos por fabricante
+- `GET /fabricantes/ping` - Health check
+- `POST /fabricantes/reset` - Restablecer base de datos
 
 ### Colección de Postman
 La colección postman se encuentra en el archivo postman_collection.json en este repositorio.
