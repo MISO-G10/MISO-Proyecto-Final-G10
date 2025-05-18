@@ -11,10 +11,9 @@ export interface Producto {
   reglasComerciales: string;
   reglasTributarias: string;
   categoria: Categoria;
-  fabricanteId: string;
+  fabricante_id: string;
   sku: string;
   createdAt: string;
-  fabricante_id: string;
 }
 
 export type Bodega = {
