@@ -11,11 +11,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.ccpapplication.navigation.BottomDrawer
 import com.example.ccpapplication.navigation.BottomNavItem
+import com.example.ccpapplication.pages.clients.OrderViewModel
 import com.example.ccpapplication.pages.home.HomePage
+import com.example.ccpapplication.pages.orders.OrderDetailPage
+import com.example.ccpapplication.pages.orders.OrderPage
 import com.example.ccpapplication.pages.products.ProductPage
 import com.example.ccpapplication.pages.products.ProductViewModel
 import com.example.ccpapplication.pages.shopping.ShoppingCartPage
@@ -54,11 +59,31 @@ fun NavGraphBuilder.clientNavGraph(navController: NavHostController,tokenManager
             )
         }
         composable(BottomNavItem.Orders.route) {
+            val orderViewModel: OrderViewModel = viewModel(factory = OrderViewModel.Factory)
 
+            OrderPage(
+                orderUiState = orderViewModel.orderUiState,
+                navController = navController,
+                viewModel = orderViewModel,
+                userId = tokenManager.getUser()?.id ?: "",
+                onViewDetailOrder = { orderId ->
+                    navController.navigate("order/$orderId")
+                }
+            )
         }
 
-
-
+        composable(
+            route = "order/{orderId}",
+            arguments = listOf(navArgument("orderId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val orderId = backStackEntry.arguments?.getString("orderId") ?: ""
+            val orderViewModel: OrderViewModel = viewModel(factory = OrderViewModel.Factory)
+            OrderDetailPage(
+                orderId = orderId,
+                viewModel = orderViewModel,
+                navController = navController
+            )
+        }
     }
 }
 @Composable

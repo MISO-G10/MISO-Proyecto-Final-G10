@@ -1,6 +1,8 @@
 package com.example.ccpapplication.pages.orders
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -10,97 +12,89 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.ccpapplication.data.model.Producto
+import com.example.ccpapplication.data.model.*
 import java.text.NumberFormat
 import java.util.*
-
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.example.ccpapplication.pages.clients.OrderViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderDetailPage(
     orderId: String,
-    products: List<Producto>,
-    onBackClick: () -> Unit,
-    onFavoriteClick: (String) -> Unit,
-    orderStatus: String = "Recibido",
-    creationDate: String = "28/02/2025",
-    estimatedDeliveryDate: String = "01/03/2025"
+    viewModel: OrderViewModel = viewModel(factory = OrderViewModel.Factory),
+    navController: NavHostController
+
 ) {
-    val showMenu = remember { mutableStateOf(false) }
+    val orders by viewModel.orders.collectAsState()
+    val order = orders.find { it.id == orderId }
     
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Orden #$orderId") },
+                title = { Text("Orden #${orderId.take(8)}") },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { showMenu.value = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Menú")
-                    }
-                    DropdownMenu(
-                        expanded = showMenu.value,
-                        onDismissRequest = { showMenu.value = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text("Opción 1") },
-                            onClick = { showMenu.value = false }
-                        )
-                        DropdownMenuItem(
-                            text = { Text("Opción 2") },
-                            onClick = { showMenu.value = false }
-                        )
                     }
                 }
             )
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp)
-        ) {
-            // Estado y fechas
-            OrderStatusSection(
-                status = orderStatus,
-                creationDate = creationDate,
-                estimatedDeliveryDate = estimatedDeliveryDate
-            )
-            
-            Spacer(modifier = Modifier.height(24.dp))
-            
-            // Lista de productos
-            Text(
-                text = "Productos",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            // Lista de productos
-            products.forEach { product ->
-                OrderProductItem(
-                    product = product,
-                    onFavoriteClick = onFavoriteClick
-                )
-                Spacer(modifier = Modifier.height(8.dp))
+        if (order == null) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
             }
-            
-            Spacer(modifier = Modifier.height(24.dp))
-            
-            // Costos
-            OrderCostSection(products = products)
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(horizontal = 16.dp)
+            ) {
+                // Estado y fechas
+                item {
+                    OrderStatusSection(
+                        status = order.estado,
+                        creationDate = order.createdAt?.split("T")?.get(0) ?: "",
+                        estimatedDeliveryDate = order.fechaEntrega?.split("T")?.get(0) ?: ""
+                    )
+                    
+                    Spacer(modifier = Modifier.height(24.dp))
+                    
+                    // Título de productos
+                    Text(
+                        text = "Productos",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                
+                // Lista de productos
+                items(order.orderProducts ?: emptyList()) { orderProduct ->
+                    OrderProductItem(
+                        orderProduct = orderProduct,
+                        onFavoriteClick = { /* TODO: Implementar marcar como favorito */ }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                
+                // Costos
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    OrderCostSection(orderProducts = order.orderProducts ?: emptyList())
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
         }
     }
 }
 
 @Composable
 fun OrderStatusSection(
-    status: String,
+    status: OrderStatus,
     creationDate: String,
     estimatedDeliveryDate: String
 ) {
@@ -116,11 +110,19 @@ fun OrderStatusSection(
                 Icon(
                     Icons.Default.CheckCircle,
                     contentDescription = null,
-                    tint = Color.Green
+                    tint = when(status) {
+                        OrderStatus.PENDIENTE -> Color.Yellow
+                        OrderStatus.ENVIADO -> Color.Blue
+                        OrderStatus.ENTREGADO -> Color.Green
+                    }
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = status,
+                    text = when(status) {
+                        OrderStatus.PENDIENTE -> "Pendiente"
+                        OrderStatus.ENVIADO -> "Enviado"
+                        OrderStatus.ENTREGADO -> "Entregado"
+                    },
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -129,6 +131,10 @@ fun OrderStatusSection(
             
             Row {
                 Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Fecha de creación",
+                        style = MaterialTheme.typography.bodySmall
+                    )
                     Text(
                         text = "Fecha de creación",
                         style = MaterialTheme.typography.bodySmall
@@ -155,7 +161,7 @@ fun OrderStatusSection(
 
 @Composable
 fun OrderProductItem(
-    product: Producto,
+    orderProduct: OrderProduct,
     onFavoriteClick: (String) -> Unit
 ) {
     Card(
@@ -170,23 +176,23 @@ fun OrderProductItem(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = product.nombre,
+                    text = orderProduct.producto?.nombre ?: "",
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = product.categoria,
+                    text = orderProduct.producto?.categoria?.name ?: "",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = "Cantidad: ${product.cantidad ?: 1}",
+                    text = "Cantidad: ${orderProduct.cantidad}",
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
-                    text = formatCurrency(product.valorUnidad * (product.cantidad ?: 1)),
+                    text = formatCurrency(orderProduct.valorUnitario.toDouble() * orderProduct.cantidad.toDouble()),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-            IconButton(onClick = { onFavoriteClick(product.sku) }) {
+            IconButton(onClick = { onFavoriteClick(orderProduct.producto?.sku ?: "") }) {
                 Icon(
                     Icons.Default.FavoriteBorder,
                     contentDescription = "Marcar como favorito"
@@ -197,8 +203,10 @@ fun OrderProductItem(
 }
 
 @Composable
-fun OrderCostSection(products: List<Producto>) {
-    val subtotal = products.sumOf { it.valorUnidad * (it.cantidad ?: 1) }
+fun OrderCostSection(orderProducts: List<OrderProduct>) {
+    val subtotal = orderProducts.sumOf { product: OrderProduct -> 
+        product.valorUnitario.toDouble() * product.cantidad.toDouble()
+    }
     val ivaPercentage = 0.19
     val iva = subtotal * ivaPercentage
     val total = subtotal + iva
