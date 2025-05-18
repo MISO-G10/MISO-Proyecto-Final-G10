@@ -21,9 +21,8 @@ export interface BulkProductoResponse {
 export class ProductoService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = environment.apiUrl + ':' + environment.endpointInventario;
-  private readonly apiProductosUrl = environment.apiUrl + ':' + environment.endpointInventario + '/createproduct';
-  private readonly createProductUrl = this.apiProductosUrl + '/createproduct';
-  private readonly bulkProductUrl = this.apiProductosUrl + '/productos/bulk';
+  private readonly createProductUrl = this.apiUrl + '/createproduct';
+  private readonly bulkProductUrl = this.apiUrl + '/productos/bulk';
 
   crearProducto(producto: Producto) {
     // Crear una copia del objeto y transformar el nombre del campo

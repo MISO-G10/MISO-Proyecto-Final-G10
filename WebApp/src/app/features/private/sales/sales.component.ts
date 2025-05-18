@@ -32,7 +32,6 @@ export class SalesComponent {
   };
 
   navigateToCreateSalesPlan() {
-
     this.router.navigate(['/private/sales/create']);
   }
 }
