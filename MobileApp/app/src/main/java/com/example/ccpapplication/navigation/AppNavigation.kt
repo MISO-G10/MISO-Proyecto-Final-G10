@@ -107,6 +107,7 @@ fun AppNavigation(appViewModel: AppViewModel,
             navController = navController,
             modifier = Modifier.padding(innerPadding),
             appViewModel = appViewModel,
+            tokenManager=tokenManager
         )
     }
 }

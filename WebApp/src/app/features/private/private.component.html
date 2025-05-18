@@ -6,7 +6,7 @@
   <h1 class="site-title">
     <img src="assets/images/ccp-logo.svg" [alt]="translations['logo_alt']" class="logo-image">
   </h1>
-  
+
   <span class="spacer"></span>
   <button mat-icon-button [matTooltip]="translations['tooltip_user']" class="user-button">
     <mat-icon>account_circle</mat-icon>
@@ -30,24 +30,46 @@
       </a>
 
 
-      <a mat-list-item routerLink="sellers" routerLinkActive="active-link" *ngIf="canRenderRole(['ADMINISTRADOR','DIRECTOR_VENTAS'])">
+      <a mat-list-item routerLink="sellers" routerLinkActive="active-link"
+         *ngIf="canRenderRole(['ADMINISTRADOR','DIRECTOR_VENTAS'])">
         <div class="menu-item-container">
           <mat-icon mat-list-icon>supervisor_account</mat-icon>
-          <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_sellers'] }}</span>
+          <span class="menu-text"
+                *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_sellers'] }}</span>
         </div>
       </a>
 
-      <a mat-list-item routerLink="sales" routerLinkActive="active-link" *ngIf="canRenderRole(['ADMINISTRADOR','DIRECTOR_VENTAS'])">
+      <a mat-list-item routerLink="sales" routerLinkActive="active-link"
+         *ngIf="canRenderRole(['ADMINISTRADOR','DIRECTOR_VENTAS'])">
         <div class="menu-item-container">
           <mat-icon mat-list-icon>attach_money</mat-icon>
           <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_sales'] }}</span>
         </div>
       </a>
 
-      <a mat-list-item routerLink="fabricantes" routerLinkActive="active-link" *ngIf="canRenderRole(['ADMINISTRADOR','ENCARGADO_COMPRAS_PROVEEDORES'])">
+      <a mat-list-item routerLink="fabricantes" routerLinkActive="active-link"
+         *ngIf="canRenderRole(['ADMINISTRADOR','ENCARGADO_COMPRAS_PROVEEDORES'])">
         <div class="menu-item-container">
           <mat-icon mat-list-icon>business</mat-icon>
-          <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_manufacturer'] }}</span>
+          <span class="menu-text"
+                *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_manufacturer'] }}</span>
+        </div>
+      </a>
+
+      <a mat-list-item routerLink="productos" routerLinkActive="active-link"
+         *ngIf="canRenderRole(['ADMINISTRADOR','LOGISTICA'])">
+        <div class="menu-item-container">
+          <mat-icon mat-list-icon>list</mat-icon>
+          <span class="menu-text"
+                *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_products'] }}</span>
+        </div>
+      </a>
+
+      <a mat-list-item routerLink="routes" routerLinkActive="active-link"
+         *ngIf="canRenderRole(['ADMINISTRADOR','LOGISTICA'])">
+        <div class="menu-item-container">
+          <mat-icon mat-list-icon>explore</mat-icon>
+          <span class="menu-text" *ngIf="isClickExpanded || isHoverExpanded">{{ translations['navicon_routes'] }}</span>
         </div>
       </a>
     </mat-nav-list>

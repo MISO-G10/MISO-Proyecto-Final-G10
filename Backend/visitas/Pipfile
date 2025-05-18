@@ -15,6 +15,7 @@ pytz = "*"
 flask-cors = "*"
 requests = "*"
 marshmallow = "*"
+colorama = "*"
 
 [dev-packages]
 pytest = "*"

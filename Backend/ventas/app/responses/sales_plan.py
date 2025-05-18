@@ -13,12 +13,12 @@ class SalesPlanPath(BaseModel):
 class SalesPlanResponse(BaseModel):
     """Esquema para devolver un Plan de Ventas"""
     id: int
+    usuario_id: str
     nombre: str
     descripcion: str
     valor_objetivo: float
     fecha_inicio: str
     fecha_fin: str
-    sellers: List[SellerResponse]
 
 
 class SalesPlanListResponse(BaseModel):

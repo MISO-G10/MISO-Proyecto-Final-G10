@@ -151,7 +151,7 @@ Este proyecto consta se las siguientes Apis
 Este proyecto hace uso de pytest para la ejecución de pruebas. Para ejecutar las pruebas se debe ejecutar el siguiente
 comando:
 
-> Recuerde estar ubicado en el directorio de este microservicio `fabricantes/`
+> Recuerde estar ubicado en el directorio de este microservicio `inventario/`
 
 ```bash
 pytest

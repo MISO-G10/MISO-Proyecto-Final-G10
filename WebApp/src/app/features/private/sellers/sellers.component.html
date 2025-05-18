@@ -54,9 +54,16 @@
             <button mat-icon-button color="primary" [matTooltip]="translations['tooltip_detail']">
               <mat-icon>visibility</mat-icon>
             </button>
-            <button mat-icon-button color="accent" [matTooltip]="translations['tooltip_edit']">
+            <button 
+              mat-icon-button 
+              color="accent" 
+              [matTooltip]="translations['tooltip_edit']"
+              (click)="navigateToEdit(user)">
               <mat-icon>edit</mat-icon>
-            </button>            
+            </button>
+            <button mat-icon-button color="warn" [matTooltip]="translations['sales_report_tooltip']" (click)="navigateToSalesReport(user)">
+              <mat-icon>assessment</mat-icon>
+            </button>
           </td>
         </ng-container>
   

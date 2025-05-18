@@ -1,6 +1,10 @@
 <div class="sales-container">
-  <h1>Ventas</h1>
+  <h1>{{ translations.title }}</h1>
   <div class="content">
     <!-- Sales content will go here -->
+    <button mat-raised-button color="accent" (click)="navigateToCreateSalesPlan()">
+      <mat-icon>add_shopping_cart</mat-icon>
+      {{ translations.create_sales_plan }}
+    </button>
   </div>
 </div>

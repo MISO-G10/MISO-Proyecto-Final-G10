@@ -18,6 +18,7 @@ Para instalar todas las dependencias del proyecto, ejecuta en la raíz del proye
 npm install
 ```
 
+
 Este comando instalará todas las dependencias definidas en el archivo `package.json`, incluyendo las de desarrollo necesarias para compilar, probar y ejecutar la aplicación.
 
 ## Servidor de desarrollo

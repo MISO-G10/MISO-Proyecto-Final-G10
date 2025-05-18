@@ -34,7 +34,8 @@ class Validate(BaseCommannd):
                 "username": current_usuario.username,
                 "nombre": current_usuario.nombre,
                 "apellido": current_usuario.apellido,
-                "rol": current_usuario.rol.value
+                "rol": current_usuario.rol.value,
+                "direccion": current_usuario.direccion,
             }
 
         except Exception as e:

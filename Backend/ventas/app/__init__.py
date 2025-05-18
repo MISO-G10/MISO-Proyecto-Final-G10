@@ -122,7 +122,6 @@ def create_app():
     # Register all the API blueprints
     app.register_api(api)  # Main API blueprint
     app.register_api(plan_blueprint)  # Sales plans blueprint
-    app.register_api(seller_blueprint)  # Sellers blueprint
 
     app.register_blueprint(command_bp)  # Register regular blueprint for commands
     app.register_blueprint(commands)  # Register commands blueprint
@@ -140,5 +139,12 @@ def create_app():
         from app.models import sales_plan_seller, sales_plan
 
         db.create_all()
+    
+    # Registrar función para limpiar conexiones a la base de datos al final de cada petición
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        db.session.remove()
+        if os.environ.get('FLASK_ENV') == 'development':
+            print("Sesiones de base de datos limpiadas")
 
     return app

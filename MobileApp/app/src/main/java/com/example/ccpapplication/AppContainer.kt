@@ -8,7 +8,8 @@ import com.example.ccpapplication.data.repository.InventaryRepositoryImpl
 import android.util.Log
 import com.example.ccpapplication.data.repository.ClientRepository
 import com.example.ccpapplication.data.repository.ClientRepositoryImpl
-
+import com.example.ccpapplication.data.repository.OrderRepository
+import com.example.ccpapplication.data.repository.OrderRepositoryImpl
 import com.example.ccpapplication.data.repository.UserRepository
 import com.example.ccpapplication.data.repository.UserRepositoryImpl
 import com.example.ccpapplication.data.repository.VisitRepository
@@ -33,6 +34,7 @@ interface AppContainer {
     val visitRepository: VisitRepository
     val inventarioRepository:InventaryRepository
     val clientRepository: ClientRepository
+    val orderRepository: OrderRepository
 
 }
 
@@ -61,6 +63,12 @@ class DefaultAppContainer(private val context: Context)  : AppContainer {
             .create(CcpApiServiceImpl::class.java)
 
     }
+    private val orderService: CcpApiServiceAdapter by lazy {
+        RetrofitFactory
+            .createRetrofit(BuildConfig.API_URL+BuildConfig.ENDPOINT_INVENTARIOS, tokenManager)
+            .create(CcpApiServiceImpl::class.java)
+
+    }
 
     override val userRepository:UserRepository by lazy {
         UserRepositoryImpl(userService,tokenManager)
@@ -79,6 +87,11 @@ class DefaultAppContainer(private val context: Context)  : AppContainer {
         // Usamos el servicio de visitas ya que el endpoint de tenderos está en ese servicio
         Log.d("AppContainer", "Creando repositorio de clientes usando el servicio de visitas")
         ClientRepositoryImpl(visitService,tokenManager)
+    }
+
+    override val orderRepository:OrderRepository by lazy {
+        Log.d("AppContainer", "Creando repositorio de pedidos")
+        OrderRepositoryImpl(orderService,tokenManager)
     }
 
 }
