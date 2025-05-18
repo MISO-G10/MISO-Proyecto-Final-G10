@@ -5,7 +5,7 @@ from flask_cors import CORS
 
 from src.db.base import Base
 # DB
-from src.db.session import engine, get_inspector
+from src.db.session import engine, get_inspector, cleanup_db_sessions
 # CONFIG
 from src.utils.config import get_config
 # ROUTES
@@ -35,6 +35,12 @@ def create_app(env_name='development'):
 
     # Initialize the database
     initialize_database()
+
+    # Registrar función para limpiar conexiones a la base de datos al final de cada petición
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        cleanup_db_sessions()
+        print("Sesiones de base de datos limpiadas") if os.getenv('FLASK_ENV') == 'development' else None
 
     @app.errorhandler(ApiError)
     def handle_exception(err):
