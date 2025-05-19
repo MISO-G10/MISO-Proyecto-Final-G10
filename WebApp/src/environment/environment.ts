@@ -5,5 +5,5 @@ export const environment = {
     endpointVentas: "3002/planes",
     endpointInventario: "3003/inventarios",
     endpointVisitas: "3004/visitas",
-    googleMapsApiKey: "AIzaSyAwhcQ3koddiPAhu3nFiXDwxWqmlYIJQss"
+    googleMapsApiKey: "AIzaSyCNDZtrt6-VY8Jj39zWQEUgybcLvSFeaJY"
 }

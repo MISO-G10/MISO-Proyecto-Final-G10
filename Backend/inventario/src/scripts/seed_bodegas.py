@@ -31,7 +31,7 @@ BODEGAS = [
     },
     {
         "nombre": "Bodega Bogota 4",
-        "direccion": "Cl. 147 #58c-95, Bogotá",
+        "direccion": "Cl. 147 #58c-95, Bogotá, Colombia",
         "ciudad": "Bogotá",
         "pais": "Colombia"
     },
